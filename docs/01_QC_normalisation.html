@@ -344,6 +344,15 @@ div.tocify {
 <li>
   <a href="license.html">License</a>
 </li>
+<li>
+  <a href="01_QC_normalisation.html">QC and normalisation</a>
+</li>
+<li>
+  <a href="02_EDA.html">EDA</a>
+</li>
+<li>
+  <a href="03_DE_and_clustering.html">DE</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -527,15 +536,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree9abb54e7fa24dc447a625420d334e81d0ff906a9targetblank9abb54ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree4525b368e7bd197e9c7aec657d151e77b282f53dtargetblank4525b36a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/9abb54e7fa24dc447a625420d334e81d0ff906a9" target="_blank">9abb54e</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/4525b368e7bd197e9c7aec657d151e77b282f53d" target="_blank">4525b36</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree9abb54e7fa24dc447a625420d334e81d0ff906a9targetblank9abb54ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree4525b368e7bd197e9c7aec657d151e77b282f53dtargetblank4525b36a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -545,7 +554,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/9abb54e7fa24dc447a625420d334e81d0ff906a9" target="_blank">9abb54e</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/4525b368e7bd197e9c7aec657d151e77b282f53d" target="_blank">4525b36</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -564,28 +573,12 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
 
-Untracked files:
-    Untracked:  code/functions.R
-    Untracked:  data/lncRNA_plasma.csv
-    Untracked:  data/lncRNA_sf.csv
-    Untracked:  data/plasma_data_norm.rds
-    Untracked:  data/plasma_pheno.rds
-    Untracked:  data/plasma_proteins2.csv
-    Untracked:  data/sf_data_norm.rds
-    Untracked:  data/sf_pheno.rds
-    Untracked:  data/snRNA_plasma.csv
-    Untracked:  data/snRNA_sf.csv
-    Untracked:  data/snoRNA_plasma.csv
-    Untracked:  data/snoRNA_sf.csv
-    Untracked:  normalisation/
-    Untracked:  output/plasma_missing_values_heatmap.png
-    Untracked:  output/sf_missing_values_heatmap.png
-
 Unstaged changes:
     Modified:   analysis/01_QC_normalisation.Rmd
     Modified:   analysis/02_EDA.Rmd
     Modified:   analysis/03_DE_and_clustering.Rmd
-    Modified:   data/sf_proteins.csv
+    Modified:   analysis/_site.yml
+    Modified:   output/sf_proDA_DE_results.xlsx
 
 </code></pre>
 <p>
@@ -631,6 +624,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/702f3f3a980b06144660133f1c94fa6d6b2ce6f6/analysis/01_QC_normalisation.Rmd" target="_blank">702f3f3</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+EDA + DE
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/702f3f3a980b06144660133f1c94fa6d6b2ce6f6/docs/01_QC_normalisation.html" target="_blank">702f3f3</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+EDA + DE
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -919,7 +946,7 @@ other attached packages:
  [4] NormalyzerDE_1.13.2 forcats_0.5.1       stringr_1.4.0      
  [7] dplyr_1.0.9         purrr_0.3.4         readr_2.1.2        
 [10] tidyr_1.2.0         tibble_3.1.7        ggplot2_3.3.6      
-[13] tidyverse_1.3.1    
+[13] tidyverse_1.3.1     workflowr_1.7.0    
 
 loaded via a namespace (and not attached):
   [1] colorspace_2.0-3            ggsignif_0.6.3             
@@ -932,56 +959,58 @@ loaded via a namespace (and not attached):
  [15] lubridate_1.8.0             xml2_1.3.3                 
  [17] codetools_0.2-18            splines_4.2.0              
  [19] knitr_1.39                  Formula_1.2-4              
- [21] jsonlite_1.8.0              workflowr_1.7.0            
- [23] broom_0.8.0                 cluster_2.1.3              
- [25] dbplyr_2.2.0                png_0.1-7                  
- [27] compiler_4.2.0              httr_1.4.3                 
- [29] backports_1.4.1             assertthat_0.2.1           
- [31] Matrix_1.4-1                fastmap_1.1.0              
- [33] limma_3.52.1                cli_3.3.0                  
- [35] later_1.3.0                 htmltools_0.5.2            
- [37] tools_4.2.0                 GenomeInfoDbData_1.2.8     
- [39] gtable_0.3.0                glue_1.6.2                 
- [41] Rcpp_1.0.8.3                Biobase_2.56.0             
- [43] carData_3.0-5               cellranger_1.1.0           
- [45] jquerylib_0.1.4             raster_3.5-15              
- [47] vctrs_0.4.1                 preprocessCore_1.58.0      
- [49] xfun_0.31                   rvest_1.0.2                
+ [21] jsonlite_1.8.0              broom_0.8.0                
+ [23] cluster_2.1.3               dbplyr_2.2.0               
+ [25] png_0.1-7                   compiler_4.2.0             
+ [27] httr_1.4.3                  backports_1.4.1            
+ [29] assertthat_0.2.1            Matrix_1.4-1               
+ [31] fastmap_1.1.0               limma_3.52.1               
+ [33] cli_3.3.0                   later_1.3.0                
+ [35] htmltools_0.5.2             tools_4.2.0                
+ [37] GenomeInfoDbData_1.2.8      gtable_0.3.0               
+ [39] glue_1.6.2                  Rcpp_1.0.8.3               
+ [41] Biobase_2.56.0              carData_3.0-5              
+ [43] cellranger_1.1.0            jquerylib_0.1.4            
+ [45] raster_3.5-15               vctrs_0.4.1                
+ [47] preprocessCore_1.58.0       xfun_0.31                  
+ [49] ps_1.7.0                    rvest_1.0.2                
  [51] lifecycle_1.0.1             RcmdrMisc_2.7-2            
  [53] rstatix_0.7.0               terra_1.5-34               
- [55] zlibbioc_1.42.0             MASS_7.3-56                
- [57] zoo_1.8-10                  scales_1.2.0               
- [59] hms_1.1.1                   promises_1.2.0.1           
- [61] MatrixGenerics_1.8.0        SummarizedExperiment_1.26.1
- [63] sandwich_3.0-2              RColorBrewer_1.1-3         
- [65] yaml_2.3.5                  gridExtra_2.3              
- [67] sass_0.4.1                  rpart_4.1.16               
- [69] latticeExtra_0.6-29         stringi_1.7.6              
- [71] highr_0.9                   S4Vectors_0.34.0           
- [73] nortest_1.0-4               e1071_1.7-11               
- [75] checkmate_2.1.0             BiocGenerics_0.42.0        
- [77] GenomeInfoDb_1.32.2         bitops_1.0-7               
- [79] rlang_1.0.2                 pkgconfig_2.0.3            
- [81] matrixStats_0.62.0          evaluate_0.15              
- [83] lattice_0.20-45             labeling_0.4.2             
- [85] htmlwidgets_1.5.4           tidyselect_1.1.2           
- [87] magrittr_2.0.3              R6_2.5.1                   
- [89] IRanges_2.30.0              generics_0.1.2             
- [91] Hmisc_4.7-0                 DelayedArray_0.22.0        
- [93] DBI_1.1.2                   pillar_1.7.0               
- [95] haven_2.5.0                 whisker_0.4                
- [97] foreign_0.8-82              withr_2.5.0                
- [99] RCurl_1.98-1.7              survival_3.3-1             
-[101] abind_1.4-5                 sp_1.5-0                   
-[103] nnet_7.3-17                 modelr_0.1.8               
-[105] crayon_1.5.1                car_3.1-0                  
-[107] utf8_1.2.2                  tzdb_0.3.0                 
-[109] rmarkdown_2.14              jpeg_0.1-9                 
-[111] grid_4.2.0                  readxl_1.4.0               
-[113] data.table_1.14.2           git2r_0.30.1               
-[115] reprex_2.0.1                digest_0.6.29              
-[117] httpuv_1.6.5                stats4_4.2.0               
-[119] munsell_0.5.0               bslib_0.3.1                </code></pre>
+ [55] zlibbioc_1.42.0             getPass_0.2-2              
+ [57] MASS_7.3-56                 zoo_1.8-10                 
+ [59] scales_1.2.0                MatrixGenerics_1.8.0       
+ [61] hms_1.1.1                   promises_1.2.0.1           
+ [63] SummarizedExperiment_1.26.1 sandwich_3.0-2             
+ [65] RColorBrewer_1.1-3          yaml_2.3.5                 
+ [67] gridExtra_2.3               sass_0.4.1                 
+ [69] rpart_4.1.16                latticeExtra_0.6-29        
+ [71] stringi_1.7.6               highr_0.9                  
+ [73] S4Vectors_0.34.0            nortest_1.0-4              
+ [75] e1071_1.7-11                checkmate_2.1.0            
+ [77] BiocGenerics_0.42.0         GenomeInfoDb_1.32.2        
+ [79] bitops_1.0-7                matrixStats_0.62.0         
+ [81] rlang_1.0.2                 pkgconfig_2.0.3            
+ [83] evaluate_0.15               lattice_0.20-45            
+ [85] labeling_0.4.2              htmlwidgets_1.5.4          
+ [87] processx_3.6.0              tidyselect_1.1.2           
+ [89] magrittr_2.0.3              R6_2.5.1                   
+ [91] IRanges_2.30.0              generics_0.1.2             
+ [93] Hmisc_4.7-0                 DelayedArray_0.22.0        
+ [95] DBI_1.1.2                   pillar_1.7.0               
+ [97] haven_2.5.0                 whisker_0.4                
+ [99] foreign_0.8-82              withr_2.5.0                
+[101] RCurl_1.98-1.7              survival_3.3-1             
+[103] abind_1.4-5                 sp_1.5-0                   
+[105] nnet_7.3-17                 modelr_0.1.8               
+[107] crayon_1.5.1                car_3.1-0                  
+[109] utf8_1.2.2                  tzdb_0.3.0                 
+[111] rmarkdown_2.14              jpeg_0.1-9                 
+[113] grid_4.2.0                  readxl_1.4.0               
+[115] data.table_1.14.2           callr_3.7.0                
+[117] git2r_0.30.1                reprex_2.0.1               
+[119] digest_0.6.29               httpuv_1.6.5               
+[121] stats4_4.2.0                munsell_0.5.0              
+[123] bslib_0.3.1                </code></pre>
 </div>
 </div>
 

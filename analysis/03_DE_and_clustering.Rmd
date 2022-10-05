@@ -18,8 +18,10 @@ library(openxlsx)
 
 ```
 
+# With missing values
 
 ## Load data
+
 
 ```{r}
 
@@ -31,16 +33,6 @@ plasma_data_norm <- readRDS("./data/plasma_data_norm.rds")
 # Pheno
 sf_pheno <- readRDS("./data/sf_pheno.rds")
 plasma_pheno <- readRDS("./data/plasma_pheno.rds")
-
-```
-
-
-First filter data. In the original iteration of this analysis all the data with missing values was used to test the proDA package.
-To reduce the number of tests (and improve the power of the analysis) filter the data so only rows with <20% missing values remain. 
-
-```{r}
-
-test <- sf_data_norm[which(rowMeans(is.na(sf_data_norm)) < 0.2), ]
 
 ```
 
@@ -82,6 +74,31 @@ plasma_day10 <- test_diff(fit, day10) %>% arrange(-desc(adj_pval))
 
 Day 35 and 42 have one sig protein after adjustment each: A0A3Q2HID2 & 	A0A3Q2H659.  
 
+These results can be combined into a list and then saved as an Excel spreadsheet: 
+
+```{r}
+
+plasma_DE_res <- list("day63" = plasma_day63, "day56" = plasma_day56, "day49" = plasma_day49, "day42" = plasma_day42, "day35" = plasma_day35, "day10" = plasma_day10)
+openxlsx::write.xlsx(plasma_DE_res, file = "./output/plasma_proDA_DE_results.xlsx")
+
+```
+
+
+Sample results showing the day 42 vs day 0 contrast are below. The rows are ordered by descending p-value. 
+
+```{r, echo=FALSE}
+
+DT::datatable(plasma_day42[,c(1:4,6,10)], 
+              class = "cell-border stripe", 
+              filter= "top", 
+              extensions = "Buttons",
+              options = list(pageLength = 10, pageWidth = 5, dom = 'Bfrtip',
+              buttons = c('copy', 'print'))
+              )
+
+```
+
+
 
 ### Version 2, time as a continuous variable 
 
@@ -105,7 +122,7 @@ fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse,
 
 ```{r}
 
-plasma_time <- test_diff(fit, day)
+plasma_time <- test_diff(fit, day) %>% arrange(-desc(adj_pval))
 
 ```
 
@@ -157,9 +174,11 @@ openxlsx::write.xlsx(sf_DE_res, file = "./output/sf_proDA_DE_results.xlsx")
 ```
 
 
-```{r}
+Sample results of the differential expression analysis with the time points as factors are shown below. The results shown are day 63 versus day 0. The rows are ordered by descending p-value. 
 
-DT::datatable(sf_day63, 
+```{r, echo=FALSE}
+
+DT::datatable(sf_day63[,c(1:4,6,10)], 
               class = "cell-border stripe", 
               filter= "top", 
               extensions = "Buttons",
@@ -201,9 +220,11 @@ sf_time <- test_diff(fit, day) %>% arrange(-desc(pval))
 ```
 
 
-```{r}
+Results of the differential expression analysis with time as a continuous variable are shown below. The rows are ordered by descending p-value. 
 
-DT::datatable(sf_time, 
+```{r, echo=FALSE}
+
+DT::datatable(sf_time[,c(1:4,6,10)], 
               class = "cell-border stripe", 
               filter= "top", 
               extensions = "Buttons",
@@ -213,3 +234,31 @@ DT::datatable(sf_time,
 
 ```
 
+
+
+# Without missing values
+
+## Load data
+
+```{r}
+
+# Data
+sf_data_norm <- readRDS("./data/sf_data_norm.rds")
+plasma_data_norm <- readRDS("./data/plasma_data_norm.rds")
+
+
+# Pheno
+sf_pheno <- readRDS("./data/sf_pheno.rds")
+plasma_pheno <- readRDS("./data/plasma_pheno.rds")
+
+```
+
+
+```{r}
+
+sf_data_norm <- na.omit(sf_data_norm)
+plasma_data_norm <- na.omit(plasma_data_norm)
+
+#plasma_data_norm <- plasma_data_norm[which(rowMeans(is.na(plasma_data_norm)) < 0.1), ]
+
+```

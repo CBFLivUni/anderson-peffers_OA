@@ -344,6 +344,15 @@ div.tocify {
 <li>
   <a href="license.html">License</a>
 </li>
+<li>
+  <a href="01_QC_normalisation.html">QC and normalisation</a>
+</li>
+<li>
+  <a href="02_EDA.html">EDA</a>
+</li>
+<li>
+  <a href="03_DE_and_clustering.html">DE</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -372,7 +381,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -383,8 +392,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -397,9 +406,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>anderson-peffers_OA/</code> <span
@@ -422,18 +431,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -524,15 +536,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea5f8c84f0c36854d18eba400f97e24184f9790f1targetblanka5f8c84a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree4525b368e7bd197e9c7aec657d151e77b282f53dtargetblank4525b36a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a5f8c84f0c36854d18eba400f97e24184f9790f1" target="_blank">a5f8c84</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/4525b368e7bd197e9c7aec657d151e77b282f53d" target="_blank">4525b36</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea5f8c84f0c36854d18eba400f97e24184f9790f1targetblanka5f8c84a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree4525b368e7bd197e9c7aec657d151e77b282f53dtargetblank4525b36a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -542,7 +554,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a5f8c84f0c36854d18eba400f97e24184f9790f1" target="_blank">a5f8c84</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/4525b368e7bd197e9c7aec657d151e77b282f53d" target="_blank">4525b36</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -560,6 +572,13 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
+
+Unstaged changes:
+    Modified:   analysis/01_QC_normalisation.Rmd
+    Modified:   analysis/02_EDA.Rmd
+    Modified:   analysis/03_DE_and_clustering.Rmd
+    Modified:   analysis/_site.yml
+    Modified:   output/sf_proDA_DE_results.xlsx
 
 </code></pre>
 <p>
@@ -604,6 +623,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/91edc404e0d9b2a4dd5cbc09600f69cecb255c9c/docs/02_EDA.html" target="_blank">91edc40</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+Modifications to website/yaml.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
