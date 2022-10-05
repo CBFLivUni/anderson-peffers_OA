@@ -13,6 +13,7 @@ editor_options:
 
 library(tidyverse)
 library(proDA)
+library(DT)
 
 ```
 
@@ -59,16 +60,16 @@ fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse,
 
 ```{r}
 
-plasma_day63 <- test_diff(fit, day63)
-plasma_day56 <- test_diff(fit, day56)
-plasma_day49 <- test_diff(fit, day49)
-plasma_day42 <- test_diff(fit, day42)
-plasma_day35 <- test_diff(fit, day35)
-plasma_day10 <- test_diff(fit, day10)
+plasma_day63 <- test_diff(fit, day63) %>% arrange(-desc(adj_pval))
+plasma_day56 <- test_diff(fit, day56) %>% arrange(-desc(adj_pval))
+plasma_day49 <- test_diff(fit, day49) %>% arrange(-desc(adj_pval))
+plasma_day42 <- test_diff(fit, day42) %>% arrange(-desc(adj_pval))
+plasma_day35 <- test_diff(fit, day35) %>% arrange(-desc(adj_pval))
+plasma_day10 <- test_diff(fit, day10) %>% arrange(-desc(adj_pval))
 
 ```
 
-Day 35 and 42 have one sig protein after adjustment each: A0A3Q2HID2 & 	A0A3Q2H659.
+Day 35 and 42 have one sig protein after adjustment each: A0A3Q2HID2 & 	A0A3Q2H659.  
 
 
 ### Version 2, time as a continuous variable 
@@ -90,7 +91,6 @@ fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse,
 ```
 
 
-`result_names(fit)` can be used to view the names of the possible contrasts. Not entirely sure this is the correct way... 
 
 ```{r}
 
@@ -99,10 +99,106 @@ plasma_time <- test_diff(fit, day)
 ```
 
 
-Is this the correct way? 
+
+## Synovial fluid differential expression analysis 
+
+### Version 1, time and condition as factors 
 
 ```{r}
 
-plasma_res <- test_diff(fit)
+sf_design <- sf_pheno[,c(6,2,1,5)]
+colnames(sf_design) <- c("name", "day", "horse", "group")
+sf_design$group_day <- as.factor(paste0(sf_design$group, "_", sf_design$day))
 
-``` 
+```
+
+
+
+```{r}
+
+fit <- proDA(as.matrix(sf_data_norm), design = ~ group_day + horse, 
+             col_data = sf_design) # Manually specified reference level but confirmed its 0 by default
+
+```
+
+
+`result_names(fit)` can be used to view the names of the possible contrasts. Create contrasts between all the OA samples vs time 0 and sort them by descending p-value. 
+
+```{r}
+
+sf_day63 <- test_diff(fit, group_dayOA_63 - group_dayOA_0) %>% arrange(-desc(pval))
+sf_day56 <- test_diff(fit, group_dayOA_56 - group_dayOA_0) %>% arrange(-desc(pval))
+sf_day49 <- test_diff(fit, group_dayOA_49 - group_dayOA_0) %>% arrange(-desc(pval))
+sf_day42 <- test_diff(fit, group_dayOA_42 - group_dayOA_0) %>% arrange(-desc(pval))
+sf_day35 <- test_diff(fit, group_dayOA_35 - group_dayOA_0) %>% arrange(-desc(pval))
+sf_day10 <- test_diff(fit, group_dayOA_10 - group_dayOA_0) %>% arrange(-desc(pval))
+
+```
+
+
+These results can be combined into a list and then saved as an Excel spreadsheet: 
+
+```{r}
+
+sf_DE_res <- list("day63" = sf_day63, "day56" = sf_day56, "day49" = sf_day49, "day42" = sf_day42, "day35" = sf_day35, "day10" = sf_day10)
+write.xlsx(sf_DE_res, file = "./output/sf_proDA_DE_results.xlsx")
+
+```
+
+
+```{r}
+
+DT::datatable(sf_day63, 
+              class = "cell-border stripe", 
+              filter= "top", 
+              extensions = "Buttons",
+              options = list(pageLength = 10, dom = 'Bfrtip',
+              buttons = c('copy', 'print'))
+              )
+
+```
+
+### Version 2, time as a continuous variable 
+
+```{r}
+
+sf_pheno_OA <- sf_pheno[!sf_pheno$Group == "Control",]
+sf_data_norm_just_OA <- sf_data_norm[,sf_pheno_OA$Sample.Number]
+
+```
+
+```{r}
+
+sf_design <- sf_pheno_OA[,c(6,2,1)]
+colnames(sf_design) <- c("name", "day", "horse")
+
+```
+
+
+```{r}
+
+fit <- proDA(as.matrix(sf_data_norm_just_OA), design = ~ day + horse, 
+             col_data = sf_design) 
+
+```
+
+
+```{r}
+
+sf_time <- test_diff(fit, day) %>% arrange(-desc(pval))
+
+```
+
+
+```{r}
+
+DT::datatable(sf_time, 
+              class = "cell-border stripe", 
+              filter= "top", 
+              extensions = "Buttons",
+              options = list(pageLength = 10, dom = 'Bfrtip',
+              buttons = c('copy', 'print'))
+              )
+
+```
+
