@@ -8,6 +8,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+Multi-omics analysis of blood plasma and synovial fluid extra-cellular vesicles after induction of OA. The dataset consists of proteomics data and small RNA sequencing. The sequencing data has been [previously published](https://www.frontiersin.org/articles/10.3389/fvets.2022.901269/full).
+
+The current analysis consists of:
+
 -   QC and normalisation [here](01_QC_normalisation.html).
 -   Exploratory data analysis [here](02_EDA.html).
 -   Differential expression analysis [here](03_DE_and_clustering.html).

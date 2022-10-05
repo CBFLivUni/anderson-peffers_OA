@@ -74,7 +74,7 @@ plasma_day10 <- test_diff(fit, day10) %>% arrange(-desc(adj_pval))
 
 Day 35 and 42 have one sig protein after adjustment each: A0A3Q2HID2 & 	A0A3Q2H659.  
 
-These results can be combined into a list and then saved as an Excel spreadsheet: 
+These results were combined into a list and then saved as an Excel spreadsheet: 
 
 ```{r}
 

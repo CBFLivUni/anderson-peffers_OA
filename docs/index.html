@@ -273,7 +273,7 @@ $(document).ready(function () {
   <a href="02_EDA.html">EDA</a>
 </li>
 <li>
-  <a href="03_DE_and_clustering.html.html">EDA</a>
+  <a href="03_DE_and_clustering.html">DE</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -301,7 +301,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -312,8 +312,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -326,9 +326,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>anderson-peffers_OA/</code> <span
@@ -351,33 +351,36 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree91edc404e0d9b2a4dd5cbc09600f69cecb255c9ctargetblank91edc40a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeebbe547e38343b45e8512fcca61c0232dbca05f1targetblankebbe547a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/91edc404e0d9b2a4dd5cbc09600f69cecb255c9c" target="_blank">91edc40</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/ebbe547e38343b45e8512fcca61c0232dbca05f1" target="_blank">ebbe547</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree91edc404e0d9b2a4dd5cbc09600f69cecb255c9ctargetblank91edc40a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeebbe547e38343b45e8512fcca61c0232dbca05f1targetblankebbe547a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -387,7 +390,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/91edc404e0d9b2a4dd5cbc09600f69cecb255c9c" target="_blank">91edc40</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/ebbe547e38343b45e8512fcca61c0232dbca05f1" target="_blank">ebbe547</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -407,6 +410,11 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Unstaged changes:
+    Modified:   analysis/03_DE_and_clustering.Rmd
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/license.Rmd
+    Modified:   output/plasma_proDA_DE_results.xlsx
     Modified:   output/sf_proDA_DE_results.xlsx
 
 </code></pre>
@@ -452,6 +460,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/4525b368e7bd197e9c7aec657d151e77b282f53d/docs/index.html" target="_blank">4525b36</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+wflow_git_commit(all = TRUE)
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -527,6 +552,13 @@ Start workflowr project.
 </div>
 </div>
 </div>
+<p>Multi-omics analysis of blood plasma and synovial fluid
+extra-cellular vesicles after induction of OA. The dataset consists of
+proteomics data and small RNA sequencing. The sequencing data has been
+<a
+href="https://www.frontiersin.org/articles/10.3389/fvets.2022.901269/full">previously
+published</a>.</p>
+<p>The current analysis consists of:</p>
 <ul>
 <li>QC and normalisation <a
 href="01_QC_normalisation.html">here</a>.</li>
