@@ -9,6 +9,12 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  - text: QC and normalisation
+    href: 01_QC_normalisation.html
+  - text: EDA
+    href: 02_EDA.html
+  - text: EDA
+    href: 03_DE_and_clustering.html.html
   right:
   - icon: fab fa-github
     text: Source code

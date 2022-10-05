@@ -393,7 +393,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-09-28
+<strong>Last updated:</strong> 2022-10-05
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -524,15 +524,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomejjohnson93andersonpeffersOAtree3d14de9c38f7642761c700187a7d417d0763cf29targetblank3d14de9a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea5f8c84f0c36854d18eba400f97e24184f9790f1targetblanka5f8c84a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ejjohnson93/anderson-peffers_OA/tree/3d14de9c38f7642761c700187a7d417d0763cf29" target="_blank">3d14de9</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a5f8c84f0c36854d18eba400f97e24184f9790f1" target="_blank">a5f8c84</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomejjohnson93andersonpeffersOAtree3d14de9c38f7642761c700187a7d417d0763cf29targetblank3d14de9a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea5f8c84f0c36854d18eba400f97e24184f9790f1targetblanka5f8c84a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -542,7 +542,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ejjohnson93/anderson-peffers_OA/tree/3d14de9c38f7642761c700187a7d417d0763cf29" target="_blank">3d14de9</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a5f8c84f0c36854d18eba400f97e24184f9790f1" target="_blank">a5f8c84</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -561,9 +561,9 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
 
-Untracked files:
-    Untracked:  data/plasma-ev_proteins.csv
-    Untracked:  data/sf_proteins.csv
+Unstaged changes:
+    Modified:   analysis/03_DE_and_clustering.Rmd
+    Modified:   output/sf_proDA_DE_results.xlsx
 
 </code></pre>
 <p>
@@ -581,8 +581,9 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/QC_normalisation.Rmd</code>) and
-HTML (<code>docs/QC_normalisation.html</code>) files. If you’ve
+made to the R Markdown
+(<code>analysis/04_Functional_enrichment.Rmd</code>) and HTML
+(<code>docs/04_Functional_enrichment.html</code>) files. If you’ve
 configured a remote Git repository (see <code>?wflow_git_remote</code>),
 click on the hyperlinks in the table below to view the files as they
 were in that past version.
@@ -614,16 +615,16 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/ejjohnson93/anderson-peffers_OA/blob/3d14de9c38f7642761c700187a7d417d0763cf29/analysis/QC_normalisation.Rmd" target="_blank">3d14de9</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/9abb54e7fa24dc447a625420d334e81d0ff906a9/analysis/04_Functional_enrichment.Rmd" target="_blank">9abb54e</a>
 </td>
 <td>
 ejjohnson93
 </td>
 <td>
-2022-09-28
+2022-09-30
 </td>
 <td>
-Add my first analysis
+Set-up &amp; file structure
 </td>
 </tr>
 </tbody>
@@ -633,8 +634,33 @@ Add my first analysis
 </div>
 </div>
 </div>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
+<div id="load-libraries" class="section level2">
+<h2>Load libraries</h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<pre class="r"><code>plasma_data &lt;- read.csv(&quot;./data/plasma_proteins.csv&quot;, row.names = 1) 
+colnames(plasma_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_data))
+  
+sf_data &lt;- read.csv(&quot;./data/sf_proteins.csv&quot;, row.names = 1)
+colnames(sf_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_data))
+
+plasma_pheno &lt;- read.csv(&quot;./data/plasma_pheno.csv&quot;)
+plasma_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, plasma_pheno$Sample.Number)
+
+sf_pheno &lt;- read.csv(&quot;./data/sf_pheno.csv&quot;)
+sf_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, sf_pheno$Sample.Number)</code></pre>
+<pre class="r"><code>rawData &lt;- log2(plasma_data) %&gt;%  as.data.frame() %&gt;%
+  gather() </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -661,20 +687,28 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] workflowr_1.7.0
+ [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9     purrr_0.3.4    
+ [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    ggplot2_3.3.6  
+ [9] tidyverse_1.3.1 workflowr_1.7.0
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.8.3     bslib_0.3.1      compiler_4.2.0   pillar_1.7.0    
- [5] later_1.3.0      git2r_0.30.1     jquerylib_0.1.4  tools_4.2.0     
- [9] getPass_0.2-2    digest_0.6.29    jsonlite_1.8.0   evaluate_0.15   
-[13] tibble_3.1.7     lifecycle_1.0.1  pkgconfig_2.0.3  rlang_1.0.2     
-[17] cli_3.3.0        rstudioapi_0.13  yaml_2.3.5       xfun_0.31       
-[21] fastmap_1.1.0    httr_1.4.3       stringr_1.4.0    knitr_1.39      
-[25] sass_0.4.1       fs_1.5.2         vctrs_0.4.1      rprojroot_2.0.3 
-[29] glue_1.6.2       R6_2.5.1         processx_3.6.0   fansi_1.0.3     
-[33] rmarkdown_2.14   callr_3.7.0      magrittr_2.0.3   whisker_0.4     
-[37] ps_1.7.0         promises_1.2.0.1 htmltools_0.5.2  ellipsis_0.3.2  
-[41] httpuv_1.6.5     utf8_1.2.2       stringi_1.7.6    crayon_1.5.1    </code></pre>
+ [1] Rcpp_1.0.8.3     lubridate_1.8.0  getPass_0.2-2    ps_1.7.0        
+ [5] assertthat_0.2.1 rprojroot_2.0.3  digest_0.6.29    utf8_1.2.2      
+ [9] R6_2.5.1         cellranger_1.1.0 backports_1.4.1  reprex_2.0.1    
+[13] evaluate_0.15    httr_1.4.3       pillar_1.7.0     rlang_1.0.2     
+[17] readxl_1.4.0     rstudioapi_0.13  whisker_0.4      callr_3.7.0     
+[21] jquerylib_0.1.4  rmarkdown_2.14   munsell_0.5.0    broom_0.8.0     
+[25] compiler_4.2.0   httpuv_1.6.5     modelr_0.1.8     xfun_0.31       
+[29] pkgconfig_2.0.3  htmltools_0.5.2  tidyselect_1.1.2 fansi_1.0.3     
+[33] withr_2.5.0      crayon_1.5.1     tzdb_0.3.0       dbplyr_2.2.0    
+[37] later_1.3.0      grid_4.2.0       jsonlite_1.8.0   gtable_0.3.0    
+[41] lifecycle_1.0.1  DBI_1.1.2        git2r_0.30.1     magrittr_2.0.3  
+[45] scales_1.2.0     cli_3.3.0        stringi_1.7.6    fs_1.5.2        
+[49] promises_1.2.0.1 xml2_1.3.3       bslib_0.3.1      ellipsis_0.3.2  
+[53] generics_0.1.2   vctrs_0.4.1      tools_4.2.0      glue_1.6.2      
+[57] hms_1.1.1        processx_3.6.0   fastmap_1.1.0    yaml_2.3.5      
+[61] colorspace_2.0-3 rvest_1.0.2      knitr_1.39       haven_2.5.0     
+[65] sass_0.4.1      </code></pre>
 </div>
 </div>
 

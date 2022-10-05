@@ -372,7 +372,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -383,8 +383,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -397,9 +397,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>anderson-peffers_OA/</code> <span
@@ -422,21 +422,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -527,15 +524,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree9abb54e7fa24dc447a625420d334e81d0ff906a9targetblank9abb54ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea5f8c84f0c36854d18eba400f97e24184f9790f1targetblanka5f8c84a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/9abb54e7fa24dc447a625420d334e81d0ff906a9" target="_blank">9abb54e</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a5f8c84f0c36854d18eba400f97e24184f9790f1" target="_blank">a5f8c84</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree9abb54e7fa24dc447a625420d334e81d0ff906a9targetblank9abb54ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea5f8c84f0c36854d18eba400f97e24184f9790f1targetblanka5f8c84a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -545,7 +542,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/9abb54e7fa24dc447a625420d334e81d0ff906a9" target="_blank">9abb54e</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a5f8c84f0c36854d18eba400f97e24184f9790f1" target="_blank">a5f8c84</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -563,28 +560,6 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
-
-Untracked files:
-    Untracked:  code/functions.R
-    Untracked:  data/lncRNA_plasma.csv
-    Untracked:  data/lncRNA_sf.csv
-    Untracked:  data/plasma_data_norm.rds
-    Untracked:  data/plasma_pheno.rds
-    Untracked:  data/plasma_proteins2.csv
-    Untracked:  data/sf_data_norm.rds
-    Untracked:  data/sf_pheno.rds
-    Untracked:  data/snRNA_plasma.csv
-    Untracked:  data/snRNA_sf.csv
-    Untracked:  data/snoRNA_plasma.csv
-    Untracked:  data/snoRNA_sf.csv
-    Untracked:  normalisation/
-    Untracked:  output/plasma_missing_values_heatmap.png
-    Untracked:  output/sf_missing_values_heatmap.png
-
-Unstaged changes:
-    Modified:   analysis/01_QC_normalisation.Rmd
-    Modified:   analysis/02_EDA.Rmd
-    Modified:   data/sf_proteins.csv
 
 </code></pre>
 <p>
@@ -629,6 +604,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/702f3f3a980b06144660133f1c94fa6d6b2ce6f6/analysis/02_EDA.Rmd" target="_blank">702f3f3</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+EDA + DE
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/702f3f3a980b06144660133f1c94fa6d6b2ce6f6/docs/02_EDA.html" target="_blank">702f3f3</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+EDA + DE
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -728,8 +737,7 @@ sf_df_out &lt;- as.data.frame(sf_pca_res$x)</code></pre>
                             multilevel = plasma_pheno$Horse) %&gt;%
                             plotIndiv(., group = plasma_pheno$Day, 
                             ind.names = plasma_pheno$Horse,
-                            legend = TRUE, legend.title = &#39;Day&#39;,
-                            title = &#39;(B) Multilevel PCA of proteomics data&#39;) </code></pre>
+                            legend = TRUE, legend.title = &#39;Day&#39;) </code></pre>
 <pre class="r"><code>plasma_ml_pca_plot &lt;- ggplot(plasma_pca_multi_level$df, aes(x=x, y=y, colour = plasma_pheno$Day)) + 
     geom_point(size = 3) + 
     xlab(plasma_pca_multi_level[[&quot;graph&quot;]][[&quot;labels&quot;]]$x) + 
@@ -747,8 +755,7 @@ sf_df_out &lt;- as.data.frame(sf_pca_res$x)</code></pre>
                             multilevel = sf_pheno$Horse) %&gt;%
                             plotIndiv(., group = sf_pheno$Day, 
                             ind.names = sf_pheno$Horse,
-                            legend = TRUE, legend.title = &#39;Day&#39;,
-                            title = &#39;(B) Multilevel PCA of proteomics data&#39;) </code></pre>
+                            legend = TRUE, legend.title = &#39;Day&#39;) </code></pre>
 <pre class="r"><code>sf_ml_pca_plot &lt;- ggplot(sf_pca_multi_level$df, aes(x=x, y=y, colour = sf_pheno$Day)) + 
     geom_point(size = 3) + 
     xlab(sf_pca_multi_level[[&quot;graph&quot;]][[&quot;labels&quot;]]$x) + 
@@ -817,7 +824,7 @@ other attached packages:
  [5] mixOmics_6.20.0   lattice_0.20-45   MASS_7.3-56       cowplot_1.1.1    
  [9] forcats_0.5.1     stringr_1.4.0     dplyr_1.0.9       purrr_0.3.4      
 [13] readr_2.1.2       tidyr_1.2.0       tibble_3.1.7      ggplot2_3.3.6    
-[17] tidyverse_1.3.1  
+[17] tidyverse_1.3.1   workflowr_1.7.0  
 
 loaded via a namespace (and not attached):
  [1] matrixStats_0.62.0  fs_1.5.2            lubridate_1.8.0    
@@ -825,30 +832,31 @@ loaded via a namespace (and not attached):
  [7] tools_4.2.0         backports_1.4.1     bslib_0.3.1        
 [10] utf8_1.2.2          R6_2.5.1            DBI_1.1.2          
 [13] colorspace_2.0-3    withr_2.5.0         tidyselect_1.1.2   
-[16] gridExtra_2.3       compiler_4.2.0      git2r_0.30.1       
-[19] cli_3.3.0           rvest_1.0.2         xml2_1.3.3         
-[22] labeling_0.4.2      sass_0.4.1          scales_1.2.0       
-[25] digest_0.6.29       rmarkdown_2.14      pkgconfig_2.0.3    
-[28] htmltools_0.5.2     highr_0.9           dbplyr_2.2.0       
-[31] fastmap_1.1.0       rlang_1.0.2         readxl_1.4.0       
-[34] rstudioapi_0.13     farver_2.1.0        jquerylib_0.1.4    
-[37] generics_0.1.2      jsonlite_1.8.0      BiocParallel_1.30.3
-[40] car_3.1-0           magrittr_2.0.3      Matrix_1.4-1       
-[43] Rcpp_1.0.8.3        munsell_0.5.0       fansi_1.0.3        
-[46] abind_1.4-5         lifecycle_1.0.1     stringi_1.7.6      
-[49] whisker_0.4         yaml_2.3.5          carData_3.0-5      
-[52] plyr_1.8.7          grid_4.2.0          parallel_4.2.0     
-[55] promises_1.2.0.1    ggrepel_0.9.1       crayon_1.5.1       
-[58] haven_2.5.0         hms_1.1.1           knitr_1.39         
-[61] pillar_1.7.0        igraph_1.3.2        ggsignif_0.6.3     
-[64] corpcor_1.6.10      reshape2_1.4.4      codetools_0.2-18   
-[67] reprex_2.0.1        glue_1.6.2          evaluate_0.15      
-[70] modelr_0.1.8        vctrs_0.4.1         tzdb_0.3.0         
-[73] httpuv_1.6.5        cellranger_1.1.0    gtable_0.3.0       
-[76] assertthat_0.2.1    xfun_0.31           broom_0.8.0        
-[79] RSpectra_0.16-1     rstatix_0.7.0       later_1.3.0        
-[82] rARPACK_0.11-0      ellipse_0.4.3       workflowr_1.7.0    
-[85] ellipsis_0.3.2     </code></pre>
+[16] gridExtra_2.3       processx_3.6.0      compiler_4.2.0     
+[19] git2r_0.30.1        cli_3.3.0           rvest_1.0.2        
+[22] xml2_1.3.3          labeling_0.4.2      sass_0.4.1         
+[25] scales_1.2.0        callr_3.7.0         digest_0.6.29      
+[28] rmarkdown_2.14      pkgconfig_2.0.3     htmltools_0.5.2    
+[31] highr_0.9           dbplyr_2.2.0        fastmap_1.1.0      
+[34] rlang_1.0.2         readxl_1.4.0        rstudioapi_0.13    
+[37] farver_2.1.0        jquerylib_0.1.4     generics_0.1.2     
+[40] jsonlite_1.8.0      BiocParallel_1.30.3 car_3.1-0          
+[43] magrittr_2.0.3      Matrix_1.4-1        Rcpp_1.0.8.3       
+[46] munsell_0.5.0       fansi_1.0.3         abind_1.4-5        
+[49] lifecycle_1.0.1     stringi_1.7.6       whisker_0.4        
+[52] yaml_2.3.5          carData_3.0-5       plyr_1.8.7         
+[55] grid_4.2.0          parallel_4.2.0      promises_1.2.0.1   
+[58] ggrepel_0.9.1       crayon_1.5.1        haven_2.5.0        
+[61] hms_1.1.1           knitr_1.39          ps_1.7.0           
+[64] pillar_1.7.0        igraph_1.3.2        ggsignif_0.6.3     
+[67] corpcor_1.6.10      reshape2_1.4.4      codetools_0.2-18   
+[70] reprex_2.0.1        glue_1.6.2          evaluate_0.15      
+[73] getPass_0.2-2       modelr_0.1.8        vctrs_0.4.1        
+[76] tzdb_0.3.0          httpuv_1.6.5        cellranger_1.1.0   
+[79] gtable_0.3.0        assertthat_0.2.1    xfun_0.31          
+[82] broom_0.8.0         RSpectra_0.16-1     rstatix_0.7.0      
+[85] later_1.3.0         rARPACK_0.11-0      ellipse_0.4.3      
+[88] ellipsis_0.3.2     </code></pre>
 </div>
 </div>
 </div>

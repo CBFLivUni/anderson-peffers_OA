@@ -14,6 +14,7 @@ editor_options:
 library(tidyverse)
 library(proDA)
 library(DT)
+library(openxlsx)
 
 ```
 
@@ -141,7 +142,7 @@ These results can be combined into a list and then saved as an Excel spreadsheet
 ```{r}
 
 sf_DE_res <- list("day63" = sf_day63, "day56" = sf_day56, "day49" = sf_day49, "day42" = sf_day42, "day35" = sf_day35, "day10" = sf_day10)
-write.xlsx(sf_DE_res, file = "./output/sf_proDA_DE_results.xlsx")
+openxlsx::write.xlsx(sf_DE_res, file = "./output/sf_proDA_DE_results.xlsx")
 
 ```
 
@@ -152,7 +153,7 @@ DT::datatable(sf_day63,
               class = "cell-border stripe", 
               filter= "top", 
               extensions = "Buttons",
-              options = list(pageLength = 10, dom = 'Bfrtip',
+              options = list(pageLength = 10, pageWidth = 5, dom = 'Bfrtip',
               buttons = c('copy', 'print'))
               )
 
@@ -196,7 +197,7 @@ DT::datatable(sf_time,
               class = "cell-border stripe", 
               filter= "top", 
               extensions = "Buttons",
-              options = list(pageLength = 10, dom = 'Bfrtip',
+              options = list(pageLength = 10, pageWidth = 5, dom = 'Bfrtip',
               buttons = c('copy', 'print'))
               )
 
