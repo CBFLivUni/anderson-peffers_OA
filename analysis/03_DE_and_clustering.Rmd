@@ -35,6 +35,16 @@ plasma_pheno <- readRDS("./data/plasma_pheno.rds")
 ```
 
 
+First filter data. In the original iteration of this analysis all the data with missing values was used to test the proDA package.
+To reduce the number of tests (and improve the power of the analysis) filter the data so only rows with <20% missing values remain. 
+
+```{r}
+
+test <- sf_data_norm[which(rowMeans(is.na(sf_data_norm)) < 0.2), ]
+
+```
+
+
 ## Plasma DE analysis 
 
 ### Version 1, time as a factor 
