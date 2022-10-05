@@ -72,3 +72,37 @@ Day 35 and 42 have one sig protein after adjustment each: A0A3Q2HID2 & 	A0A3Q2H6
 
 
 ### Version 2, time as a continuous variable 
+
+```{r}
+
+plasma_design <- plasma_pheno[,c(5,2,1)]
+colnames(plasma_design) <- c("name", "day", "horse")
+
+```
+
+
+
+```{r}
+
+fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse, 
+             col_data = plasma_design) 
+
+```
+
+
+`result_names(fit)` can be used to view the names of the possible contrasts. Not entirely sure this is the correct way... 
+
+```{r}
+
+plasma_time <- test_diff(fit, day)
+
+```
+
+
+Is this the correct way? 
+
+```{r}
+
+plasma_res <- test_diff(fit)
+
+``` 
