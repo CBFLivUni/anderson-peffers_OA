@@ -1,5 +1,5 @@
 ---
-title: "QC_normalisation"
+title: "Quality control and normalisation"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html
@@ -7,16 +7,25 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Load libraries
+# Load libraries
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 library(tidyverse)
+library(NormalyzerDE) # compare normalisation strategies 
+library(pheatmap) # visualise whether samples cluster by missingness 
+library(cowplot) # pretty theme 
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+source("./code/functions.R") # load helper functions 
 
 ```
 
 
+# Proteomics 
+
 ## Load data
+
+Read in data and accompanying phenotype tables: 
 
 ```{r}
 
@@ -27,17 +36,303 @@ sf_data <- read.csv("./data/sf_proteins.csv", row.names = 1)
 colnames(sf_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_data))
 
 plasma_pheno <- read.csv("./data/plasma_pheno.csv")
-plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
-
 sf_pheno <- read.csv("./data/sf_pheno.csv")
+
+```
+
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+
+```{r}
+
+plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
+plasma_pheno$Horse <- as.factor(plasma_pheno$Horse)
+plasma_pheno <- plasma_pheno[match(colnames(plasma_data),plasma_pheno$Sample.Number),]
+
+
 sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
+sf_pheno$Horse <- as.factor(sf_pheno$Horse)
+sf_pheno <- sf_pheno[match(colnames(sf_data),sf_pheno$Sample.Number),]
+
+```
+
+
+## Normalisation
+
+To compare normalisation strategies the NormalyzerDE package was used. This requires a design matrix and a summarised experimental object to be constructed. The design matrix needs to contain a column with a 'group' header. The summarised experimental object won't accept values <1 as the data is log-transformed during processing this will lead to negative values which in turn will crash processing. For the purpose of comparing normalisation techniques a small constant can be added to each value (in this case 1) before normalisation (not including NA values). 
+
+```{r, eval=FALSE}
+
+# Create directory for outputs
+if (!dir.exists("./normalisation")) {
+    dir.create("./normalisation")
+}
+
+
+# Create design matrix
+design <- plasma_pheno[,c(5,2,1)]
+colnames(design) <- c("sample", "group", "batch")
+
+
+# Create a summarised experiment object
+sumExpObj <- SummarizedExperiment::SummarizedExperiment(
+as.matrix(plasma_data +1), # Add a constant to each value
+colData=design,
+rowData=rownames(data)
+)
+
+# Run analysis 
+normalyzer(jobName="proteomics_norm", experimentObj = sumExpObj, outputDir=dir)
+
+```
+
+
+VSN performed best but log2 still seemed sufficient and preferable to use for now:
+
+```{r}
+
+# Read in sample normalised data 
+vsn_normalised <- read.delim("./normalisation/proteomics_norm/VSN-normalized.txt", row.names = 1)
+log2_normalised <- read.delim("./normalisation/proteomics_norm/log2-normalized.txt", row.names = 1)
 
 ```
 
 ```{r}
 
-rawData <- log2(plasma_data) %>%  as.data.frame() %>%
-  gather() 
+# Boxplots of VSN and log2 normalised data
+boxplot(vsn_normalised)
+boxplot(log2_normalised)
 
 ```
+
+
+Log transform the data:
+
+```{r}
+
+sf_data_norm <- log2(sf_data)
+plasma_data_norm <- log2(plasma_data)
+
+```
+
+
+## Quality check 
+
+Create box plots of the log transformed data:
+
+```{r}
+
+sf_bp <- t(sf_data_norm) %>%
+  as.data.frame() %>%
+  mutate(Day = as.factor(sf_pheno$Day), Horse = sf_pheno$Horse, Group = sf_pheno$Group) %>%
+  rownames_to_column('Sample_ID') %>%
+  pivot_longer(cols = A0A061DBP6:Q9XSZ5) %>%
+  ggplot(aes(x=Sample_ID, y=value, fill=Day)) + geom_boxplot() + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab("Sample ID") + 
+    ylab("Log2 Intensity") + 
+    ggtitle("Synovial fluid EVs")
+
+
+```
+
+```{r}
+
+plasma_bp <- t(plasma_data_norm) %>%
+  as.data.frame() %>%
+  mutate(Day = as.factor(plasma_pheno$Day), Horse = plasma_pheno$Horse, Group = plasma_pheno$Group) %>%
+  rownames_to_column('Sample_ID') %>%
+  pivot_longer(cols = A0A061DBP6:Q9GKX7) %>%
+  ggplot(aes(x=Sample_ID, y=value, fill=Day)) + geom_boxplot() + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab("Sample ID") + 
+    ylab("Log2 Intensity") + 
+    ggtitle("Plasma EVs")
+
+```
+
+
+```{r}
+
+sf_missing_values <- data.frame(missing_count = colSums(is.na(sf_data_norm)),
+                    Day = as.factor(sf_pheno$Day),
+                    Horse = sf_pheno$Horse) %>%
+                    rownames_to_column('Sample_ID') 
+
+
+sf_missing_values_barplot <- ggbarplot(sf_missing_values, x = "Sample_ID", y = "missing_count",  fill = "Day", scales = "free") + 
+    #scale_fill_brewer(palette="Set1") + 
+    theme_pubclean() +
+    theme(legend.position="right") + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab("Sample ID") + 
+    ylab("# Missing values") 
+
+
+```
+
+```{r}
+
+plasma_missing_values <- data.frame(missing_count = colSums(is.na(plasma_data_norm)),
+                    Day = as.factor(plasma_pheno$Day),
+                    Horse = plasma_pheno$Horse) %>%
+                    rownames_to_column('Sample_ID') 
+
+
+plasma_missing_values_barplot <- ggbarplot(plasma_missing_values, x = "Sample_ID", y = "missing_count",  fill = "Day", scales = "free") + 
+    #scale_fill_brewer(palette="Set1") + 
+    theme_pubclean() +
+    theme(legend.position="right") + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab("Sample ID") + 
+    ylab("# Missing values") 
+
+
+```
+
+
+```{r, echo=FALSE, fig.height = 16, fig.width = 7, fig.align="center"}
+
+ggarrange(sf_bp, sf_missing_values_barplot, plasma_bp, plasma_missing_values_barplot,                        
+          nrow = 4, 
+          ncol = 1,
+          labels = c("A", "B", "C", "D")                                       
+          ) 
+
+```
+
+
+For the synovial fluid samples, samples 6, 13, 17, 43 and 44 have a much lower number of missing values, this could correspond to a batch effect. 
+
+Its also notable that the intensity distribution is generally shifted upwards for samples that have more missing values. This agrees with the idea that small values are more likely to be missing. 
+
+Save the R data objects for use in exploratory analysis and differential expression analysis. 
+
+```{r}
+
+# Plasma pheno
+saveRDS(plasma_data_norm, "./data/plasma_data_norm.rds")
+saveRDS(plasma_pheno, "./data/plasma_pheno.rds")
+
+# SF pheno
+saveRDS(sf_data_norm, "./data/sf_data_norm.rds")
+saveRDS(sf_pheno, "./data/sf_pheno.rds")
+
+```
+
+
+
+## Missing values
+
+### Synovial fluid samples
+
+An additional way to analyse the missing values is to replace them all with 0's and then carry out clustering analysis. The rationale behind this is that if the missing values correspond to a biological effect (e.g. proteins that were abundant at time 0 that are absent at later time points or vice versa) they will cluster according to that biological effect. 
+
+Firstly, all the NA's in the matrix need to be replaced with zeros: 
+
+```{r}
+
+# Create a copy of the data
+sf_heatmap_data <- sf_data_norm
+
+# Replace all the NA values in the copy with 0's
+sf_heatmap_data[is.na(sf_heatmap_data)] <- 0
+
+```
+
+
+Next we need to create a dataframe that contains the annotation for all the features of interest in the phenotype table. For the synovial fluid samples this is day, group and horse. 
+
+```{r}
+
+my_sample_col <- data.frame(Horse = sf_pheno$Horse, Day = sf_pheno$Day, Group = sf_pheno$Group)
+rownames(my_sample_col) <- sf_pheno$Sample.Number
+
+```
+
+
+Next create a heatmap using the pheatmap package taking the modified data and annotation as input. Multiple clustering methods were used, but they all resulted in a similar pattern.
+
+```{r}
+
+sf_heatmap <- pheatmap(sf_heatmap_data, 
+                       annotation_col = my_sample_col, 
+                       show_rownames=F,
+                       cluster_cols = TRUE,
+                       clustering_method = "ward.D2"
+                       )
+
+# Use the helper function 'save_pheatmap' to write the pheatmap output ot a figure
+save_pheatmap_png(sf_heatmap, "./output/sf_missing_values_heatmap.png")
+
+```
+
+
+For the synovial fluid samples the missing values don't appear to be entirely at random. Horse 4 seems to display some clustering, the samples that have fewer missing values cluster together (6, 13, 17, 43 and 44). This may correspond to a batch effect in the processing. 
+
+We can also create a clustering dendogram to show just the clustering:
+
+```{r}
+
+my_hclust_sample <- hclust(dist(t(sf_heatmap_data)), method = "complete")
+
+as.dendrogram(my_hclust_sample) %>%
+  plot()
+
+```
+
+It is better to avoid imputing missing values in proteomics data, especially when there are a low number of replicates per group as you might end up imputing based off one value and this will result in unreliable data and potential false positives. Ideally only the proteins without missing values should be taken forward for differential expression analysis. However, the synovial fluid data is very sparse: 
+
+```{r}
+
+dim(sf_data_norm[which(rowMeans(is.na(sf_data_norm)) < 0.1), ])
+dim(na.omit(sf_data_norm))
+
+```
+
+There are only 130 proteins remaining if we take rows with <10% missing values and 27 proteins remaining if we take rows that have no missing values. 
+
+
+### Plasma samples
+
+Now repeat the same process for the plasma samples: 
+
+```{r}
+
+plasma_heatmap_data <- plasma_data_norm
+plasma_heatmap_data[is.na(plasma_heatmap_data)] <- 0
+
+```
+
+```{r}
+
+my_sample_col <- data.frame(Horse = plasma_pheno$Horse, Day = plasma_pheno$Day)
+rownames(my_sample_col) <- plasma_pheno$Sample.Number
+
+plasma_heatmap <- pheatmap(plasma_heatmap_data, annotation_col = my_sample_col, show_rownames=F)
+
+save_pheatmap_png(plasma_heatmap, "./output/plasma_missing_values_heatmap.png")
+
+```
+
+There appears to be some clustering dependent on which horse the plasma was extracted from. Additionally, some mild clustering based off the time point. 
+
+```{r}
+
+my_hclust_sample <- hclust(dist(t(plasma_heatmap_data)), method = "complete")
+
+as.dendrogram(my_hclust_sample) %>%
+  plot()
+
+```
+
+
+# Sequencing data 
+
+```{r}
+
+
+
+```
+
 

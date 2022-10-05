@@ -1,5 +1,5 @@
 ---
-title: "QC_normalisation"
+title: "Differential expression analysis"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html
@@ -9,9 +9,10 @@ editor_options:
 
 ## Load libraries
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 library(tidyverse)
+library(proDA)
 
 ```
 
@@ -20,24 +21,43 @@ library(tidyverse)
 
 ```{r}
 
-plasma_data <- read.csv("./data/plasma_proteins.csv", row.names = 1) 
-colnames(plasma_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_data))
-  
-sf_data <- read.csv("./data/sf_proteins.csv", row.names = 1)
-colnames(sf_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_data))
+# Data
+sf_data_norm <- readRDS("./data/sf_data_norm.rds")
+plasma_data_norm <- readRDS("./data/plasma_data_norm.rds")
 
-plasma_pheno <- read.csv("./data/plasma_pheno.csv")
-plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
 
-sf_pheno <- read.csv("./data/sf_pheno.csv")
-sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
+# Pheno
+sf_pheno <- readRDS("./data/sf_pheno.rds")
+plasma_pheno <- readRDS("./data/plasma_pheno.rds")
 
 ```
+
+
+## Plasma DE analysis 
+
 
 ```{r}
 
-rawData <- log2(plasma_data) %>%  as.data.frame() %>%
-  gather() 
+plasma_design <- plasma_pheno[,c(5,2,1)]
+colnames(plasma_design) <- c("name", "day", "horse")
+plasma_design$day <- as.factor(plasma_design$day)
 
 ```
 
+
+
+```{r}
+
+fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse, 
+             col_data = plasma_design, reference_level = "0") # Manually specified reference level but confirmed its 0 by default
+
+```
+
+
+`result_names(fit)` can be used to view the names of the possible contrasts. 
+
+```{r}
+
+test_res <- test_diff(fit, day63)
+
+```

@@ -1,5 +1,5 @@
 ---
-title: "QC_normalisation"
+title: "Exploratory data analysis"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html
@@ -9,9 +9,14 @@ editor_options:
 
 ## Load libraries
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 library(tidyverse)
+library(cowplot) # plot theme
+library(mixOmics) # multi-level PCA
+library(viridis) # colour schemes
+library(factoextra) # eigenvector plot
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 
 ```
 
@@ -20,24 +25,250 @@ library(tidyverse)
 
 ```{r}
 
-plasma_data <- read.csv("./data/plasma_proteins.csv", row.names = 1) 
-colnames(plasma_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_data))
-  
-sf_data <- read.csv("./data/sf_proteins.csv", row.names = 1)
-colnames(sf_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_data))
+# Data
+sf_data_norm <- readRDS("./data/sf_data_norm.rds")
+plasma_data_norm <- readRDS("./data/plasma_data_norm.rds")
 
-plasma_pheno <- read.csv("./data/plasma_pheno.csv")
-plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
 
-sf_pheno <- read.csv("./data/sf_pheno.csv")
-sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
+# Pheno
+sf_pheno <- readRDS("./data/sf_pheno.rds")
+plasma_pheno <- readRDS("./data/plasma_pheno.rds")
+
+```
+
+
+## PCA
+
+### Plasma
+
+```{r}
+
+plasma_pca_res <- prcomp(t(na.omit(plasma_data_norm)), scale. = TRUE, center = TRUE)
+plasma_df_out <- as.data.frame(plasma_pca_res$x)
+
+
+```
+
+
+```{r}
+
+plasma_pca_plot <- ggplot(plasma_df_out, aes(x=PC1, y=PC2, colour = plasma_pheno$Day, shape=factor(plasma_pheno$Horse))) + 
+    geom_point(size = 4) + 
+    xlab(paste0('PC1: ', round(as.numeric(summary(plasma_pca_res)$importance[2,1]*100)), '% expl.var')) + 
+    ylab(paste0('PC2: ', round(as.numeric(summary(plasma_pca_res)$importance[2,2]*100)), '% expl.var')) + 
+    scale_color_viridis(option = "plasma") +
+    theme_cowplot() + 
+    labs(colour = "Day", shape = "Horse")
 
 ```
 
 ```{r}
 
-rawData <- log2(plasma_data) %>%  as.data.frame() %>%
-  gather() 
+plasma_pca_plot2 <- ggplot(plasma_df_out, aes(x=PC2, y=PC3, colour = plasma_pheno$Day, shape=factor(plasma_pheno$Horse))) + 
+    geom_point(size = 4) + 
+    xlab(paste0('PC2: ', round(as.numeric(summary(plasma_pca_res)$importance[2,2]*100)), '% expl.var')) + 
+    ylab(paste0('PC3: ', round(as.numeric(summary(plasma_pca_res)$importance[2,3]*100)), '% expl.var')) + 
+    scale_color_viridis(option = "plasma") +
+    theme_cowplot() + 
+    labs(colour = "Day", shape = "Horse")
 
 ```
 
+```{r}
+
+plasma_variance_plot <-fviz_eig(plasma_pca_res) + theme_cowplot() + labs(title="",
+        x ="Principal components", y = "% Variance Explained")
+
+```
+
+
+
+```{r, echo=FALSE, fig.height = 8, fig.width = 10, fig.align="center"}
+
+ggarrange(ggarrange(plasma_pca_plot, plasma_pca_plot2, ncol = 2, labels = c("A", "B")), 
+          plasma_variance_plot,                                                 
+          nrow = 2, 
+          labels = c(" ", "C")                                       
+          ) 
+
+```
+
+
+### Synovial fluid 
+
+```{r}
+
+sf_pca_res <- prcomp(t(na.omit(sf_data_norm)), scale. = TRUE, center = TRUE)
+sf_df_out <- as.data.frame(sf_pca_res$x)
+
+```
+
+```{r}
+
+sf_pca_plot <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Day, shape=factor(sf_pheno$Horse))) + 
+    geom_point(size = 3) + 
+    xlab(paste0('PC1: ', round(as.numeric(summary(sf_pca_res)$importance[2,1]*100)), '% expl.var')) + 
+    ylab(paste0('PC2: ', round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), '% expl.var')) + 
+    scale_color_viridis(option = "plasma") +
+    theme_cowplot() + 
+    labs(colour = "Day", shape = "Horse")
+
+
+```
+
+```{r}
+
+sf_pca_plot2 <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Group, shape=factor(sf_pheno$Horse))) + 
+    geom_point(size = 3) + 
+    xlab(paste0('PC1: ', round(as.numeric(summary(sf_pca_res)$importance[2,1]*100)), '% expl.var')) + 
+    ylab(paste0('PC2: ', round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), '% expl.var')) + 
+    scale_colour_brewer(palette = "Set1") +
+    theme_cowplot() + 
+    labs(colour = "Day", shape = "Horse")
+
+
+```
+
+```{r}
+
+sf_variance_plot <-fviz_eig(sf_pca_res) + theme_cowplot() + labs(title="",
+        x ="Principal components", y = "% Variance Explained")
+
+```
+
+
+
+```{r, echo=FALSE, fig.height = 8, fig.width = 10, fig.align="center"}
+
+ggarrange(ggarrange(sf_pca_plot, sf_pca_plot2, ncol = 2, labels = c("A", "B")), 
+          sf_variance_plot,                                                 
+          nrow = 2, 
+          labels = c(" ", "C")                                       
+          ) 
+
+```
+
+
+
+## Multi-level PCA
+
+### Plasma
+
+```{r, fig.show='hide', message=FALSE}
+
+plasma_pca_multi_level <- pca(t(na.omit(plasma_data_norm)), scale = TRUE, center = TRUE, ncomp = 10,
+                            multilevel = plasma_pheno$Horse) %>%
+                            plotIndiv(., group = plasma_pheno$Day, 
+                            ind.names = plasma_pheno$Horse,
+                            legend = TRUE, legend.title = 'Day') 
+
+```
+
+```{r}
+
+plasma_ml_pca_plot <- ggplot(plasma_pca_multi_level$df, aes(x=x, y=y, colour = plasma_pheno$Day)) + 
+    geom_point(size = 3) + 
+    xlab(plasma_pca_multi_level[["graph"]][["labels"]]$x) + 
+    ylab(plasma_pca_multi_level[["graph"]][["labels"]]$y) + 
+    scale_color_viridis(option = "plasma") +
+    theme_cowplot() + 
+    labs(colour = "Treatment", shape = "Day") + 
+    ggtitle("Plasma multi-level PCA")
+
+
+```
+
+```{r, echo=FALSE}
+
+plasma_ml_pca_plot
+
+```
+
+
+### Synovial fluid 
+
+First run the analysis with the control samples still present: 
+
+```{r, fig.show='hide', message=FALSE}
+
+sf_pca_multi_level <- pca(t(na.omit(sf_data_norm)), scale = TRUE, center = TRUE, ncomp = 10,
+                            multilevel = sf_pheno$Horse) %>%
+                            plotIndiv(., group = sf_pheno$Day, 
+                            ind.names = sf_pheno$Horse,
+                            legend = TRUE, legend.title = 'Day') 
+
+```
+
+```{r}
+
+sf_ml_pca_plot <- ggplot(sf_pca_multi_level$df, aes(x=x, y=y, colour = sf_pheno$Day)) + 
+    geom_point(size = 3) + 
+    xlab(sf_pca_multi_level[["graph"]][["labels"]]$x) + 
+    ylab(sf_pca_multi_level[["graph"]][["labels"]]$y) + 
+    scale_color_viridis(option = "plasma") +
+    theme_cowplot() + 
+    labs(colour = "Treatment", shape = "Day") + 
+    ggtitle("Synovial fluid multi-level PCA")
+
+
+
+sf_ml_pca_plot2 <- ggplot(sf_pca_multi_level$df, aes(x=x, y=y, colour = sf_pheno$Group)) + 
+    geom_point(size = 3) + 
+    xlab(sf_pca_multi_level[["graph"]][["labels"]]$x) + 
+    ylab(sf_pca_multi_level[["graph"]][["labels"]]$y) + 
+    scale_colour_brewer(palette = "Set1") +
+    theme_cowplot() + 
+    labs(colour = "Treatment", shape = "Day") 
+
+
+```
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 9, fig.align="center"}
+
+ggarrange(sf_ml_pca_plot, sf_ml_pca_plot2,
+          ncol = 2,
+          nrow = 1, 
+          labels = c("A", "B")) 
+
+```
+
+
+Now run without the control samples since the DE analysis will be ran vs time 0 instead of against the control:
+
+```{r}
+
+sf_pheno_OA <- sf_pheno[!sf_pheno$Group == "Control",]
+sf_data_norm_just_OA <- sf_data_norm[,sf_pheno_OA$Sample.Number]
+
+```
+
+
+```{r, fig.show='hide', message=FALSE}
+
+sf_pca_multi_level_OA <- pca(t(na.omit(sf_data_norm_just_OA)), scale = TRUE, center = TRUE, ncomp = 10,
+                            multilevel = sf_pheno_OA$Horse) %>%
+                            plotIndiv(., group = sf_pheno_OA$Day, 
+                            ind.names = sf_pheno_OA$Horse,
+                            legend = TRUE, legend.title = 'Day',
+                            title = '(B) Multilevel PCA of proteomics data') 
+
+```
+
+```{r}
+
+sf_ml_pca_plot_OA <- ggplot(sf_pca_multi_level_OA$df, aes(x=x, y=y, colour = sf_pheno_OA$Day)) + 
+    geom_point(size = 3) + 
+    xlab(sf_pca_multi_level_OA[["graph"]][["labels"]]$x) + 
+    ylab(sf_pca_multi_level_OA[["graph"]][["labels"]]$y) + 
+    scale_color_viridis(option = "plasma") +
+    theme_cowplot() + 
+    labs(colour = "Treatment", shape = "Day") + 
+    ggtitle("Synovial fluid multi-level PCA - no control samples")
+
+```
+
+```{r, echo=FALSE}
+
+sf_ml_pca_plot_OA
+
+```

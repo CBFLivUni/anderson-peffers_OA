@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="ejjohnson93" />
+
+<meta name="date" content="2022-09-28" />
+
+<title>Quality control and normalisation</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">anderson-peffers_OA</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ejjohnson93/anderson-peffers_OA">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Quality control and normalisation</h1>
+<h4 class="author">ejjohnson93</h4>
+<h4 class="date">2022-09-28</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-10-05
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>anderson-peffers_OA/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20220927code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20220927)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20220927code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20220927)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree9abb54e7fa24dc447a625420d334e81d0ff906a9targetblank9abb54ea">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/9abb54e7fa24dc447a625420d334e81d0ff906a9" target="_blank">9abb54e</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree9abb54e7fa24dc447a625420d334e81d0ff906a9targetblank9abb54ea"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/9abb54e7fa24dc447a625420d334e81d0ff906a9" target="_blank">9abb54e</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+
+Untracked files:
+    Untracked:  code/functions.R
+    Untracked:  data/lncRNA_plasma.csv
+    Untracked:  data/lncRNA_sf.csv
+    Untracked:  data/plasma_data_norm.rds
+    Untracked:  data/plasma_pheno.rds
+    Untracked:  data/plasma_proteins2.csv
+    Untracked:  data/sf_data_norm.rds
+    Untracked:  data/sf_pheno.rds
+    Untracked:  data/snRNA_plasma.csv
+    Untracked:  data/snRNA_sf.csv
+    Untracked:  data/snoRNA_plasma.csv
+    Untracked:  data/snoRNA_sf.csv
+    Untracked:  normalisation/
+    Untracked:  output/plasma_missing_values_heatmap.png
+    Untracked:  output/sf_missing_values_heatmap.png
+
+Unstaged changes:
+    Modified:   analysis/01_QC_normalisation.Rmd
+    Modified:   analysis/02_EDA.Rmd
+    Modified:   analysis/03_DE_and_clustering.Rmd
+    Modified:   data/sf_proteins.csv
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/01_QC_normalisation.Rmd</code>)
+and HTML (<code>docs/01_QC_normalisation.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/9abb54e7fa24dc447a625420d334e81d0ff906a9/analysis/01_QC_normalisation.Rmd" target="_blank">9abb54e</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-09-30
+</td>
+<td>
+Set-up &amp; file structure
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-libraries" class="section level1">
+<h1>Load libraries</h1>
+<pre class="r"><code>library(tidyverse)
+library(NormalyzerDE) # compare normalisation strategies 
+library(pheatmap) # visualise whether samples cluster by missingness 
+library(cowplot) # pretty theme 
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+source(&quot;./code/functions.R&quot;) # load helper functions </code></pre>
+</div>
+<div id="proteomics" class="section level1">
+<h1>Proteomics</h1>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<p>Read in data and accompanying phenotype tables:</p>
+<pre class="r"><code>plasma_data &lt;- read.csv(&quot;./data/plasma_proteins.csv&quot;, row.names = 1) 
+colnames(plasma_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_data))
+  
+sf_data &lt;- read.csv(&quot;./data/sf_proteins.csv&quot;, row.names = 1)
+colnames(sf_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_data))
+
+plasma_pheno &lt;- read.csv(&quot;./data/plasma_pheno.csv&quot;)
+sf_pheno &lt;- read.csv(&quot;./data/sf_pheno.csv&quot;)</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>plasma_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, plasma_pheno$Sample.Number)
+plasma_pheno$Horse &lt;- as.factor(plasma_pheno$Horse)
+plasma_pheno &lt;- plasma_pheno[match(colnames(plasma_data),plasma_pheno$Sample.Number),]
+
+
+sf_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, sf_pheno$Sample.Number)
+sf_pheno$Horse &lt;- as.factor(sf_pheno$Horse)
+sf_pheno &lt;- sf_pheno[match(colnames(sf_data),sf_pheno$Sample.Number),]</code></pre>
+</div>
+<div id="normalisation" class="section level2">
+<h2>Normalisation</h2>
+<p>To compare normalisation strategies the NormalyzerDE package was
+used. This requires a design matrix and a summarised experimental object
+to be constructed. The design matrix needs to contain a column with a
+‘group’ header. The summarised experimental object won’t accept values
+&lt;1 as the data is log-transformed during processing this will lead to
+negative values which in turn will crash processing. For the purpose of
+comparing normalisation techniques a small constant can be added to each
+value (in this case 1) before normalisation (not including NA
+values).</p>
+<pre class="r"><code># Create directory for outputs
+if (!dir.exists(&quot;./normalisation&quot;)) {
+    dir.create(&quot;./normalisation&quot;)
+}
+
+
+# Create design matrix
+design &lt;- plasma_pheno[,c(5,2,1)]
+colnames(design) &lt;- c(&quot;sample&quot;, &quot;group&quot;, &quot;batch&quot;)
+
+
+# Create a summarised experiment object
+sumExpObj &lt;- SummarizedExperiment::SummarizedExperiment(
+as.matrix(plasma_data +1), # Add a constant to each value
+colData=design,
+rowData=rownames(data)
+)
+
+# Run analysis 
+normalyzer(jobName=&quot;proteomics_norm&quot;, experimentObj = sumExpObj, outputDir=dir)</code></pre>
+<p>VSN performed best but log2 still seemed sufficient and preferable to
+use for now:</p>
+<pre class="r"><code># Read in sample normalised data 
+vsn_normalised &lt;- read.delim(&quot;./normalisation/proteomics_norm/VSN-normalized.txt&quot;, row.names = 1)
+log2_normalised &lt;- read.delim(&quot;./normalisation/proteomics_norm/log2-normalized.txt&quot;, row.names = 1)</code></pre>
+<pre class="r"><code># Boxplots of VSN and log2 normalised data
+boxplot(vsn_normalised)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>boxplot(log2_normalised)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Log transform the data:</p>
+<pre class="r"><code>sf_data_norm &lt;- log2(sf_data)
+plasma_data_norm &lt;- log2(plasma_data)</code></pre>
+</div>
+<div id="quality-check" class="section level2">
+<h2>Quality check</h2>
+<p>Create box plots of the log transformed data:</p>
+<pre class="r"><code>sf_bp &lt;- t(sf_data_norm) %&gt;%
+  as.data.frame() %&gt;%
+  mutate(Day = as.factor(sf_pheno$Day), Horse = sf_pheno$Horse, Group = sf_pheno$Group) %&gt;%
+  rownames_to_column(&#39;Sample_ID&#39;) %&gt;%
+  pivot_longer(cols = A0A061DBP6:Q9XSZ5) %&gt;%
+  ggplot(aes(x=Sample_ID, y=value, fill=Day)) + geom_boxplot() + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab(&quot;Sample ID&quot;) + 
+    ylab(&quot;Log2 Intensity&quot;) + 
+    ggtitle(&quot;Synovial fluid EVs&quot;)</code></pre>
+<pre class="r"><code>plasma_bp &lt;- t(plasma_data_norm) %&gt;%
+  as.data.frame() %&gt;%
+  mutate(Day = as.factor(plasma_pheno$Day), Horse = plasma_pheno$Horse, Group = plasma_pheno$Group) %&gt;%
+  rownames_to_column(&#39;Sample_ID&#39;) %&gt;%
+  pivot_longer(cols = A0A061DBP6:Q9GKX7) %&gt;%
+  ggplot(aes(x=Sample_ID, y=value, fill=Day)) + geom_boxplot() + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab(&quot;Sample ID&quot;) + 
+    ylab(&quot;Log2 Intensity&quot;) + 
+    ggtitle(&quot;Plasma EVs&quot;)</code></pre>
+<pre class="r"><code>sf_missing_values &lt;- data.frame(missing_count = colSums(is.na(sf_data_norm)),
+                    Day = as.factor(sf_pheno$Day),
+                    Horse = sf_pheno$Horse) %&gt;%
+                    rownames_to_column(&#39;Sample_ID&#39;) 
+
+
+sf_missing_values_barplot &lt;- ggbarplot(sf_missing_values, x = &quot;Sample_ID&quot;, y = &quot;missing_count&quot;,  fill = &quot;Day&quot;, scales = &quot;free&quot;) + 
+    #scale_fill_brewer(palette=&quot;Set1&quot;) + 
+    theme_pubclean() +
+    theme(legend.position=&quot;right&quot;) + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab(&quot;Sample ID&quot;) + 
+    ylab(&quot;# Missing values&quot;) </code></pre>
+<pre class="r"><code>plasma_missing_values &lt;- data.frame(missing_count = colSums(is.na(plasma_data_norm)),
+                    Day = as.factor(plasma_pheno$Day),
+                    Horse = plasma_pheno$Horse) %&gt;%
+                    rownames_to_column(&#39;Sample_ID&#39;) 
+
+
+plasma_missing_values_barplot &lt;- ggbarplot(plasma_missing_values, x = &quot;Sample_ID&quot;, y = &quot;missing_count&quot;,  fill = &quot;Day&quot;, scales = &quot;free&quot;) + 
+    #scale_fill_brewer(palette=&quot;Set1&quot;) + 
+    theme_pubclean() +
+    theme(legend.position=&quot;right&quot;) + theme_cowplot() +
+    theme(axis.text.x = element_text(angle = 90, size = 8)) + 
+    xlab(&quot;Sample ID&quot;) + 
+    ylab(&quot;# Missing values&quot;) </code></pre>
+<pre><code>Warning: Removed 30840 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>Warning: Removed 1003 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>For the synovial fluid samples, samples 6, 13, 17, 43 and 44 have a
+much lower number of missing values, this could correspond to a batch
+effect.</p>
+<p>Its also notable that the intensity distribution is generally shifted
+upwards for samples that have more missing values. This agrees with the
+idea that small values are more likely to be missing.</p>
+<p>Save the R data objects for use in exploratory analysis and
+differential expression analysis.</p>
+<pre class="r"><code># Plasma pheno
+saveRDS(plasma_data_norm, &quot;./data/plasma_data_norm.rds&quot;)
+saveRDS(plasma_pheno, &quot;./data/plasma_pheno.rds&quot;)
+
+# SF pheno
+saveRDS(sf_data_norm, &quot;./data/sf_data_norm.rds&quot;)
+saveRDS(sf_pheno, &quot;./data/sf_pheno.rds&quot;)</code></pre>
+</div>
+<div id="missing-values" class="section level2">
+<h2>Missing values</h2>
+<div id="synovial-fluid-samples" class="section level3">
+<h3>Synovial fluid samples</h3>
+<p>An additional way to analyse the missing values is to replace them
+all with 0’s and then carry out clustering analysis. The rationale
+behind this is that if the missing values correspond to a biological
+effect (e.g. proteins that were abundant at time 0 that are absent at
+later time points or vice versa) they will cluster according to that
+biological effect.</p>
+<p>Firstly, all the NA’s in the matrix need to be replaced with
+zeros:</p>
+<pre class="r"><code># Create a copy of the data
+sf_heatmap_data &lt;- sf_data_norm
+
+# Replace all the NA values in the copy with 0&#39;s
+sf_heatmap_data[is.na(sf_heatmap_data)] &lt;- 0</code></pre>
+<p>Next we need to create a dataframe that contains the annotation for
+all the features of interest in the phenotype table. For the synovial
+fluid samples this is day, group and horse.</p>
+<pre class="r"><code>my_sample_col &lt;- data.frame(Horse = sf_pheno$Horse, Day = sf_pheno$Day, Group = sf_pheno$Group)
+rownames(my_sample_col) &lt;- sf_pheno$Sample.Number</code></pre>
+<p>Next create a heatmap using the pheatmap package taking the modified
+data and annotation as input. Multiple clustering methods were used, but
+they all resulted in a similar pattern.</p>
+<pre class="r"><code>sf_heatmap &lt;- pheatmap(sf_heatmap_data, 
+                       annotation_col = my_sample_col, 
+                       show_rownames=F,
+                       cluster_cols = TRUE,
+                       clustering_method = &quot;ward.D2&quot;
+                       )</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Use the helper function &#39;save_pheatmap&#39; to write the pheatmap output ot a figure
+save_pheatmap_png(sf_heatmap, &quot;./output/sf_missing_values_heatmap.png&quot;)</code></pre>
+<pre><code>png 
+  2 </code></pre>
+<p>For the synovial fluid samples the missing values don’t appear to be
+entirely at random. Horse 4 seems to display some clustering, the
+samples that have fewer missing values cluster together (6, 13, 17, 43
+and 44). This may correspond to a batch effect in the processing.</p>
+<p>We can also create a clustering dendogram to show just the
+clustering:</p>
+<pre class="r"><code>my_hclust_sample &lt;- hclust(dist(t(sf_heatmap_data)), method = &quot;complete&quot;)
+
+as.dendrogram(my_hclust_sample) %&gt;%
+  plot()</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>It is better to avoid imputing missing values in proteomics data,
+especially when there are a low number of replicates per group as you
+might end up imputing based off one value and this will result in
+unreliable data and potential false positives. Ideally only the proteins
+without missing values should be taken forward for differential
+expression analysis. However, the synovial fluid data is very
+sparse:</p>
+<pre class="r"><code>dim(sf_data_norm[which(rowMeans(is.na(sf_data_norm)) &lt; 0.1), ])</code></pre>
+<pre><code>[1] 130  52</code></pre>
+<pre class="r"><code>dim(na.omit(sf_data_norm))</code></pre>
+<pre><code>[1] 27 52</code></pre>
+<p>There are only 130 proteins remaining if we take rows with &lt;10%
+missing values and 27 proteins remaining if we take rows that have no
+missing values.</p>
+</div>
+<div id="plasma-samples" class="section level3">
+<h3>Plasma samples</h3>
+<p>Now repeat the same process for the plasma samples:</p>
+<pre class="r"><code>plasma_heatmap_data &lt;- plasma_data_norm
+plasma_heatmap_data[is.na(plasma_heatmap_data)] &lt;- 0</code></pre>
+<pre class="r"><code>my_sample_col &lt;- data.frame(Horse = plasma_pheno$Horse, Day = plasma_pheno$Day)
+rownames(my_sample_col) &lt;- plasma_pheno$Sample.Number
+
+plasma_heatmap &lt;- pheatmap(plasma_heatmap_data, annotation_col = my_sample_col, show_rownames=F)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>save_pheatmap_png(plasma_heatmap, &quot;./output/plasma_missing_values_heatmap.png&quot;)</code></pre>
+<pre><code>png 
+  2 </code></pre>
+<p>There appears to be some clustering dependent on which horse the
+plasma was extracted from. Additionally, some mild clustering based off
+the time point.</p>
+<pre class="r"><code>my_hclust_sample &lt;- hclust(dist(t(plasma_heatmap_data)), method = &quot;complete&quot;)
+
+as.dendrogram(my_hclust_sample) %&gt;%
+  plot()</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="sequencing-data" class="section level1">
+<h1>Sequencing data</h1>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.0 (2022-04-22 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19044)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United Kingdom.utf8 
+[2] LC_CTYPE=English_United Kingdom.utf8   
+[3] LC_MONETARY=English_United Kingdom.utf8
+[4] LC_NUMERIC=C                           
+[5] LC_TIME=English_United Kingdom.utf8    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggpubr_0.4.0        cowplot_1.1.1       pheatmap_1.0.12    
+ [4] NormalyzerDE_1.13.2 forcats_0.5.1       stringr_1.4.0      
+ [7] dplyr_1.0.9         purrr_0.3.4         readr_2.1.2        
+[10] tidyr_1.2.0         tibble_3.1.7        ggplot2_3.3.6      
+[13] tidyverse_1.3.1    
+
+loaded via a namespace (and not attached):
+  [1] colorspace_2.0-3            ggsignif_0.6.3             
+  [3] ellipsis_0.3.2              class_7.3-20               
+  [5] rprojroot_2.0.3             htmlTable_2.4.0            
+  [7] XVector_0.36.0              GenomicRanges_1.48.0       
+  [9] base64enc_0.1-3             fs_1.5.2                   
+ [11] rstudioapi_0.13             proxy_0.4-27               
+ [13] farver_2.1.0                fansi_1.0.3                
+ [15] lubridate_1.8.0             xml2_1.3.3                 
+ [17] codetools_0.2-18            splines_4.2.0              
+ [19] knitr_1.39                  Formula_1.2-4              
+ [21] jsonlite_1.8.0              workflowr_1.7.0            
+ [23] broom_0.8.0                 cluster_2.1.3              
+ [25] dbplyr_2.2.0                png_0.1-7                  
+ [27] compiler_4.2.0              httr_1.4.3                 
+ [29] backports_1.4.1             assertthat_0.2.1           
+ [31] Matrix_1.4-1                fastmap_1.1.0              
+ [33] limma_3.52.1                cli_3.3.0                  
+ [35] later_1.3.0                 htmltools_0.5.2            
+ [37] tools_4.2.0                 GenomeInfoDbData_1.2.8     
+ [39] gtable_0.3.0                glue_1.6.2                 
+ [41] Rcpp_1.0.8.3                Biobase_2.56.0             
+ [43] carData_3.0-5               cellranger_1.1.0           
+ [45] jquerylib_0.1.4             raster_3.5-15              
+ [47] vctrs_0.4.1                 preprocessCore_1.58.0      
+ [49] xfun_0.31                   rvest_1.0.2                
+ [51] lifecycle_1.0.1             RcmdrMisc_2.7-2            
+ [53] rstatix_0.7.0               terra_1.5-34               
+ [55] zlibbioc_1.42.0             MASS_7.3-56                
+ [57] zoo_1.8-10                  scales_1.2.0               
+ [59] hms_1.1.1                   promises_1.2.0.1           
+ [61] MatrixGenerics_1.8.0        SummarizedExperiment_1.26.1
+ [63] sandwich_3.0-2              RColorBrewer_1.1-3         
+ [65] yaml_2.3.5                  gridExtra_2.3              
+ [67] sass_0.4.1                  rpart_4.1.16               
+ [69] latticeExtra_0.6-29         stringi_1.7.6              
+ [71] highr_0.9                   S4Vectors_0.34.0           
+ [73] nortest_1.0-4               e1071_1.7-11               
+ [75] checkmate_2.1.0             BiocGenerics_0.42.0        
+ [77] GenomeInfoDb_1.32.2         bitops_1.0-7               
+ [79] rlang_1.0.2                 pkgconfig_2.0.3            
+ [81] matrixStats_0.62.0          evaluate_0.15              
+ [83] lattice_0.20-45             labeling_0.4.2             
+ [85] htmlwidgets_1.5.4           tidyselect_1.1.2           
+ [87] magrittr_2.0.3              R6_2.5.1                   
+ [89] IRanges_2.30.0              generics_0.1.2             
+ [91] Hmisc_4.7-0                 DelayedArray_0.22.0        
+ [93] DBI_1.1.2                   pillar_1.7.0               
+ [95] haven_2.5.0                 whisker_0.4                
+ [97] foreign_0.8-82              withr_2.5.0                
+ [99] RCurl_1.98-1.7              survival_3.3-1             
+[101] abind_1.4-5                 sp_1.5-0                   
+[103] nnet_7.3-17                 modelr_0.1.8               
+[105] crayon_1.5.1                car_3.1-0                  
+[107] utf8_1.2.2                  tzdb_0.3.0                 
+[109] rmarkdown_2.14              jpeg_0.1-9                 
+[111] grid_4.2.0                  readxl_1.4.0               
+[113] data.table_1.14.2           git2r_0.30.1               
+[115] reprex_2.0.1                digest_0.6.29              
+[117] httpuv_1.6.5                stats4_4.2.0               
+[119] munsell_0.5.0               bslib_0.3.1                </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
