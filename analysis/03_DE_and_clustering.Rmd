@@ -35,6 +35,7 @@ plasma_pheno <- readRDS("./data/plasma_pheno.rds")
 
 ## Plasma DE analysis 
 
+### Version 1, time as a factor 
 
 ```{r}
 
@@ -58,6 +59,16 @@ fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse,
 
 ```{r}
 
-test_res <- test_diff(fit, day63)
+plasma_day63 <- test_diff(fit, day63)
+plasma_day56 <- test_diff(fit, day56)
+plasma_day49 <- test_diff(fit, day49)
+plasma_day42 <- test_diff(fit, day42)
+plasma_day35 <- test_diff(fit, day35)
+plasma_day10 <- test_diff(fit, day10)
 
 ```
+
+Day 35 and 42 have one sig protein after adjustment each: A0A3Q2HID2 & 	A0A3Q2H659.
+
+
+### Version 2, time as a continuous variable 
