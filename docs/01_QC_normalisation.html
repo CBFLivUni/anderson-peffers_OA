@@ -402,7 +402,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-10-05
+<strong>Last updated:</strong> 2022-10-06
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -536,15 +536,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree4525b368e7bd197e9c7aec657d151e77b282f53dtargetblank4525b36a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree8a27ebc60bfb5c9768cdc4fbd575ed96cd928752targetblank8a27ebca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/4525b368e7bd197e9c7aec657d151e77b282f53d" target="_blank">4525b36</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/8a27ebc60bfb5c9768cdc4fbd575ed96cd928752" target="_blank">8a27ebc</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree4525b368e7bd197e9c7aec657d151e77b282f53dtargetblank4525b36a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree8a27ebc60bfb5c9768cdc4fbd575ed96cd928752targetblank8a27ebca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -554,7 +554,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/4525b368e7bd197e9c7aec657d151e77b282f53d" target="_blank">4525b36</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/8a27ebc60bfb5c9768cdc4fbd575ed96cd928752" target="_blank">8a27ebc</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -577,7 +577,7 @@ Unstaged changes:
     Modified:   analysis/01_QC_normalisation.Rmd
     Modified:   analysis/02_EDA.Rmd
     Modified:   analysis/03_DE_and_clustering.Rmd
-    Modified:   analysis/_site.yml
+    Modified:   output/plasma_proDA_DE_results.xlsx
     Modified:   output/sf_proDA_DE_results.xlsx
 
 </code></pre>
@@ -624,6 +624,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/ebbe547e38343b45e8512fcca61c0232dbca05f1/analysis/01_QC_normalisation.Rmd" target="_blank">ebbe547</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+Updating html files
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/ebbe547e38343b45e8512fcca61c0232dbca05f1/docs/01_QC_normalisation.html" target="_blank">ebbe547</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-05
+</td>
+<td>
+Updating html files
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -689,6 +723,7 @@ library(NormalyzerDE) # compare normalisation strategies
 library(pheatmap) # visualise whether samples cluster by missingness 
 library(cowplot) # pretty theme 
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(proDA) # median normalisation function
 source(&quot;./code/functions.R&quot;) # load helper functions </code></pre>
 </div>
 <div id="proteomics" class="section level1">
@@ -746,19 +781,26 @@ rowData=rownames(data)
 
 # Run analysis 
 normalyzer(jobName=&quot;proteomics_norm&quot;, experimentObj = sumExpObj, outputDir=dir)</code></pre>
-<p>VSN performed best but log2 still seemed sufficient and preferable to
-use for now:</p>
+<p>Box plots of some of the normalisation methods:</p>
 <pre class="r"><code># Read in sample normalised data 
 vsn_normalised &lt;- read.delim(&quot;./normalisation/proteomics_norm/VSN-normalized.txt&quot;, row.names = 1)
-log2_normalised &lt;- read.delim(&quot;./normalisation/proteomics_norm/log2-normalized.txt&quot;, row.names = 1)</code></pre>
-<pre class="r"><code># Boxplots of VSN and log2 normalised data
+log2_normalised &lt;- read.delim(&quot;./normalisation/proteomics_norm/log2-normalized.txt&quot;, row.names = 1)
+median_normalised &lt;- read.delim(&quot;./normalisation/proteomics_norm/median-normalized.txt&quot;, row.names = 1)</code></pre>
+<pre class="r"><code># Boxplots of VSN, median and log2 normalised data
 boxplot(vsn_normalised)</code></pre>
 <p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>boxplot(log2_normalised)</code></pre>
 <p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Log transform the data:</p>
-<pre class="r"><code>sf_data_norm &lt;- log2(sf_data)
-plasma_data_norm &lt;- log2(plasma_data)</code></pre>
+<pre class="r"><code>boxplot(median_normalised)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-6-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Log2 transform the data:</p>
+<pre class="r"><code>sf_data_norm &lt;- log2(sf_data) 
+plasma_data_norm &lt;- log2(plasma_data) 
+
+# Median normalisation would be:
+# plasma_data_norm &lt;- log2(plasma_data) %&gt;% as.matrix(.) %&gt;% median_normalization(.)</code></pre>
+<p>Note: median normalisation was also tested for EDA and DE
+analysis.</p>
 </div>
 <div id="quality-check" class="section level2">
 <h2>Quality check</h2>
@@ -942,11 +984,11 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggpubr_0.4.0        cowplot_1.1.1       pheatmap_1.0.12    
- [4] NormalyzerDE_1.13.2 forcats_0.5.1       stringr_1.4.0      
- [7] dplyr_1.0.9         purrr_0.3.4         readr_2.1.2        
-[10] tidyr_1.2.0         tibble_3.1.7        ggplot2_3.3.6      
-[13] tidyverse_1.3.1     workflowr_1.7.0    
+ [1] proDA_1.10.0        ggpubr_0.4.0        cowplot_1.1.1      
+ [4] pheatmap_1.0.12     NormalyzerDE_1.13.2 forcats_0.5.1      
+ [7] stringr_1.4.0       dplyr_1.0.9         purrr_0.3.4        
+[10] readr_2.1.2         tidyr_1.2.0         tibble_3.1.7       
+[13] ggplot2_3.3.6       tidyverse_1.3.1     workflowr_1.7.0    
 
 loaded via a namespace (and not attached):
   [1] colorspace_2.0-3            ggsignif_0.6.3             

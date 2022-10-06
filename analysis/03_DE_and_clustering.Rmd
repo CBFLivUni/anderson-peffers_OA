@@ -15,6 +15,7 @@ library(tidyverse)
 library(proDA)
 library(DT)
 library(openxlsx)
+library(limma)
 
 ```
 
@@ -188,6 +189,10 @@ DT::datatable(sf_day63[,c(1:4,6,10)],
 
 ```
 
+
+Note that when median normalisation is used instead there are two differentially expressed proteins at day 10 versus day 0: F6PH38 & A0A5F5PPB8. However, when this noramalisation technique is used the plasma proteins no longer pass FDR.
+
+
 ### Version 2, time as a continuous variable 
 
 ```{r}
@@ -238,7 +243,7 @@ DT::datatable(sf_time[,c(1:4,6,10)],
 
 # Without missing values
 
-## Load data
+## Load and format data
 
 ```{r}
 
@@ -254,6 +259,8 @@ plasma_pheno <- readRDS("./data/plasma_pheno.rds")
 ```
 
 
+Remove all the rows with NA values: 
+
 ```{r}
 
 sf_data_norm <- na.omit(sf_data_norm)
@@ -262,3 +269,186 @@ plasma_data_norm <- na.omit(plasma_data_norm)
 #plasma_data_norm <- plasma_data_norm[which(rowMeans(is.na(plasma_data_norm)) < 0.1), ]
 
 ```
+
+
+Remove the control samples for the synovial fluid. For both plasma and synovial fluid DE relative to time zero will be investigated. 
+
+```{r}
+
+sf_pheno <- sf_pheno[!sf_pheno$Group == "Control",]
+sf_data_norm <- sf_data_norm[,sf_pheno$Sample.Number]
+
+```
+
+
+## Plasma DE analysis 
+
+### Version 1, time as a factor 
+
+
+```{r}
+
+# Create the model matrix using this factor
+design <- model.matrix(~0 + as.factor(plasma_pheno$Day) + as.factor(plasma_pheno$Horse))
+
+# Rename the columns of the design matrix using the levels of the factor 
+colnames(design) <- c("Day_0", "Day_10", "Day_35", "Day_42", "Day_49", "Day_56", "Day_63", "Horse_4", "Horse_6", "Horse_8")
+
+
+```
+
+```{r}
+
+# Create contrast matrix 
+contrast <- makeContrasts(day_63vs0 = Day_63 - Day_0,
+                          day_56vs0 = Day_56 - Day_0,
+                          day_49vs0 = Day_49 - Day_0,
+                          day_42vs0 = Day_42 - Day_0,
+                          day_35vs0 = Day_35 - Day_0,
+                          day_10vs0 = Day_10 - Day_0,
+                          levels = design)
+
+# Fit model
+fit <- lmFit(plasma_data_norm, design)
+fit2 <- contrasts.fit(fit, contrast)
+fit2 <- eBayes(fit2)
+
+# Number of differentially expressed proteins at each time point 
+summary(decideTests(fit2))
+
+```
+
+```{r}
+
+plasma_tt_day56 <- topTable(fit2, coef=2, n=Inf)
+plasma_tt_day35 <- topTable(fit2, coef=5, n=Inf)
+
+```
+
+[A0A3Q2HID2](https://www.uniprot.org/uniprotkb/A0A3Q2HID2/entry) (Coagulation factor XIII A chain) is the one significant protein at both time points.
+
+
+```{r, echo=FALSE}
+
+DT::datatable(plasma_tt_day56, 
+              class = "cell-border stripe", 
+              filter= "top", 
+              extensions = "Buttons",
+              options = list(pageLength = 10, pageWidth = 5, dom = 'Bfrtip',
+              buttons = c('copy', 'print'))
+              )
+
+```
+
+
+### Version 2, time as continuous variable
+
+```{r}
+
+# Create the model matrix using this factor
+design <- model.matrix(~ plasma_pheno$Day + as.factor(plasma_pheno$Horse))
+
+# Rename the columns of the design matrix using the levels of the factor 
+colnames(design) <- c("(Intercept", "Day", "Horse_4", "Horse_6", "Horse_8")
+
+
+```
+
+```{r}
+
+# Fit model
+fit <- lmFit(plasma_data_norm, design)
+fit2 <- eBayes(fit)
+
+# Number of differentially expressed genes
+summary(decideTests(fit2))
+
+```
+
+```{r}
+
+plasma_tt_continuous_time <- topTable(fit2, coef=2, n=Inf)
+
+```
+
+## Synovial fluid DE analysis 
+
+### Version 1, time as a factor 
+
+```{r}
+
+# Create the model matrix using this factor
+design <- model.matrix(~0 + as.factor(sf_pheno$Day) + as.factor(sf_pheno$Horse))
+
+# Rename the columns of the design matrix using the levels of the factor 
+colnames(design) <- c("Day_0", "Day_10", "Day_35", "Day_42", "Day_49", "Day_56", "Day_63", "Horse_4", "Horse_6", "Horse_8")
+
+
+```
+
+```{r}
+
+# Create contrast matrix 
+contrast <- makeContrasts(day_63vs0 = Day_63 - Day_0,
+                          day_56vs0 = Day_56 - Day_0,
+                          day_49vs0 = Day_49 - Day_0,
+                          day_42vs0 = Day_42 - Day_0,
+                          day_35vs0 = Day_35 - Day_0,
+                          day_10vs0 = Day_10 - Day_0,
+                          levels = design)
+
+# Fit model
+fit <- lmFit(sf_data_norm, design)
+fit2 <- contrasts.fit(fit, contrast)
+fit2 <- eBayes(fit2)
+
+# Number of differentially expressed proteins at each time point 
+summary(decideTests(fit2))
+
+```
+
+```{r}
+
+sf_tt_day10 <- topTable(fit2, coef=6, n=Inf)
+
+```
+
+```{r, echo=FALSE}
+
+DT::datatable(sf_tt_day10, 
+              class = "cell-border stripe", 
+              filter= "top", 
+              extensions = "Buttons",
+              options = list(pageLength = 10, pageWidth = 5, dom = 'Bfrtip',
+              buttons = c('copy', 'print'))
+              )
+
+```
+
+### Version 2, time as continuous variable
+
+```{r}
+
+# Create the model matrix using this factor
+design <- model.matrix(~ sf_pheno$Day + as.factor(sf_pheno$Horse))
+
+# Rename the columns of the design matrix using the levels of the factor 
+colnames(design) <- c("(Intercept", "Day", "Horse_4", "Horse_6", "Horse_8")
+
+
+```
+
+```{r}
+
+# Fit model
+fit <- lmFit(sf_data_norm, design)
+fit2 <- eBayes(fit)
+
+# Number of differentially expressed genes
+summary(decideTests(fit2))
+
+```
+
+Time as a continuous variable results in no significant proteins (suggests the response must be non-linear).
+
+

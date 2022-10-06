@@ -16,6 +16,7 @@ library(NormalyzerDE) # compare normalisation strategies
 library(pheatmap) # visualise whether samples cluster by missingness 
 library(cowplot) # pretty theme 
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(proDA) # median normalisation function
 source("./code/functions.R") # load helper functions 
 
 ```
@@ -87,33 +88,40 @@ normalyzer(jobName="proteomics_norm", experimentObj = sumExpObj, outputDir=dir)
 ```
 
 
-VSN performed best but log2 still seemed sufficient and preferable to use for now:
+Box plots of some of the normalisation methods: 
 
 ```{r}
 
 # Read in sample normalised data 
 vsn_normalised <- read.delim("./normalisation/proteomics_norm/VSN-normalized.txt", row.names = 1)
 log2_normalised <- read.delim("./normalisation/proteomics_norm/log2-normalized.txt", row.names = 1)
+median_normalised <- read.delim("./normalisation/proteomics_norm/median-normalized.txt", row.names = 1)
 
 ```
 
 ```{r}
 
-# Boxplots of VSN and log2 normalised data
+# Boxplots of VSN, median and log2 normalised data
 boxplot(vsn_normalised)
 boxplot(log2_normalised)
+boxplot(median_normalised)
 
 ```
 
 
-Log transform the data:
+Log2 transform the data:
 
 ```{r}
 
-sf_data_norm <- log2(sf_data)
-plasma_data_norm <- log2(plasma_data)
+sf_data_norm <- log2(sf_data) 
+plasma_data_norm <- log2(plasma_data) 
+
+# Median normalisation would be:
+# plasma_data_norm <- log2(plasma_data) %>% as.matrix(.) %>% median_normalization(.)
 
 ```
+
+Note: median normalisation was also tested for EDA and DE analysis.
 
 
 ## Quality check 
