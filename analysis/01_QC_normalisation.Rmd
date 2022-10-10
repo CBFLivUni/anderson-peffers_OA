@@ -30,14 +30,20 @@ Read in data and accompanying phenotype tables:
 
 ```{r}
 
+# Data
 plasma_data <- read.csv("./data/plasma_proteins.csv", row.names = 1) 
 colnames(plasma_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_data))
   
 sf_data <- read.csv("./data/sf_proteins.csv", row.names = 1)
 colnames(sf_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_data))
 
+# Pheno
 plasma_pheno <- read.csv("./data/plasma_pheno.csv")
 sf_pheno <- read.csv("./data/sf_pheno.csv")
+
+# Annotation
+plasma_annotation <- read.csv("./data/plasma_protein_annotation.csv", row.names=1)
+sf_annotation <- read.csv("./data/sf_protein_annotation.csv", row.names=1)
 
 ```
 
@@ -117,7 +123,8 @@ sf_data_norm <- log2(sf_data)
 plasma_data_norm <- log2(plasma_data) 
 
 # Median normalisation would be:
-# plasma_data_norm <- log2(plasma_data) %>% as.matrix(.) %>% median_normalization(.)
+#sf_data_norm <- log2(sf_data) %>% as.matrix(.) %>% median_normalization(.)
+#plasma_data_norm <- log2(plasma_data) %>% as.matrix(.) %>% median_normalization(.)
 
 ```
 
@@ -218,13 +225,15 @@ Save the R data objects for use in exploratory analysis and differential express
 
 ```{r}
 
-# Plasma pheno
+# Plasma 
 saveRDS(plasma_data_norm, "./data/plasma_data_norm.rds")
 saveRDS(plasma_pheno, "./data/plasma_pheno.rds")
+saveRDS(plasma_annotation, "./data/plasma_proteomics_annotation.rds")
 
-# SF pheno
+# SF 
 saveRDS(sf_data_norm, "./data/sf_data_norm.rds")
 saveRDS(sf_pheno, "./data/sf_pheno.rds")
+saveRDS(sf_annotation, "./data/sf_proteomics_annotation.rds")
 
 ```
 

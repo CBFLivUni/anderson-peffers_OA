@@ -16,6 +16,7 @@ library(proDA)
 library(DT)
 library(openxlsx)
 library(limma)
+library(splines)
 
 ```
 
@@ -35,8 +36,20 @@ plasma_data_norm <- readRDS("./data/plasma_data_norm.rds")
 sf_pheno <- readRDS("./data/sf_pheno.rds")
 plasma_pheno <- readRDS("./data/plasma_pheno.rds")
 
+
+# Annotation
+sf_annotation <- readRDS("./data/sf_proteomics_annotation.rds")
+plasma_annotation <- readRDS("./data/plasma_proteomics_annotation.rds")
+
 ```
 
+
+```{r}
+
+sf_data_norm <- sf_data_norm[which(rowMeans(is.na(sf_data_norm)) < 0.5), ]
+plasma_data_norm <- plasma_data_norm[which(rowMeans(is.na(plasma_data_norm)) < 0.5), ]
+
+```
 
 ## Plasma DE analysis 
 
@@ -64,25 +77,33 @@ fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse,
 
 ```{r}
 
-plasma_day63 <- test_diff(fit, day63) %>% arrange(-desc(adj_pval))
-plasma_day56 <- test_diff(fit, day56) %>% arrange(-desc(adj_pval))
-plasma_day49 <- test_diff(fit, day49) %>% arrange(-desc(adj_pval))
-plasma_day42 <- test_diff(fit, day42) %>% arrange(-desc(adj_pval))
-plasma_day35 <- test_diff(fit, day35) %>% arrange(-desc(adj_pval))
-plasma_day10 <- test_diff(fit, day10) %>% arrange(-desc(adj_pval))
+plasma_day63 <- test_diff(fit, day63) %>%
+  arrange(-desc(adj_pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
+
+plasma_day56 <- test_diff(fit, day56) %>%
+  arrange(-desc(adj_pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
+
+plasma_day49 <- test_diff(fit, day49) %>%
+  arrange(-desc(adj_pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
+
+plasma_day42 <- test_diff(fit, day42) %>%
+  arrange(-desc(adj_pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
+
+plasma_day35 <- test_diff(fit, day35) %>%
+  arrange(-desc(adj_pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
+
+plasma_day10 <- test_diff(fit, day10) %>%
+  arrange(-desc(adj_pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
 
 ```
 
 Day 35 and 42 have one sig protein after adjustment each: A0A3Q2HID2 & 	A0A3Q2H659.  
-
-These results were combined into a list and then saved as an Excel spreadsheet: 
-
-```{r}
-
-plasma_DE_res <- list("day63" = plasma_day63, "day56" = plasma_day56, "day49" = plasma_day49, "day42" = plasma_day42, "day35" = plasma_day35, "day10" = plasma_day10)
-openxlsx::write.xlsx(plasma_DE_res, file = "./output/plasma_proDA_DE_results.xlsx")
-
-```
 
 
 Sample results showing the day 42 vs day 0 contrast are below. The rows are ordered by descending p-value. 
@@ -123,10 +144,60 @@ fit <- proDA(as.matrix(plasma_data_norm), design = ~ day + horse,
 
 ```{r}
 
-plasma_time <- test_diff(fit, day) %>% arrange(-desc(adj_pval))
+plasma_time <- test_diff(fit, day) %>% 
+  arrange(-desc(adj_pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
 
 ```
 
+
+### Version 3, cubic spline model
+
+
+```{r}
+
+plasma_design <- plasma_pheno[,c(5,2,1)]
+colnames(plasma_design) <- c("name", "day", "horse")
+
+```
+
+```{r}
+
+matTimeSplineBasis <- ns(
+  plasma_design$day, df=5)
+colnames(matTimeSplineBasis) <- 
+  paste0("spline", seq(1, dim(matTimeSplineBasis)[2]))
+
+
+plasma_design <- cbind(plasma_design, matTimeSplineBasis)
+
+```
+
+```{r}
+
+fit <- proDA(as.matrix(plasma_data_norm), design = ~ spline1 + spline2 + spline3 + horse, 
+             col_data = plasma_design) 
+
+```
+
+
+```{r}
+
+plasma_spline <- test_diff(fit, reduced_model = ~ horse) %>% 
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = plasma_annotation[.$name,])
+
+```
+
+
+These results were combined into a list and then saved as an Excel spreadsheet: 
+
+```{r}
+
+plasma_DE_res <- list("day63" = plasma_day63, "day56" = plasma_day56, "day49" = plasma_day49, "day42" = plasma_day42, "day35" = plasma_day35, "day10" = plasma_day10, "continuous_time" = plasma_time, "natural_splines_time" = plasma_spline)
+openxlsx::write.xlsx(plasma_DE_res, file = "./output/plasma_proDA_DE_results.xlsx")
+
+```
 
 
 ## Synovial fluid differential expression analysis 
@@ -155,24 +226,32 @@ fit <- proDA(as.matrix(sf_data_norm), design = ~ group_day + horse,
 
 ```{r}
 
-sf_day63 <- test_diff(fit, group_dayOA_63 - group_dayOA_0) %>% arrange(-desc(pval))
-sf_day56 <- test_diff(fit, group_dayOA_56 - group_dayOA_0) %>% arrange(-desc(pval))
-sf_day49 <- test_diff(fit, group_dayOA_49 - group_dayOA_0) %>% arrange(-desc(pval))
-sf_day42 <- test_diff(fit, group_dayOA_42 - group_dayOA_0) %>% arrange(-desc(pval))
-sf_day35 <- test_diff(fit, group_dayOA_35 - group_dayOA_0) %>% arrange(-desc(pval))
-sf_day10 <- test_diff(fit, group_dayOA_10 - group_dayOA_0) %>% arrange(-desc(pval))
+sf_day63 <- test_diff(fit, group_dayOA_63 - group_dayOA_0) %>%
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = sf_annotation[.$name,])
+
+sf_day56 <- test_diff(fit, group_dayOA_56 - group_dayOA_0) %>%
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = sf_annotation[.$name,])
+
+sf_day49 <- test_diff(fit, group_dayOA_49 - group_dayOA_0) %>%
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = sf_annotation[.$name,])
+
+sf_day42 <- test_diff(fit, group_dayOA_42 - group_dayOA_0) %>%
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = sf_annotation[.$name,])
+
+sf_day35 <- test_diff(fit, group_dayOA_35 - group_dayOA_0) %>%
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = sf_annotation[.$name,])
+
+sf_day10 <- test_diff(fit, group_dayOA_10 - group_dayOA_0) %>%
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = sf_annotation[.$name,])
 
 ```
 
-
-These results can be combined into a list and then saved as an Excel spreadsheet: 
-
-```{r}
-
-sf_DE_res <- list("day63" = sf_day63, "day56" = sf_day56, "day49" = sf_day49, "day42" = sf_day42, "day35" = sf_day35, "day10" = sf_day10)
-openxlsx::write.xlsx(sf_DE_res, file = "./output/sf_proDA_DE_results.xlsx")
-
-```
 
 
 Sample results of the differential expression analysis with the time points as factors are shown below. The results shown are day 63 versus day 0. The rows are ordered by descending p-value. 
@@ -190,7 +269,7 @@ DT::datatable(sf_day63[,c(1:4,6,10)],
 ```
 
 
-Note that when median normalisation is used instead there are two differentially expressed proteins at day 10 versus day 0: F6PH38 & A0A5F5PPB8. However, when this noramalisation technique is used the plasma proteins no longer pass FDR.
+Note that when median normalisation is used instead there are two differentially expressed proteins at day 10 versus day 0: [F6PH38](https://www.uniprot.org/uniprotkb/F6PH38/entry) (Fibrinogen beta chain) & [A0A5F5PPB8](https://www.uniprot.org/uniprotkb/A0A5F5PPB8/entry) (Fibrinogen gamma chain). However, when this noramalisation technique is used the plasma proteins no longer pass FDR.
 
 
 ### Version 2, time as a continuous variable 
@@ -220,7 +299,9 @@ fit <- proDA(as.matrix(sf_data_norm_just_OA), design = ~ day + horse,
 
 ```{r}
 
-sf_time <- test_diff(fit, day) %>% arrange(-desc(pval))
+sf_time <- test_diff(fit, day) %>% 
+  arrange(-desc(pval)) %>% 
+  mutate(protein_name = sf_annotation[.$name,])
 
 ```
 
@@ -239,6 +320,60 @@ DT::datatable(sf_time[,c(1:4,6,10)],
 
 ```
 
+
+### Version 3, cubic spline model
+
+```{r}
+
+sf_pheno_OA <- sf_pheno[!sf_pheno$Group == "Control",]
+sf_data_norm_just_OA <- sf_data_norm[,sf_pheno_OA$Sample.Number]
+
+```
+
+```{r}
+
+sf_design <- sf_pheno_OA[,c(6,2,1)]
+colnames(sf_design) <- c("name", "day", "horse")
+
+```
+
+```{r}
+
+matTimeSplineBasis <- ns(
+  sf_design$day, df=5)
+colnames(matTimeSplineBasis) <- 
+  paste0("spline", seq(1, dim(matTimeSplineBasis)[2]))
+
+
+sf_design <- cbind(sf_design, matTimeSplineBasis)
+
+```
+
+```{r}
+
+fit <- proDA(as.matrix(sf_data_norm_just_OA), design = ~ spline1 + spline2 + spline3 + horse, 
+             col_data = sf_design) 
+
+```
+
+
+```{r}
+
+sf_spline <- test_diff(fit, reduced_model = ~ horse) %>% 
+  arrange(-desc(pval)) %>%
+  mutate(protein_name = sf_annotation[.$name,])
+
+```
+
+
+These results were combined into a list and then saved as an Excel spreadsheet: 
+
+```{r}
+
+sf_DE_res <- list("day63" = sf_day63, "day56" = sf_day56, "day49" = sf_day49, "day42" = sf_day42, "day35" = sf_day35, "day10" = sf_day10, "continous_time" = sf_time, "natural_splines_time" = sf_spline)
+openxlsx::write.xlsx(sf_DE_res, file = "./output/sf_proDA_DE_results.xlsx")
+
+```
 
 
 # Without missing values
@@ -320,8 +455,9 @@ summary(decideTests(fit2))
 
 ```{r}
 
-plasma_tt_day56 <- topTable(fit2, coef=2, n=Inf)
-plasma_tt_day35 <- topTable(fit2, coef=5, n=Inf)
+plasma_tt_day56 <- topTable(fit2, coef=2, n=Inf) %>% mutate(protein_name = plasma_annotation[rownames(.),]) %>% rownames_to_column('Protein Accession')
+
+plasma_tt_day35 <- topTable(fit2, coef=5, n=Inf) %>% mutate(protein_name = plasma_annotation[rownames(.),]) %>% rownames_to_column('Protein Accession')
 
 ```
 
@@ -367,9 +503,22 @@ summary(decideTests(fit2))
 
 ```{r}
 
-plasma_tt_continuous_time <- topTable(fit2, coef=2, n=Inf)
+plasma_tt_continuous_time <- topTable(fit2, coef=2, n=Inf) %>% mutate(protein_name = plasma_annotation[rownames(.),]) %>% rownames_to_column('Protein Accession')
 
 ```
+
+
+[P0DN28](https://www.uniprot.org/uniprotkb/P0DN28/entry) & [F6SP74](https://www.uniprot.org/uniprotkb/F6SP74/entry) differentially expressed when time is continuous. 
+
+
+```{r}
+
+plasma_DE_res_limma <- list("day56" = plasma_tt_day56, "day35" = plasma_tt_day35, "whole_time_course" = plasma_tt_continuous_time)
+
+openxlsx::write.xlsx(plasma_DE_res_limma, file = "./output/plasma_limma_DE_results_log2.xlsx")
+
+```
+
 
 ## Synovial fluid DE analysis 
 
@@ -409,7 +558,7 @@ summary(decideTests(fit2))
 
 ```{r}
 
-sf_tt_day10 <- topTable(fit2, coef=6, n=Inf)
+sf_tt_day10 <- topTable(fit2, coef=6, n=Inf) %>% mutate(protein_name = sf_annotation[rownames(.),]) %>% rownames_to_column('Protein Accession')
 
 ```
 
@@ -450,5 +599,13 @@ summary(decideTests(fit2))
 ```
 
 Time as a continuous variable results in no significant proteins (suggests the response must be non-linear).
+
+
+
+```{r}
+
+write.csv(sf_tt_day10, file = "./output/sf_limma_DE_results_log2.csv")
+
+```
 
 

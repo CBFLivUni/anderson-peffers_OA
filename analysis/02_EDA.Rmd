@@ -14,6 +14,7 @@ editor_options:
 library(tidyverse)
 library(cowplot) # plot theme
 library(mixOmics) # multi-level PCA
+library(PCAtools) # correlation plot
 library(viridis) # colour schemes
 library(factoextra) # eigenvector plot
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
@@ -43,53 +44,98 @@ plasma_pheno <- readRDS("./data/plasma_pheno.rds")
 
 ```{r}
 
-plasma_pca_res <- prcomp(t(na.omit(plasma_data_norm)), scale. = TRUE, center = TRUE)
-plasma_df_out <- as.data.frame(plasma_pca_res$x)
-
+row.names(plasma_pheno) <- plasma_pheno$Sample.Number
+plasma_pca_res <- pca(na.omit(plasma_data_norm), metadata = plasma_pheno, scale = TRUE, center = TRUE)
+plasma_df_out <- as.data.frame(plasma_pca_res$rotated)
 
 ```
 
+
+```{r, message=FALSE, warning=FALSE}
+
+use_cex <- 16/16
+
+plasma_corplot <- eigencorplot(plasma_pca_res,
+    metavars = c("Day", "Horse", "Date"),
+    col = c( "blue2", "blue1", "black", "red1", "red2"),
+    colCorval = "white",
+    scale = TRUE,
+    main = "",
+    plotRsquared = FALSE,
+    cexTitleX= use_cex,
+    cexTitleY= use_cex,
+    cexLabX = use_cex,
+    cexLabY = use_cex,
+    cexMain = use_cex,
+    cexLabColKey = use_cex,
+    cexCorval = use_cex) 
+
+
+```
 
 ```{r}
 
 plasma_pca_plot <- ggplot(plasma_df_out, aes(x=PC1, y=PC2, colour = plasma_pheno$Day, shape=factor(plasma_pheno$Horse))) + 
     geom_point(size = 4) + 
-    xlab(paste0('PC1: ', round(as.numeric(summary(plasma_pca_res)$importance[2,1]*100)), '% expl.var')) + 
-    ylab(paste0('PC2: ', round(as.numeric(summary(plasma_pca_res)$importance[2,2]*100)), '% expl.var')) + 
+    xlab(paste0('PC1: ', round(as.numeric(plasma_pca_res$variance[1])), '% expl.var')) + 
+    ylab(paste0('PC2: ', round(as.numeric(plasma_pca_res$variance[2])), '% expl.var')) + 
     scale_color_viridis(option = "plasma") +
     theme_cowplot() + 
+    scale_shape_manual(values=c(19,15,17,18)) +
     labs(colour = "Day", shape = "Horse")
 
 ```
 
 ```{r}
 
-plasma_pca_plot2 <- ggplot(plasma_df_out, aes(x=PC2, y=PC3, colour = plasma_pheno$Day, shape=factor(plasma_pheno$Horse))) + 
+plasma_pca_plot2 <- ggplot(plasma_df_out, aes(x=PC1, y=PC3, colour = plasma_pheno$Day, shape=factor(plasma_pheno$Horse))) + 
     geom_point(size = 4) + 
-    xlab(paste0('PC2: ', round(as.numeric(summary(plasma_pca_res)$importance[2,2]*100)), '% expl.var')) + 
-    ylab(paste0('PC3: ', round(as.numeric(summary(plasma_pca_res)$importance[2,3]*100)), '% expl.var')) + 
+    xlab(paste0('PC1: ', round(as.numeric(plasma_pca_res$variance[1])), '% expl.var')) + 
+    ylab(paste0('PC3: ', round(as.numeric(plasma_pca_res$variance[3])), '% expl.var')) + 
     scale_color_viridis(option = "plasma") +
     theme_cowplot() + 
+    scale_shape_manual(values=c(19,15,17,18)) +
     labs(colour = "Day", shape = "Horse")
 
 ```
 
 ```{r}
 
-plasma_variance_plot <-fviz_eig(plasma_pca_res) + theme_cowplot() + labs(title="",
-        x ="Principal components", y = "% Variance Explained")
+plasma_pca_plot3 <- ggplot(plasma_df_out, aes(x=PC4, y=PC5, colour = plasma_pheno$Horse)) + 
+    geom_point(size = 4) + 
+    xlab(paste0('PC4: ', round(as.numeric(plasma_pca_res$variance[5])), '% expl.var')) + 
+    ylab(paste0('PC5: ', round(as.numeric(plasma_pca_res$variance[6])), '% expl.var')) + 
+    scale_colour_brewer(palette = "Set1") +
+    theme_cowplot() + 
+    labs(colour = "Horse")
 
 ```
 
+```{r}
+
+plasma_variance_plot <- screeplot(plasma_pca_res,
+                                  components=1:8,
+                                  axisLabSize = 18,
+                                  title = "") + theme_cowplot() 
+
+```
 
 
 ```{r, echo=FALSE, fig.height = 8, fig.width = 10, fig.align="center"}
 
-ggarrange(ggarrange(plasma_pca_plot, plasma_pca_plot2, ncol = 2, labels = c("A", "B")), 
-          plasma_variance_plot,                                                 
+ggarrange(plasma_pca_plot, plasma_pca_plot2, plasma_pca_plot3, plasma_variance_plot,
           nrow = 2, 
-          labels = c(" ", "C")                                       
-          ) 
+          ncol = 2,
+          labels = c("A", "B", "C", "D"))
+
+```
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 8, fig.align="center"}
+
+ggarrange(plasma_corplot,
+          nrow = 1, 
+          ncol = 1,
+          labels = c("E"))
 
 ```
 
@@ -111,6 +157,7 @@ sf_pca_plot <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Day, shape=
     ylab(paste0('PC2: ', round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), '% expl.var')) + 
     scale_color_viridis(option = "plasma") +
     theme_cowplot() + 
+    scale_shape_manual(values=c(16,15,17,18)) +
     labs(colour = "Day", shape = "Horse")
 
 
@@ -124,6 +171,7 @@ sf_pca_plot2 <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Group, sha
     ylab(paste0('PC2: ', round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), '% expl.var')) + 
     scale_colour_brewer(palette = "Set1") +
     theme_cowplot() + 
+    scale_shape_manual(values=c(16,15,17,18)) +
     labs(colour = "Day", shape = "Horse")
 
 
@@ -156,7 +204,7 @@ ggarrange(ggarrange(sf_pca_plot, sf_pca_plot2, ncol = 2, labels = c("A", "B")),
 
 ```{r, fig.show='hide', message=FALSE}
 
-plasma_pca_multi_level <- pca(t(na.omit(plasma_data_norm)), scale = TRUE, center = TRUE, ncomp = 10,
+plasma_pca_multi_level <- mixOmics::pca(t(na.omit(plasma_data_norm)), scale = TRUE, center = TRUE, ncomp = 10,
                             multilevel = plasma_pheno$Horse) %>%
                             plotIndiv(., group = plasma_pheno$Day, 
                             ind.names = plasma_pheno$Horse,
@@ -191,7 +239,7 @@ First run the analysis with the control samples still present:
 
 ```{r, fig.show='hide', message=FALSE}
 
-sf_pca_multi_level <- pca(t(na.omit(sf_data_norm)), scale = TRUE, center = TRUE, ncomp = 10,
+sf_pca_multi_level <- mixOmics::pca(t(na.omit(sf_data_norm)), scale = TRUE, center = TRUE, ncomp = 10,
                             multilevel = sf_pheno$Horse) %>%
                             plotIndiv(., group = sf_pheno$Day, 
                             ind.names = sf_pheno$Horse,
@@ -245,7 +293,7 @@ sf_data_norm_just_OA <- sf_data_norm[,sf_pheno_OA$Sample.Number]
 
 ```{r, fig.show='hide', message=FALSE}
 
-sf_pca_multi_level_OA <- pca(t(na.omit(sf_data_norm_just_OA)), scale = TRUE, center = TRUE, ncomp = 10,
+sf_pca_multi_level_OA <- mixOmics::pca(t(na.omit(sf_data_norm_just_OA)), scale = TRUE, center = TRUE, ncomp = 10,
                             multilevel = sf_pheno_OA$Horse) %>%
                             plotIndiv(., group = sf_pheno_OA$Day, 
                             ind.names = sf_pheno_OA$Horse,
