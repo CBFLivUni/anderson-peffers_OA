@@ -402,7 +402,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-10-06
+<strong>Last updated:</strong> 2022-10-17
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -536,15 +536,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree8a27ebc60bfb5c9768cdc4fbd575ed96cd928752targetblank8a27ebca">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree3a17e5aa750d111baf219ab1fa0de3d347287e8ftargetblank3a17e5aa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/8a27ebc60bfb5c9768cdc4fbd575ed96cd928752" target="_blank">8a27ebc</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/3a17e5aa750d111baf219ab1fa0de3d347287e8f" target="_blank">3a17e5a</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree8a27ebc60bfb5c9768cdc4fbd575ed96cd928752targetblank8a27ebca"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree3a17e5aa750d111baf219ab1fa0de3d347287e8ftargetblank3a17e5aa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -554,7 +554,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/8a27ebc60bfb5c9768cdc4fbd575ed96cd928752" target="_blank">8a27ebc</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/3a17e5aa750d111baf219ab1fa0de3d347287e8f" target="_blank">3a17e5a</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -577,6 +577,11 @@ Unstaged changes:
     Modified:   analysis/01_QC_normalisation.Rmd
     Modified:   analysis/02_EDA.Rmd
     Modified:   analysis/03_DE_and_clustering.Rmd
+    Modified:   data/plasma_data_norm.rds
+    Modified:   data/plasma_pheno.rds
+    Modified:   data/sf_data_norm.rds
+    Modified:   data/sf_pheno.rds
+    Modified:   output/plasma_limma_DE_results_log2.xlsx
     Modified:   output/plasma_proDA_DE_results.xlsx
     Modified:   output/sf_proDA_DE_results.xlsx
 
@@ -624,6 +629,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/3a17e5aa750d111baf219ab1fa0de3d347287e8f/analysis/01_QC_normalisation.Rmd" target="_blank">3a17e5a</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-11
+</td>
+<td>
+Cubic splines for DE, additional EDA, annotation
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/0bae463d773da2f04396ca18fb7e1d079c778a93/analysis/01_QC_normalisation.Rmd" target="_blank">0bae463</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-06
+</td>
+<td>
+Additional analysis - limma
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/0bae463d773da2f04396ca18fb7e1d079c778a93/docs/01_QC_normalisation.html" target="_blank">0bae463</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-06
+</td>
+<td>
+Additional analysis - limma
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -724,6 +780,9 @@ library(pheatmap) # visualise whether samples cluster by missingness
 library(cowplot) # pretty theme 
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 library(proDA) # median normalisation function
+library(HybridMTest) # per-row Pearson corrrelation 
+library(SummarizedExperiment)
+library(DEP)
 source(&quot;./code/functions.R&quot;) # load helper functions </code></pre>
 </div>
 <div id="proteomics" class="section level1">
@@ -731,14 +790,20 @@ source(&quot;./code/functions.R&quot;) # load helper functions </code></pre>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
 <p>Read in data and accompanying phenotype tables:</p>
-<pre class="r"><code>plasma_data &lt;- read.csv(&quot;./data/plasma_proteins.csv&quot;, row.names = 1) 
+<pre class="r"><code># Data
+plasma_data &lt;- read.csv(&quot;./data/plasma_proteins.csv&quot;, row.names = 1) 
 colnames(plasma_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_data))
   
 sf_data &lt;- read.csv(&quot;./data/sf_proteins.csv&quot;, row.names = 1)
 colnames(sf_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_data))
 
+# Pheno
 plasma_pheno &lt;- read.csv(&quot;./data/plasma_pheno.csv&quot;)
-sf_pheno &lt;- read.csv(&quot;./data/sf_pheno.csv&quot;)</code></pre>
+sf_pheno &lt;- read.csv(&quot;./data/sf_pheno.csv&quot;)
+
+# Annotation
+plasma_annotation &lt;- read.csv(&quot;./data/plasma_protein_annotation.csv&quot;, row.names=1)
+sf_annotation &lt;- read.csv(&quot;./data/sf_protein_annotation.csv&quot;, row.names=1)</code></pre>
 <p>Process phenotype table and make sure it is in the same order as the
 raw data:</p>
 <pre class="r"><code>plasma_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, plasma_pheno$Sample.Number)
@@ -798,7 +863,8 @@ boxplot(vsn_normalised)</code></pre>
 plasma_data_norm &lt;- log2(plasma_data) 
 
 # Median normalisation would be:
-# plasma_data_norm &lt;- log2(plasma_data) %&gt;% as.matrix(.) %&gt;% median_normalization(.)</code></pre>
+#sf_data_norm &lt;- log2(sf_data) %&gt;% as.matrix(.) %&gt;% median_normalization(.)
+#plasma_data_norm &lt;- log2(plasma_data) %&gt;% as.matrix(.) %&gt;% median_normalization(.)</code></pre>
 <p>Note: median normalisation was also tested for EDA and DE
 analysis.</p>
 </div>
@@ -860,18 +926,10 @@ effect.</p>
 <p>Its also notable that the intensity distribution is generally shifted
 upwards for samples that have more missing values. This agrees with the
 idea that small values are more likely to be missing.</p>
-<p>Save the R data objects for use in exploratory analysis and
-differential expression analysis.</p>
-<pre class="r"><code># Plasma pheno
-saveRDS(plasma_data_norm, &quot;./data/plasma_data_norm.rds&quot;)
-saveRDS(plasma_pheno, &quot;./data/plasma_pheno.rds&quot;)
-
-# SF pheno
-saveRDS(sf_data_norm, &quot;./data/sf_data_norm.rds&quot;)
-saveRDS(sf_pheno, &quot;./data/sf_pheno.rds&quot;)</code></pre>
 </div>
-<div id="missing-values" class="section level2">
-<h2>Missing values</h2>
+<div id="missing-values---heat-maps-and-correlation"
+class="section level2">
+<h2>Missing values - heat maps and correlation</h2>
 <div id="synovial-fluid-samples" class="section level3">
 <h3>Synovial fluid samples</h3>
 <p>An additional way to analyse the missing values is to replace them
@@ -901,7 +959,7 @@ they all resulted in a similar pattern.</p>
                        cluster_cols = TRUE,
                        clustering_method = &quot;ward.D2&quot;
                        )</code></pre>
-<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Use the helper function &#39;save_pheatmap&#39; to write the pheatmap output ot a figure
 save_pheatmap_png(sf_heatmap, &quot;./output/sf_missing_values_heatmap.png&quot;)</code></pre>
 <pre><code>png 
@@ -916,7 +974,7 @@ clustering:</p>
 
 as.dendrogram(my_hclust_sample) %&gt;%
   plot()</code></pre>
-<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>It is better to avoid imputing missing values in proteomics data,
 especially when there are a low number of replicates per group as you
 might end up imputing based off one value and this will result in
@@ -941,7 +999,7 @@ plasma_heatmap_data[is.na(plasma_heatmap_data)] &lt;- 0</code></pre>
 rownames(my_sample_col) &lt;- plasma_pheno$Sample.Number
 
 plasma_heatmap &lt;- pheatmap(plasma_heatmap_data, annotation_col = my_sample_col, show_rownames=F)</code></pre>
-<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>save_pheatmap_png(plasma_heatmap, &quot;./output/plasma_missing_values_heatmap.png&quot;)</code></pre>
 <pre><code>png 
   2 </code></pre>
@@ -952,8 +1010,119 @@ the time point.</p>
 
 as.dendrogram(my_hclust_sample) %&gt;%
   plot()</code></pre>
-<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
+</div>
+<div id="missing-values---additional-analysis-and-quality-control"
+class="section level2">
+<h2>Missing values - additional analysis and quality control</h2>
+<div id="synovial-fluid-samples-1" class="section level3">
+<h3>Synovial fluid samples</h3>
+<p>The synovial fluid data was subset to only include the OA time
+course. This is so the DEP package filters the samples in a treatment
+dependent manner.</p>
+<pre class="r"><code>sf_pheno_OA &lt;- sf_pheno[!sf_pheno$Group == &quot;Control&quot;,]
+sf_data_norm_OA &lt;- sf_data_norm[,sf_pheno_OA$Sample.Number]</code></pre>
+<div id="dep-package-tools-for-analysing-missing-values"
+class="section level4">
+<h4>DEP package tools for analysing missing values</h4>
+<pre class="r"><code>sf_design &lt;- sf_pheno_OA[,c(6,6,2,1)]
+colnames(sf_design) &lt;- c(&quot;label&quot;, &quot;ID&quot;, &quot;condition&quot;, &quot;replicate&quot;)
+sf_design$replicate &lt;- as.numeric(sf_design$replicate)
+sf_row_dat &lt;- cbind(data.frame(ID = c(1:1201)), sf_data_norm_OA) %&gt;% rownames_to_column(., &quot;name&quot;)
+
+
+sf_se &lt;- SummarizedExperiment(assays=sf_data_norm_OA,
+                                  rowData=sf_row_dat, colData=sf_design)</code></pre>
+<pre class="r"><code>plot_frequency(sf_se)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sf_se_filter &lt;- filter_proteins(sf_se, &quot;condition&quot;, thr = 0)</code></pre>
+<pre class="r"><code>plot_missval(sf_se)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_missval(sf_se_filter)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-25-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Samples 4, 15, 48, 39 all appear to be very poor quality. Might be
+best to remove them from the analysis altogether. However, removing 4,
+15 and 39 would mean only two replicates for the 49 day and 63 day time
+points.</p>
+<pre class="r"><code>plot_detect(sf_se)</code></pre>
+<pre><code>Warning: Removed 16 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_detect(sf_se_filter)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-26-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Subset normalised data by filtered missing values:</p>
+<pre class="r"><code>sf_data_norm &lt;- sf_data_norm[sf_se_filter@NAMES,]</code></pre>
+</div>
+</div>
+<div id="plasma-samples-1" class="section level3">
+<h3>Plasma samples</h3>
+<div
+id="correlation-between-missing-values-and-time---pearsons-correlation"
+class="section level4">
+<h4>Correlation between missing values and time - Pearson’s
+correlation</h4>
+<pre class="r"><code>plasma_data_norm_missing &lt;- plasma_data_norm %&gt;%
+  mutate_if(is.numeric, ~1 * (. &gt; 0)) %&gt;% # Replace numeric values with 1&#39;s
+  replace(is.na(.), 0) # Replace NA&#39;s with 0&#39;s
+
+
+
+plasma_data_norm_missing &lt;- plasma_data_norm_missing %&gt;% 
+  mutate(&quot;Day_0&quot; = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == &quot;0&quot;]),
+         &quot;Day_10&quot; = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == &quot;10&quot;]),
+         &quot;Day_35&quot; = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == &quot;35&quot;]),
+         &quot;Day_42&quot; = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == &quot;42&quot;]),
+         &quot;Day_49&quot; = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == &quot;49&quot;]),
+         &quot;Day_56&quot; = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == &quot;56&quot;]),
+         &quot;Day_63&quot; = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == &quot;63&quot;])) </code></pre>
+<pre class="r"><code>plasma_data_norm_missing &lt;- as.matrix(plasma_data_norm_missing[,27:33])</code></pre>
+<pre class="r"><code>time_points &lt;- c(0, 10, 35, 42, 49, 56, 63)
+pearson &lt;- row.pearson(plasma_data_norm_missing, time_points)</code></pre>
+<pre><code>Warning in ebp.null[!na] &lt;- gren.ebp: number of items to replace is not a
+multiple of replacement length</code></pre>
+<pre><code>Warning in pval.pdf[!na] &lt;- gren.pdf: number of items to replace is not a
+multiple of replacement length</code></pre>
+</div>
+<div id="dep-package-tools-for-analysing-missing-values-1"
+class="section level4">
+<h4>DEP package tools for analysing missing values</h4>
+<pre class="r"><code>plasma_design &lt;- plasma_pheno[,c(5,5,2,1)]
+colnames(plasma_design) &lt;- c(&quot;label&quot;, &quot;ID&quot;, &quot;condition&quot;, &quot;replicate&quot;)
+plasma_design$replicate &lt;- as.numeric(plasma_design$replicate)
+plasma_row_dat &lt;- cbind(data.frame(ID = c(1:259)), plasma_data_norm) %&gt;% rownames_to_column(., &quot;name&quot;)
+
+
+plasma_se &lt;- SummarizedExperiment(assays=plasma_data_norm,
+                     rowData=plasma_row_dat, colData=plasma_design)</code></pre>
+<pre class="r"><code>plot_frequency(plasma_se)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plasma_se_filter &lt;- filter_proteins(plasma_se, &quot;condition&quot;, thr = 0)</code></pre>
+<pre class="r"><code>plot_missval(plasma_se)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_missval(plasma_se_filter)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-34-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_detect(plasma_se)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_detect(plasma_se_filter)</code></pre>
+<p><img src="figure/01_QC_normalisation.Rmd/unnamed-chunk-35-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Subset normalised data by filtered missing values:</p>
+<pre class="r"><code>plasma_data_norm &lt;- plasma_data_norm[plasma_se_filter@NAMES,]</code></pre>
+</div>
+</div>
+</div>
+<div id="write-data" class="section level2">
+<h2>Write data</h2>
+<p>Save the R data objects for use in exploratory analysis and
+differential expression analysis.</p>
+<pre class="r"><code># Plasma 
+saveRDS(plasma_data_norm, &quot;./data/plasma_data_norm.rds&quot;)
+saveRDS(plasma_pheno, &quot;./data/plasma_pheno.rds&quot;)
+saveRDS(plasma_annotation, &quot;./data/plasma_proteomics_annotation.rds&quot;)
+
+# SF 
+saveRDS(sf_data_norm, &quot;./data/sf_data_norm.rds&quot;)
+saveRDS(sf_pheno, &quot;./data/sf_pheno.rds&quot;)
+saveRDS(sf_annotation, &quot;./data/sf_proteomics_annotation.rds&quot;)</code></pre>
 </div>
 </div>
 <div id="sequencing-data" class="section level1">
@@ -981,78 +1150,77 @@ locale:
 [5] LC_TIME=English_United Kingdom.utf8    
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
 
 other attached packages:
- [1] proDA_1.10.0        ggpubr_0.4.0        cowplot_1.1.1      
- [4] pheatmap_1.0.12     NormalyzerDE_1.13.2 forcats_0.5.1      
- [7] stringr_1.4.0       dplyr_1.0.9         purrr_0.3.4        
-[10] readr_2.1.2         tidyr_1.2.0         tibble_3.1.7       
-[13] ggplot2_3.3.6       tidyverse_1.3.1     workflowr_1.7.0    
+ [1] DEP_1.18.0                  SummarizedExperiment_1.26.1
+ [3] GenomicRanges_1.48.0        GenomeInfoDb_1.32.2        
+ [5] IRanges_2.30.0              S4Vectors_0.34.0           
+ [7] MatrixGenerics_1.8.0        matrixStats_0.62.0         
+ [9] HybridMTest_1.40.0          survival_3.3-1             
+[11] MASS_7.3-56                 fdrtool_1.2.17             
+[13] Biobase_2.56.0              BiocGenerics_0.42.0        
+[15] proDA_1.10.0                ggpubr_0.4.0               
+[17] cowplot_1.1.1               pheatmap_1.0.12            
+[19] NormalyzerDE_1.13.2         forcats_0.5.1              
+[21] stringr_1.4.0               dplyr_1.0.9                
+[23] purrr_0.3.4                 readr_2.1.2                
+[25] tidyr_1.2.0                 tibble_3.1.7               
+[27] ggplot2_3.3.6               tidyverse_1.3.1            
+[29] workflowr_1.7.0            
 
 loaded via a namespace (and not attached):
-  [1] colorspace_2.0-3            ggsignif_0.6.3             
-  [3] ellipsis_0.3.2              class_7.3-20               
-  [5] rprojroot_2.0.3             htmlTable_2.4.0            
-  [7] XVector_0.36.0              GenomicRanges_1.48.0       
-  [9] base64enc_0.1-3             fs_1.5.2                   
- [11] rstudioapi_0.13             proxy_0.4-27               
- [13] farver_2.1.0                fansi_1.0.3                
- [15] lubridate_1.8.0             xml2_1.3.3                 
- [17] codetools_0.2-18            splines_4.2.0              
- [19] knitr_1.39                  Formula_1.2-4              
- [21] jsonlite_1.8.0              broom_0.8.0                
- [23] cluster_2.1.3               dbplyr_2.2.0               
- [25] png_0.1-7                   compiler_4.2.0             
- [27] httr_1.4.3                  backports_1.4.1            
- [29] assertthat_0.2.1            Matrix_1.4-1               
- [31] fastmap_1.1.0               limma_3.52.1               
- [33] cli_3.3.0                   later_1.3.0                
- [35] htmltools_0.5.2             tools_4.2.0                
- [37] GenomeInfoDbData_1.2.8      gtable_0.3.0               
- [39] glue_1.6.2                  Rcpp_1.0.8.3               
- [41] Biobase_2.56.0              carData_3.0-5              
- [43] cellranger_1.1.0            jquerylib_0.1.4            
- [45] raster_3.5-15               vctrs_0.4.1                
- [47] preprocessCore_1.58.0       xfun_0.31                  
- [49] ps_1.7.0                    rvest_1.0.2                
- [51] lifecycle_1.0.1             RcmdrMisc_2.7-2            
- [53] rstatix_0.7.0               terra_1.5-34               
- [55] zlibbioc_1.42.0             getPass_0.2-2              
- [57] MASS_7.3-56                 zoo_1.8-10                 
- [59] scales_1.2.0                MatrixGenerics_1.8.0       
- [61] hms_1.1.1                   promises_1.2.0.1           
- [63] SummarizedExperiment_1.26.1 sandwich_3.0-2             
- [65] RColorBrewer_1.1-3          yaml_2.3.5                 
- [67] gridExtra_2.3               sass_0.4.1                 
- [69] rpart_4.1.16                latticeExtra_0.6-29        
- [71] stringi_1.7.6               highr_0.9                  
- [73] S4Vectors_0.34.0            nortest_1.0-4              
- [75] e1071_1.7-11                checkmate_2.1.0            
- [77] BiocGenerics_0.42.0         GenomeInfoDb_1.32.2        
- [79] bitops_1.0-7                matrixStats_0.62.0         
- [81] rlang_1.0.2                 pkgconfig_2.0.3            
- [83] evaluate_0.15               lattice_0.20-45            
- [85] labeling_0.4.2              htmlwidgets_1.5.4          
- [87] processx_3.6.0              tidyselect_1.1.2           
- [89] magrittr_2.0.3              R6_2.5.1                   
- [91] IRanges_2.30.0              generics_0.1.2             
- [93] Hmisc_4.7-0                 DelayedArray_0.22.0        
- [95] DBI_1.1.2                   pillar_1.7.0               
- [97] haven_2.5.0                 whisker_0.4                
- [99] foreign_0.8-82              withr_2.5.0                
-[101] RCurl_1.98-1.7              survival_3.3-1             
-[103] abind_1.4-5                 sp_1.5-0                   
-[105] nnet_7.3-17                 modelr_0.1.8               
-[107] crayon_1.5.1                car_3.1-0                  
-[109] utf8_1.2.2                  tzdb_0.3.0                 
-[111] rmarkdown_2.14              jpeg_0.1-9                 
-[113] grid_4.2.0                  readxl_1.4.0               
-[115] data.table_1.14.2           callr_3.7.0                
-[117] git2r_0.30.1                reprex_2.0.1               
-[119] digest_0.6.29               httpuv_1.6.5               
-[121] stats4_4.2.0                munsell_0.5.0              
-[123] bslib_0.3.1                </code></pre>
+  [1] shinydashboard_0.7.2   utf8_1.2.2             gmm_1.7               
+  [4] tidyselect_1.1.2       htmlwidgets_1.5.4      grid_4.2.0            
+  [7] BiocParallel_1.30.3    norm_1.0-10.0          munsell_0.5.0         
+ [10] codetools_0.2-18       preprocessCore_1.58.0  DT_0.23               
+ [13] withr_2.5.0            colorspace_2.0-3       highr_0.9             
+ [16] knitr_1.39             rstudioapi_0.13        ggsignif_0.6.3        
+ [19] mzID_1.34.0            labeling_0.4.2         git2r_0.30.1          
+ [22] GenomeInfoDbData_1.2.8 farver_2.1.0           rprojroot_2.0.3       
+ [25] vctrs_0.4.1            generics_0.1.2         xfun_0.31             
+ [28] R6_2.5.1               doParallel_1.0.17      clue_0.3-61           
+ [31] MsCoreUtils_1.8.0      bitops_1.0-7           DelayedArray_0.22.0   
+ [34] assertthat_0.2.1       promises_1.2.0.1       scales_1.2.0          
+ [37] nnet_7.3-17            gtable_0.3.0           Cairo_1.5-15          
+ [40] affy_1.74.0            processx_3.6.0         sandwich_3.0-2        
+ [43] rlang_1.0.2            mzR_2.30.0             GlobalOptions_0.1.2   
+ [46] splines_4.2.0          rstatix_0.7.0          impute_1.70.0         
+ [49] broom_0.8.0            checkmate_2.1.0        BiocManager_1.30.18   
+ [52] yaml_2.3.5             abind_1.4-5            modelr_0.1.8          
+ [55] backports_1.4.1        httpuv_1.6.5           Hmisc_4.7-0           
+ [58] tools_4.2.0            affyio_1.66.0          ellipsis_0.3.2        
+ [61] raster_3.5-15          jquerylib_0.1.4        RColorBrewer_1.1-3    
+ [64] proxy_0.4-27           MSnbase_2.22.0         Rcpp_1.0.8.3          
+ [67] plyr_1.8.7             base64enc_0.1-3        zlibbioc_1.42.0       
+ [70] RCurl_1.98-1.7         ps_1.7.0               rpart_4.1.16          
+ [73] GetoptLong_1.0.5       zoo_1.8-10             haven_2.5.0           
+ [76] cluster_2.1.3          fs_1.5.2               magrittr_2.0.3        
+ [79] data.table_1.14.2      circlize_0.4.15        reprex_2.0.1          
+ [82] mvtnorm_1.1-3          pcaMethods_1.88.0      whisker_0.4           
+ [85] ProtGenerics_1.28.0    xtable_1.8-4           mime_0.12             
+ [88] hms_1.1.1              RcmdrMisc_2.7-2        evaluate_0.15         
+ [91] XML_3.99-0.10          jpeg_0.1-9             readxl_1.4.0          
+ [94] gridExtra_2.3          shape_1.4.6            compiler_4.2.0        
+ [97] ncdf4_1.19             crayon_1.5.1           htmltools_0.5.2       
+[100] later_1.3.0            tzdb_0.3.0             Formula_1.2-4         
+[103] lubridate_1.8.0        DBI_1.1.2              dbplyr_2.2.0          
+[106] ComplexHeatmap_2.12.0  tmvtnorm_1.5           Matrix_1.4-1          
+[109] car_3.1-0              cli_3.3.0              imputeLCMD_2.1        
+[112] vsn_3.64.0             parallel_4.2.0         pkgconfig_2.0.3       
+[115] getPass_0.2-2          foreign_0.8-82         sp_1.5-0              
+[118] terra_1.5-34           MALDIquant_1.21        xml2_1.3.3            
+[121] foreach_1.5.2          bslib_0.3.1            XVector_0.36.0        
+[124] rvest_1.0.2            callr_3.7.0            digest_0.6.29         
+[127] rmarkdown_2.14         cellranger_1.1.0       htmlTable_2.4.0       
+[130] nortest_1.0-4          shiny_1.7.1            rjson_0.2.21          
+[133] lifecycle_1.0.1        jsonlite_1.8.0         carData_3.0-5         
+[136] limma_3.52.1           fansi_1.0.3            pillar_1.7.0          
+[139] lattice_0.20-45        fastmap_1.1.0          httr_1.4.3            
+[142] glue_1.6.2             png_0.1-7              iterators_1.0.14      
+[145] class_7.3-20           stringi_1.7.6          sass_0.4.1            
+[148] latticeExtra_0.6-29    e1071_1.7-11          </code></pre>
 </div>
 </div>
 

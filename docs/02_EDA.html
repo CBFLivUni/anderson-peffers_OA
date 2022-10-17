@@ -402,7 +402,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-10-11
+<strong>Last updated:</strong> 2022-10-17
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -536,15 +536,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree0bae463d773da2f04396ca18fb7e1d079c778a93targetblank0bae463a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree3a17e5aa750d111baf219ab1fa0de3d347287e8ftargetblank3a17e5aa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/0bae463d773da2f04396ca18fb7e1d079c778a93" target="_blank">0bae463</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/3a17e5aa750d111baf219ab1fa0de3d347287e8f" target="_blank">3a17e5a</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree0bae463d773da2f04396ca18fb7e1d079c778a93targetblank0bae463a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree3a17e5aa750d111baf219ab1fa0de3d347287e8ftargetblank3a17e5aa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -554,7 +554,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/0bae463d773da2f04396ca18fb7e1d079c778a93" target="_blank">0bae463</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/3a17e5aa750d111baf219ab1fa0de3d347287e8f" target="_blank">3a17e5a</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -573,20 +573,15 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
 
-Untracked files:
-    Untracked:  data/plasma_protein_annotation.csv
-    Untracked:  data/plasma_proteomics_annotation.rds
-    Untracked:  data/sf_protein_annotation.csv
-    Untracked:  data/sf_proteomics_annotation.rds
-    Untracked:  output/plasma_limma_DE_results_log2.xlsx
-    Untracked:  output/plasma_proDA_DE_results_log2.xlsx
-    Untracked:  output/sf_limma_DE_results_log2.csv
-    Untracked:  output/sf_proDA_DE_results_log2.xlsx
-
 Unstaged changes:
     Modified:   analysis/01_QC_normalisation.Rmd
     Modified:   analysis/02_EDA.Rmd
     Modified:   analysis/03_DE_and_clustering.Rmd
+    Modified:   data/plasma_data_norm.rds
+    Modified:   data/plasma_pheno.rds
+    Modified:   data/sf_data_norm.rds
+    Modified:   data/sf_pheno.rds
+    Modified:   output/plasma_limma_DE_results_log2.xlsx
     Modified:   output/plasma_proDA_DE_results.xlsx
     Modified:   output/sf_proDA_DE_results.xlsx
 
@@ -633,6 +628,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/3a17e5aa750d111baf219ab1fa0de3d347287e8f/analysis/02_EDA.Rmd" target="_blank">3a17e5a</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-11
+</td>
+<td>
+Cubic splines for DE, additional EDA, annotation
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/3a17e5aa750d111baf219ab1fa0de3d347287e8f/docs/02_EDA.html" target="_blank">3a17e5a</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-10-11
+</td>
+<td>
+Cubic splines for DE, additional EDA, annotation
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -846,33 +875,61 @@ plasma_corplot &lt;- eigencorplot(plasma_pca_res,
 <pre class="r"><code>plasma_variance_plot &lt;- screeplot(plasma_pca_res,
                                   components=1:8,
                                   axisLabSize = 18,
-                                  title = &quot;&quot;) + theme_cowplot() + scale_colour_brewer(palette = &quot;Set1&quot;) </code></pre>
+                                  title = &quot;&quot;) + theme_cowplot() </code></pre>
 <p><img src="figure/02_EDA.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p><img src="figure/02_EDA.Rmd/unnamed-chunk-10-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="synovial-fluid" class="section level3">
 <h3>Synovial fluid</h3>
-<pre class="r"><code>sf_pca_res &lt;- prcomp(t(na.omit(sf_data_norm)), scale. = TRUE, center = TRUE)
-sf_df_out &lt;- as.data.frame(sf_pca_res$x)</code></pre>
+<pre class="r"><code>row.names(sf_pheno) &lt;- sf_pheno$Sample.Number
+#sf_pheno$Group_day &lt;- as.factor(paste0(sf_pheno$Group, &quot;_&quot;, sf_pheno$Day))
+
+sf_pca_res &lt;- pca(na.omit(sf_data_norm), metadata = sf_pheno, scale = TRUE, center = TRUE)
+sf_df_out &lt;- as.data.frame(sf_pca_res$rotated)</code></pre>
+<pre class="r"><code>use_cex &lt;- 16/16
+
+sf_corplot &lt;- eigencorplot(sf_pca_res,
+    metavars = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Date&quot;, &quot;Group&quot;),
+    col = c( &quot;blue2&quot;, &quot;blue1&quot;, &quot;black&quot;, &quot;red1&quot;, &quot;red2&quot;),
+    colCorval = &quot;white&quot;,
+    scale = TRUE,
+    main = &quot;&quot;,
+    plotRsquared = FALSE,
+    cexTitleX= use_cex,
+    cexTitleY= use_cex,
+    cexLabX = use_cex,
+    cexLabY = use_cex,
+    cexMain = use_cex,
+    cexLabColKey = use_cex,
+    cexCorval = use_cex) </code></pre>
 <pre class="r"><code>sf_pca_plot &lt;- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Day, shape=factor(sf_pheno$Horse))) + 
-    geom_point(size = 3) + 
-    xlab(paste0(&#39;PC1: &#39;, round(as.numeric(summary(sf_pca_res)$importance[2,1]*100)), &#39;% expl.var&#39;)) + 
-    ylab(paste0(&#39;PC2: &#39;, round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), &#39;% expl.var&#39;)) + 
-    scale_color_viridis(option = &quot;plasma&quot;) +
-    theme_cowplot() + 
-    scale_shape_manual(values=c(16,15,17,18)) +
-    labs(colour = &quot;Day&quot;, shape = &quot;Horse&quot;)</code></pre>
-<pre class="r"><code>sf_pca_plot2 &lt;- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Group, shape=factor(sf_pheno$Horse))) + 
-    geom_point(size = 3) + 
-    xlab(paste0(&#39;PC1: &#39;, round(as.numeric(summary(sf_pca_res)$importance[2,1]*100)), &#39;% expl.var&#39;)) + 
-    ylab(paste0(&#39;PC2: &#39;, round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), &#39;% expl.var&#39;)) + 
-    scale_colour_brewer(palette = &quot;Set1&quot;) +
-    theme_cowplot() + 
-    scale_shape_manual(values=c(16,15,17,18)) +
-    labs(colour = &quot;Day&quot;, shape = &quot;Horse&quot;)</code></pre>
-<pre class="r"><code>sf_variance_plot &lt;-fviz_eig(sf_pca_res) + theme_cowplot() + labs(title=&quot;&quot;,
-        x =&quot;Principal components&quot;, y = &quot;% Variance Explained&quot;)</code></pre>
-<p><img src="figure/02_EDA.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+  geom_point(size = 4) + 
+  xlab(paste0(&#39;PC1: &#39;, round(as.numeric(sf_pca_res$variance[1])), &#39;% expl.var&#39;)) + 
+  ylab(paste0(&#39;PC2: &#39;, round(as.numeric(sf_pca_res$variance[2])), &#39;% expl.var&#39;)) + 
+  scale_color_viridis(option = &quot;plasma&quot;) +
+  theme_cowplot() + 
+  scale_shape_manual(values=c(19,15,17,18)) +
+  labs(colour = &quot;Day&quot;, shape = &quot;Horse&quot;)</code></pre>
+<pre class="r"><code>sf_pca_plot2 &lt;- ggplot(sf_df_out, aes(x=PC1, y=PC3, colour = as.factor(sf_pheno$Group))) + 
+  geom_point(size = 4) + 
+  xlab(paste0(&#39;PC1: &#39;, round(as.numeric(sf_pca_res$variance[1])), &#39;% expl.var&#39;)) + 
+  ylab(paste0(&#39;PC3: &#39;, round(as.numeric(sf_pca_res$variance[5])), &#39;% expl.var&#39;)) + 
+  scale_colour_brewer(palette = &quot;Set1&quot;) +
+  theme_cowplot() + 
+  labs(colour = &quot;Group&quot;)</code></pre>
+<pre class="r"><code>sf_pca_plot3 &lt;- ggplot(sf_df_out, aes(x=PC1, y=PC4, colour = sf_pheno$Horse)) + 
+  geom_point(size = 4) + 
+  xlab(paste0(&#39;PC1: &#39;, round(as.numeric(sf_pca_res$variance[1])), &#39;% expl.var&#39;)) + 
+  ylab(paste0(&#39;PC4: &#39;, round(as.numeric(sf_pca_res$variance[4])), &#39;% expl.var&#39;)) + 
+  scale_colour_brewer(palette = &quot;Set1&quot;) +
+  theme_cowplot() + 
+  labs(colour = &quot;Horse&quot;)</code></pre>
+<pre class="r"><code>sf_variance_plot &lt;- screeplot(sf_pca_res,
+                                  components=1:8,
+                                  axisLabSize = 18,
+                                  title = &quot;&quot;) + theme_cowplot() </code></pre>
+<p><img src="figure/02_EDA.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/02_EDA.Rmd/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="multi-level-pca" class="section level2">
@@ -892,7 +949,7 @@ sf_df_out &lt;- as.data.frame(sf_pca_res$x)</code></pre>
     theme_cowplot() + 
     labs(colour = &quot;Treatment&quot;, shape = &quot;Day&quot;) + 
     ggtitle(&quot;Plasma multi-level PCA&quot;)</code></pre>
-<p><img src="figure/02_EDA.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/02_EDA.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="synovial-fluid-1" class="section level3">
 <h3>Synovial fluid</h3>
@@ -920,7 +977,7 @@ sf_ml_pca_plot2 &lt;- ggplot(sf_pca_multi_level$df, aes(x=x, y=y, colour = sf_ph
     scale_colour_brewer(palette = &quot;Set1&quot;) +
     theme_cowplot() + 
     labs(colour = &quot;Treatment&quot;, shape = &quot;Day&quot;) </code></pre>
-<p><img src="figure/02_EDA.Rmd/unnamed-chunk-21-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p><img src="figure/02_EDA.Rmd/unnamed-chunk-24-1.png" width="864" style="display: block; margin: auto;" /></p>
 <p>Now run without the control samples since the DE analysis will be ran
 vs time 0 instead of against the control:</p>
 <pre class="r"><code>sf_pheno_OA &lt;- sf_pheno[!sf_pheno$Group == &quot;Control&quot;,]
@@ -939,7 +996,7 @@ sf_data_norm_just_OA &lt;- sf_data_norm[,sf_pheno_OA$Sample.Number]</code></pre>
     theme_cowplot() + 
     labs(colour = &quot;Treatment&quot;, shape = &quot;Day&quot;) + 
     ggtitle(&quot;Synovial fluid multi-level PCA - no control samples&quot;)</code></pre>
-<p><img src="figure/02_EDA.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/02_EDA.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -970,58 +1027,60 @@ other attached packages:
  [5] PCAtools_2.8.0    ggrepel_0.9.1     mixOmics_6.20.0   lattice_0.20-45  
  [9] MASS_7.3-56       cowplot_1.1.1     forcats_0.5.1     stringr_1.4.0    
 [13] dplyr_1.0.9       purrr_0.3.4       readr_2.1.2       tidyr_1.2.0      
-[17] tibble_3.1.7      ggplot2_3.3.6     tidyverse_1.3.1  
+[17] tibble_3.1.7      ggplot2_3.3.6     tidyverse_1.3.1   workflowr_1.7.0  
 
 loaded via a namespace (and not attached):
- [1] colorspace_2.0-3          ggsignif_0.6.3           
- [3] ellipsis_0.3.2            rprojroot_2.0.3          
- [5] corpcor_1.6.10            fs_1.5.2                 
- [7] rstudioapi_0.13           farver_2.1.0             
- [9] RSpectra_0.16-1           fansi_1.0.3              
-[11] lubridate_1.8.0           xml2_1.3.3               
-[13] codetools_0.2-18          sparseMatrixStats_1.8.0  
-[15] knitr_1.39                jsonlite_1.8.0           
-[17] workflowr_1.7.0           broom_0.8.0              
-[19] dbplyr_2.2.0              compiler_4.2.0           
-[21] httr_1.4.3                dqrng_0.3.0              
-[23] backports_1.4.1           assertthat_0.2.1         
-[25] Matrix_1.4-1              fastmap_1.1.0            
-[27] cli_3.3.0                 later_1.3.0              
-[29] BiocSingular_1.12.0       htmltools_0.5.2          
-[31] tools_4.2.0               rsvd_1.0.5               
-[33] igraph_1.3.2              gtable_0.3.0             
-[35] glue_1.6.2                reshape2_1.4.4           
-[37] Rcpp_1.0.8.3              carData_3.0-5            
-[39] cellranger_1.1.0          jquerylib_0.1.4          
-[41] vctrs_0.4.1               DelayedMatrixStats_1.18.0
-[43] xfun_0.31                 beachmat_2.12.0          
-[45] rvest_1.0.2               lifecycle_1.0.1          
-[47] irlba_2.3.5               rstatix_0.7.0            
-[49] scales_1.2.0              hms_1.1.1                
-[51] promises_1.2.0.1          MatrixGenerics_1.8.0     
-[53] parallel_4.2.0            RColorBrewer_1.1-3       
-[55] yaml_2.3.5                gridExtra_2.3            
-[57] sass_0.4.1                stringi_1.7.6            
-[59] highr_0.9                 S4Vectors_0.34.0         
-[61] ScaledMatrix_1.4.0        BiocGenerics_0.42.0      
-[63] BiocParallel_1.30.3       rlang_1.0.2              
-[65] pkgconfig_2.0.3           matrixStats_0.62.0       
-[67] evaluate_0.15             labeling_0.4.2           
-[69] tidyselect_1.1.2          plyr_1.8.7               
-[71] magrittr_2.0.3            R6_2.5.1                 
-[73] IRanges_2.30.0            generics_0.1.2           
-[75] DelayedArray_0.22.0       DBI_1.1.2                
-[77] pillar_1.7.0              haven_2.5.0              
-[79] whisker_0.4               withr_2.5.0              
-[81] abind_1.4-5               modelr_0.1.8             
-[83] crayon_1.5.1              car_3.1-0                
-[85] rARPACK_0.11-0            utf8_1.2.2               
-[87] ellipse_0.4.3             tzdb_0.3.0               
-[89] rmarkdown_2.14            grid_4.2.0               
-[91] readxl_1.4.0              git2r_0.30.1             
-[93] reprex_2.0.1              digest_0.6.29            
-[95] httpuv_1.6.5              stats4_4.2.0             
-[97] munsell_0.5.0             bslib_0.3.1              </code></pre>
+  [1] colorspace_2.0-3          ggsignif_0.6.3           
+  [3] ellipsis_0.3.2            rprojroot_2.0.3          
+  [5] corpcor_1.6.10            fs_1.5.2                 
+  [7] rstudioapi_0.13           farver_2.1.0             
+  [9] RSpectra_0.16-1           fansi_1.0.3              
+ [11] lubridate_1.8.0           xml2_1.3.3               
+ [13] codetools_0.2-18          sparseMatrixStats_1.8.0  
+ [15] knitr_1.39                jsonlite_1.8.0           
+ [17] broom_0.8.0               dbplyr_2.2.0             
+ [19] compiler_4.2.0            httr_1.4.3               
+ [21] dqrng_0.3.0               backports_1.4.1          
+ [23] assertthat_0.2.1          Matrix_1.4-1             
+ [25] fastmap_1.1.0             cli_3.3.0                
+ [27] later_1.3.0               BiocSingular_1.12.0      
+ [29] htmltools_0.5.2           tools_4.2.0              
+ [31] rsvd_1.0.5                igraph_1.3.2             
+ [33] gtable_0.3.0              glue_1.6.2               
+ [35] reshape2_1.4.4            Rcpp_1.0.8.3             
+ [37] carData_3.0-5             cellranger_1.1.0         
+ [39] jquerylib_0.1.4           vctrs_0.4.1              
+ [41] DelayedMatrixStats_1.18.0 xfun_0.31                
+ [43] ps_1.7.0                  beachmat_2.12.0          
+ [45] rvest_1.0.2               lifecycle_1.0.1          
+ [47] irlba_2.3.5               rstatix_0.7.0            
+ [49] getPass_0.2-2             scales_1.2.0             
+ [51] hms_1.1.1                 promises_1.2.0.1         
+ [53] MatrixGenerics_1.8.0      parallel_4.2.0           
+ [55] RColorBrewer_1.1-3        yaml_2.3.5               
+ [57] gridExtra_2.3             sass_0.4.1               
+ [59] stringi_1.7.6             highr_0.9                
+ [61] S4Vectors_0.34.0          ScaledMatrix_1.4.0       
+ [63] BiocGenerics_0.42.0       BiocParallel_1.30.3      
+ [65] rlang_1.0.2               pkgconfig_2.0.3          
+ [67] matrixStats_0.62.0        evaluate_0.15            
+ [69] labeling_0.4.2            processx_3.6.0           
+ [71] tidyselect_1.1.2          plyr_1.8.7               
+ [73] magrittr_2.0.3            R6_2.5.1                 
+ [75] IRanges_2.30.0            generics_0.1.2           
+ [77] DelayedArray_0.22.0       DBI_1.1.2                
+ [79] pillar_1.7.0              haven_2.5.0              
+ [81] whisker_0.4               withr_2.5.0              
+ [83] abind_1.4-5               car_3.1-0                
+ [85] modelr_0.1.8              crayon_1.5.1             
+ [87] rARPACK_0.11-0            utf8_1.2.2               
+ [89] ellipse_0.4.3             tzdb_0.3.0               
+ [91] rmarkdown_2.14            grid_4.2.0               
+ [93] readxl_1.4.0              callr_3.7.0              
+ [95] git2r_0.30.1              reprex_2.0.1             
+ [97] digest_0.6.29             httpuv_1.6.5             
+ [99] stats4_4.2.0              munsell_0.5.0            
+[101] bslib_0.3.1              </code></pre>
 </div>
 </div>
 </div>

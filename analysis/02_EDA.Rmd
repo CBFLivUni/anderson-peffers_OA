@@ -140,63 +140,107 @@ ggarrange(plasma_corplot,
 ```
 
 
-### Synovial fluid 
+### Synovial fluid
 
 ```{r}
 
-sf_pca_res <- prcomp(t(na.omit(sf_data_norm)), scale. = TRUE, center = TRUE)
-sf_df_out <- as.data.frame(sf_pca_res$x)
+row.names(sf_pheno) <- sf_pheno$Sample.Number
+#sf_pheno$Group_day <- as.factor(paste0(sf_pheno$Group, "_", sf_pheno$Day))
+
+sf_pca_res <- pca(na.omit(sf_data_norm), metadata = sf_pheno, scale = TRUE, center = TRUE)
+sf_df_out <- as.data.frame(sf_pca_res$rotated)
 
 ```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+use_cex <- 16/16
+
+sf_corplot <- eigencorplot(sf_pca_res,
+    metavars = c("Day", "Horse", "Date", "Group"),
+    col = c( "blue2", "blue1", "black", "red1", "red2"),
+    colCorval = "white",
+    scale = TRUE,
+    main = "",
+    plotRsquared = FALSE,
+    cexTitleX= use_cex,
+    cexTitleY= use_cex,
+    cexLabX = use_cex,
+    cexLabY = use_cex,
+    cexMain = use_cex,
+    cexLabColKey = use_cex,
+    cexCorval = use_cex) 
+
+
+```
+
+
 
 ```{r}
 
 sf_pca_plot <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Day, shape=factor(sf_pheno$Horse))) + 
-    geom_point(size = 3) + 
-    xlab(paste0('PC1: ', round(as.numeric(summary(sf_pca_res)$importance[2,1]*100)), '% expl.var')) + 
-    ylab(paste0('PC2: ', round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), '% expl.var')) + 
-    scale_color_viridis(option = "plasma") +
-    theme_cowplot() + 
-    scale_shape_manual(values=c(16,15,17,18)) +
-    labs(colour = "Day", shape = "Horse")
-
-
-```
-
-```{r}
-
-sf_pca_plot2 <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Group, shape=factor(sf_pheno$Horse))) + 
-    geom_point(size = 3) + 
-    xlab(paste0('PC1: ', round(as.numeric(summary(sf_pca_res)$importance[2,1]*100)), '% expl.var')) + 
-    ylab(paste0('PC2: ', round(as.numeric(summary(sf_pca_res)$importance[2,2]*100)), '% expl.var')) + 
-    scale_colour_brewer(palette = "Set1") +
-    theme_cowplot() + 
-    scale_shape_manual(values=c(16,15,17,18)) +
-    labs(colour = "Day", shape = "Horse")
-
+  geom_point(size = 4) + 
+  xlab(paste0('PC1: ', round(as.numeric(sf_pca_res$variance[1])), '% expl.var')) + 
+  ylab(paste0('PC2: ', round(as.numeric(sf_pca_res$variance[2])), '% expl.var')) + 
+  scale_color_viridis(option = "plasma") +
+  theme_cowplot() + 
+  scale_shape_manual(values=c(19,15,17,18)) +
+  labs(colour = "Day", shape = "Horse")
 
 ```
 
 ```{r}
 
-sf_variance_plot <-fviz_eig(sf_pca_res) + theme_cowplot() + labs(title="",
-        x ="Principal components", y = "% Variance Explained")
+sf_pca_plot2 <- ggplot(sf_df_out, aes(x=PC1, y=PC3, colour = as.factor(sf_pheno$Group))) + 
+  geom_point(size = 4) + 
+  xlab(paste0('PC1: ', round(as.numeric(sf_pca_res$variance[1])), '% expl.var')) + 
+  ylab(paste0('PC3: ', round(as.numeric(sf_pca_res$variance[5])), '% expl.var')) + 
+  scale_colour_brewer(palette = "Set1") +
+  theme_cowplot() + 
+  labs(colour = "Group")
 
 ```
 
+```{r}
+
+sf_pca_plot3 <- ggplot(sf_df_out, aes(x=PC1, y=PC4, colour = sf_pheno$Horse)) + 
+  geom_point(size = 4) + 
+  xlab(paste0('PC1: ', round(as.numeric(sf_pca_res$variance[1])), '% expl.var')) + 
+  ylab(paste0('PC4: ', round(as.numeric(sf_pca_res$variance[4])), '% expl.var')) + 
+  scale_colour_brewer(palette = "Set1") +
+  theme_cowplot() + 
+  labs(colour = "Horse")
+
+```
+
+```{r}
+
+sf_variance_plot <- screeplot(sf_pca_res,
+                                  components=1:8,
+                                  axisLabSize = 18,
+                                  title = "") + theme_cowplot() 
+
+```
 
 
 ```{r, echo=FALSE, fig.height = 8, fig.width = 10, fig.align="center"}
 
-ggarrange(ggarrange(sf_pca_plot, sf_pca_plot2, ncol = 2, labels = c("A", "B")), 
-          sf_variance_plot,                                                 
+ggarrange(sf_pca_plot, sf_pca_plot2, sf_pca_plot3, sf_variance_plot,
           nrow = 2, 
-          labels = c(" ", "C")                                       
-          ) 
+          ncol = 2,
+          labels = c("A", "B", "C", "D"))
 
 ```
 
+```{r, echo=FALSE, fig.height = 4, fig.width = 8, fig.align="center"}
 
+ggarrange(sf_corplot,
+          nrow = 1, 
+          ncol = 1,
+          labels = c("E"))
+
+```
 
 ## Multi-level PCA
 
@@ -320,5 +364,6 @@ sf_ml_pca_plot_OA <- ggplot(sf_pca_multi_level_OA$df, aes(x=x, y=y, colour = sf_
 sf_ml_pca_plot_OA
 
 ```
+
 
 

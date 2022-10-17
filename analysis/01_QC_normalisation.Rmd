@@ -17,6 +17,9 @@ library(pheatmap) # visualise whether samples cluster by missingness
 library(cowplot) # pretty theme 
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 library(proDA) # median normalisation function
+library(HybridMTest) # per-row Pearson corrrelation 
+library(SummarizedExperiment)
+library(DEP)
 source("./code/functions.R") # load helper functions 
 
 ```
@@ -221,25 +224,9 @@ For the synovial fluid samples, samples 6, 13, 17, 43 and 44 have a much lower n
 
 Its also notable that the intensity distribution is generally shifted upwards for samples that have more missing values. This agrees with the idea that small values are more likely to be missing. 
 
-Save the R data objects for use in exploratory analysis and differential expression analysis. 
-
-```{r}
-
-# Plasma 
-saveRDS(plasma_data_norm, "./data/plasma_data_norm.rds")
-saveRDS(plasma_pheno, "./data/plasma_pheno.rds")
-saveRDS(plasma_annotation, "./data/plasma_proteomics_annotation.rds")
-
-# SF 
-saveRDS(sf_data_norm, "./data/sf_data_norm.rds")
-saveRDS(sf_pheno, "./data/sf_pheno.rds")
-saveRDS(sf_annotation, "./data/sf_proteomics_annotation.rds")
-
-```
 
 
-
-## Missing values
+## Missing values - heat maps and correlation
 
 ### Synovial fluid samples
 
@@ -342,6 +329,185 @@ as.dendrogram(my_hclust_sample) %>%
   plot()
 
 ```
+
+
+
+## Missing values - additional analysis and quality control
+
+### Synovial fluid samples
+
+The synovial fluid data was subset to only include the OA time course. This is so the DEP package filters the samples in a treatment dependent manner. 
+
+```{r}
+
+sf_pheno_OA <- sf_pheno[!sf_pheno$Group == "Control",]
+sf_data_norm_OA <- sf_data_norm[,sf_pheno_OA$Sample.Number]
+
+```
+
+#### DEP package tools for analysing missing values
+
+```{r}
+
+sf_design <- sf_pheno_OA[,c(6,6,2,1)]
+colnames(sf_design) <- c("label", "ID", "condition", "replicate")
+sf_design$replicate <- as.numeric(sf_design$replicate)
+sf_row_dat <- cbind(data.frame(ID = c(1:1201)), sf_data_norm_OA) %>% rownames_to_column(., "name")
+
+
+sf_se <- SummarizedExperiment(assays=sf_data_norm_OA,
+                                  rowData=sf_row_dat, colData=sf_design)
+
+
+```
+
+```{r}
+
+plot_frequency(sf_se)
+
+```
+
+```{r}
+
+sf_se_filter <- filter_proteins(sf_se, "condition", thr = 0)
+
+```
+
+```{r}
+
+plot_missval(sf_se)
+plot_missval(sf_se_filter)
+
+```
+
+Samples 4, 15, 48, 39 all appear to be very poor quality. Might be best to remove them from the analysis altogether. However, removing 4, 15 and 39 would mean only two replicates for the 49 day and 63 day time points.
+
+
+```{r}
+
+plot_detect(sf_se)
+plot_detect(sf_se_filter)
+
+
+```
+
+
+Subset normalised data by filtered missing values: 
+
+```{r}
+
+sf_data_norm <- sf_data_norm[sf_se_filter@NAMES,]
+
+```
+
+
+### Plasma samples
+
+#### Correlation between missing values and time - Pearson's correlation
+
+```{r}
+
+plasma_data_norm_missing <- plasma_data_norm %>%
+  mutate_if(is.numeric, ~1 * (. > 0)) %>% # Replace numeric values with 1's
+  replace(is.na(.), 0) # Replace NA's with 0's
+
+
+
+plasma_data_norm_missing <- plasma_data_norm_missing %>% 
+  mutate("Day_0" = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == "0"]),
+         "Day_10" = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == "10"]),
+         "Day_35" = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == "35"]),
+         "Day_42" = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == "42"]),
+         "Day_49" = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == "49"]),
+         "Day_56" = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == "56"]),
+         "Day_63" = rowSums(plasma_data_norm_missing[,plasma_pheno$Day == "63"])) 
+
+```
+
+```{r}
+
+plasma_data_norm_missing <- as.matrix(plasma_data_norm_missing[,27:33])
+
+```
+
+```{r}
+
+time_points <- c(0, 10, 35, 42, 49, 56, 63)
+pearson <- row.pearson(plasma_data_norm_missing, time_points)
+
+```
+
+
+#### DEP package tools for analysing missing values
+
+```{r}
+
+plasma_design <- plasma_pheno[,c(5,5,2,1)]
+colnames(plasma_design) <- c("label", "ID", "condition", "replicate")
+plasma_design$replicate <- as.numeric(plasma_design$replicate)
+plasma_row_dat <- cbind(data.frame(ID = c(1:259)), plasma_data_norm) %>% rownames_to_column(., "name")
+
+
+plasma_se <- SummarizedExperiment(assays=plasma_data_norm,
+                     rowData=plasma_row_dat, colData=plasma_design)
+
+
+```
+
+```{r}
+
+plot_frequency(plasma_se)
+
+```
+
+```{r}
+
+plasma_se_filter <- filter_proteins(plasma_se, "condition", thr = 0)
+
+```
+
+```{r}
+
+plot_missval(plasma_se)
+plot_missval(plasma_se_filter)
+
+```
+
+```{r}
+
+plot_detect(plasma_se)
+plot_detect(plasma_se_filter)
+
+
+```
+
+
+Subset normalised data by filtered missing values: 
+
+```{r}
+
+plasma_data_norm <- plasma_data_norm[plasma_se_filter@NAMES,]
+
+```
+
+## Write data
+
+Save the R data objects for use in exploratory analysis and differential expression analysis. 
+
+```{r}
+
+# Plasma 
+saveRDS(plasma_data_norm, "./data/plasma_data_norm.rds")
+saveRDS(plasma_pheno, "./data/plasma_pheno.rds")
+saveRDS(plasma_annotation, "./data/plasma_proteomics_annotation.rds")
+
+# SF 
+saveRDS(sf_data_norm, "./data/sf_data_norm.rds")
+saveRDS(sf_pheno, "./data/sf_pheno.rds")
+saveRDS(sf_annotation, "./data/sf_proteomics_annotation.rds")
+
+```
+
 
 
 # Sequencing data 

@@ -46,8 +46,8 @@ plasma_annotation <- readRDS("./data/plasma_proteomics_annotation.rds")
 
 ```{r}
 
-sf_data_norm <- sf_data_norm[which(rowMeans(is.na(sf_data_norm)) < 0.5), ]
-plasma_data_norm <- plasma_data_norm[which(rowMeans(is.na(plasma_data_norm)) < 0.5), ]
+#sf_data_norm <- sf_data_norm[which(rowMeans(is.na(sf_data_norm)) < 0.5), ]
+#plasma_data_norm <- plasma_data_norm[which(rowMeans(is.na(plasma_data_norm)) < 0.5), ]
 
 ```
 
@@ -416,7 +416,7 @@ sf_data_norm <- sf_data_norm[,sf_pheno$Sample.Number]
 ```
 
 
-## Plasma DE analysis 
+## Limma - Plasma DE analysis
 
 ### Version 1, time as a factor 
 
@@ -520,7 +520,7 @@ openxlsx::write.xlsx(plasma_DE_res_limma, file = "./output/plasma_limma_DE_resul
 ```
 
 
-## Synovial fluid DE analysis 
+## Limma - Synovial fluid DE analysis 
 
 ### Version 1, time as a factor 
 
@@ -607,5 +607,6 @@ Time as a continuous variable results in no significant proteins (suggests the r
 write.csv(sf_tt_day10, file = "./output/sf_limma_DE_results_log2.csv")
 
 ```
+
 
 
