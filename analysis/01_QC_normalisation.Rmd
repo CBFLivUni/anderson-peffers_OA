@@ -510,14 +510,3 @@ saveRDS(sf_annotation, "./data/sf_proteomics_annotation.rds")
 
 
 
-# Sequencing data 
-
-```{r}
-
-
-
-```
-
-
-
-

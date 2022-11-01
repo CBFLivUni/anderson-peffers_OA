@@ -14,9 +14,8 @@ editor_options:
 library(tidyverse)
 library(cowplot) # plot theme
 library(mixOmics) # multi-level PCA
-library(PCAtools) # correlation plot
+library(PCAtools) # pca & correlation plot
 library(viridis) # colour schemes
-library(factoextra) # eigenvector plot
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 
 ```
@@ -364,6 +363,7 @@ sf_ml_pca_plot_OA <- ggplot(sf_pca_multi_level_OA$df, aes(x=x, y=y, colour = sf_
 sf_ml_pca_plot_OA
 
 ```
+
 
 
 
