@@ -1,5 +1,5 @@
 ---
-title: "QC_normalisation"
+title: "QC & normalisation - sequencing data"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html
@@ -7,37 +7,83 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Load libraries
+# Load libraries
 
 ```{r}
 
 library(tidyverse)
+library(edgeR)
 
 ```
 
 
-## Load data
+# Load data 
+
+## Phenotype
+
+First load the phenotype data:
 
 ```{r}
 
-plasma_data <- read.csv("./data/plasma_proteins.csv", row.names = 1) 
-colnames(plasma_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_data))
-  
-sf_data <- read.csv("./data/sf_proteins.csv", row.names = 1)
-colnames(sf_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_data))
-
+# Pheno
 plasma_pheno <- read.csv("./data/plasma_pheno.csv")
-plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
-
 sf_pheno <- read.csv("./data/sf_pheno.csv")
-sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
 
 ```
+
+Next, load and process each type of sequencing data.
+
+
+## miRNA
 
 ```{r}
 
-rawData <- log2(plasma_data) %>%  as.data.frame() %>%
-  gather() 
+# Data
+plasma_miRNA_data <- read.csv("./data/raw_miRNA_plasma.csv", row.names = 1) 
+colnames(plasma_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_miRNA_data))
+  
+sf_miRNA_data <- read.csv("./data/miRNA_sf.csv", row.names = 1)
+colnames(sf_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_miRNA_data))
 
 ```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+
+```{r}
+
+plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
+plasma_pheno$Horse <- as.factor(plasma_pheno$Horse)
+plasma_pheno <- plasma_pheno[match(colnames(plasma_miRNA_data),plasma_pheno$Sample.Number),]
+
+
+sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
+sf_pheno$Horse <- as.factor(sf_pheno$Horse)
+sf_pheno <- sf_pheno[match(colnames(sf_miRNA_data),sf_pheno$Sample.Number),]
+
+```
+
+### Normalisation
+
+```{r}
+
+plasma_miRNA_data_DGE <- DGEList(counts = plasma_miRNA_data, lib.size = colSums(plasma_miRNA_data), samples = plasma_pheno)
+check <- calcNormFactors(plasma_miRNA_data_DGE, method = "TMM")
+
+check1 <- cpm(plasma_miRNA_data_DGE, log=FALSE)
+check2 <- cpm(check, log=FALSE)
+
+```
+
+## lncRNA
+
+
+## snoRNA
+
+
+## snRNA
+
+
+## tRNA
+
+
 

@@ -13,12 +13,12 @@
 
 <meta name="date" content="2022-09-28" />
 
-<title>Differential expression analysis</title>
+<title>Differential expression analysis - proteomics data</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -388,7 +388,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Differential expression analysis</h1>
+<h1 class="title toc-ignore">Differential expression analysis -
+proteomics data</h1>
 <h4 class="author">ejjohnson93</h4>
 <h4 class="date">2022-09-28</h4>
 
@@ -457,10 +458,10 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
 </div>
@@ -553,15 +554,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea565a7229efecdb8d199d958227b805ef10af687targetblanka565a72a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreec63c64ff60364617182a11660b1352d65c910cactargetblankc63c64fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a565a7229efecdb8d199d958227b805ef10af687" target="_blank">a565a72</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/c63c64ff60364617182a11660b1352d65c910cac" target="_blank">c63c64f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea565a7229efecdb8d199d958227b805ef10af687targetblanka565a72a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreec63c64ff60364617182a11660b1352d65c910cactargetblankc63c64fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -571,7 +572,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a565a7229efecdb8d199d958227b805ef10af687" target="_blank">a565a72</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/c63c64ff60364617182a11660b1352d65c910cac" target="_blank">c63c64f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -591,18 +592,16 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Untracked files:
-    Untracked:  analysis/03_Differential_expression.Rmd
-    Untracked:  analysis/04_Sequencing_QC_normalisation.Rmd
-    Untracked:  analysis/05_Sequencing_EDA.Rmd
-    Untracked:  analysis/06_jDR.Rmd
-    Untracked:  data/miRNA_plasma.csv
-    Untracked:  data/miRNA_sf.csv
-    Untracked:  data/tRNA_plasma.csv
+    Untracked:  analysis/07_Clustering.Rmd
+    Untracked:  analysis/08_Functional_enrichment.Rmd
 
 Unstaged changes:
+    Modified:   analysis/01_QC_normalisation.Rmd
     Modified:   analysis/02_EDA.Rmd
-    Deleted:    analysis/03_DE_and_clustering.Rmd
-    Deleted:    analysis/04_Functional_enrichment.Rmd
+    Modified:   analysis/03_Differential_expression.Rmd
+    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
+    Modified:   analysis/05_Sequencing_EDA.Rmd
+    Modified:   analysis/06_jDR.Rmd
     Modified:   analysis/index.Rmd
 
 </code></pre>
@@ -618,10 +617,75 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown
+(<code>analysis/03_Differential_expression.Rmd</code>) and HTML
+(<code>docs/03_Differential_expression.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/c63c64ff60364617182a11660b1352d65c910cac/analysis/03_Differential_expression.Rmd" target="_blank">c63c64f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Sequencing files created
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/c63c64ff60364617182a11660b1352d65c910cac/docs/03_Differential_expression.html" target="_blank">c63c64f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Sequencing files created
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>

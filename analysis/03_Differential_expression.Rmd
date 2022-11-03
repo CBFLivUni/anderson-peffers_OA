@@ -1,5 +1,5 @@
 ---
-title: "Differential expression analysis"
+title: "Differential expression analysis - proteomics data"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html

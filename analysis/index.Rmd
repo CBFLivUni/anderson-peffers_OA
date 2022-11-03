@@ -21,10 +21,11 @@ The previously published sequencing data was also analysed separately:
 -   QC and normalisation [here](04_Sequencing_QC_normalisation.html).
 -   Exploratory data analysis [here](05_Sequencing_EDA.html).
 
-Finally, an integrated analysis was carried out of all the multi-omics data:
+An integrated analysis was carried out of all the multi-omics data:
 
 -   jDR - MOFA and JIVE [here](06_jDR.html)
--   Time series clustering [here]()
+-   Time series clustering [here](07_Clustering.html)
 
+Finally, functional enrichment contextualising the results:
 
-Text text text
+-   Results for all analysis found [here](08_Functional_enrichment.html)

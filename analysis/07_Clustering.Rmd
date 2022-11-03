@@ -1,5 +1,5 @@
 ---
-title: "Multi-omics - joint dimensionality reduction"
+title: "Multi-omics - clustering"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html
@@ -14,6 +14,5 @@ editor_options:
 library(tidyverse)
 
 ```
-
 
 

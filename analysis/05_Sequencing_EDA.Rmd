@@ -1,5 +1,5 @@
 ---
-title: "QC_normalisation"
+title: "Exploratory data analysis - proteomics data"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html
@@ -15,29 +15,4 @@ library(tidyverse)
 
 ```
 
-
-## Load data
-
-```{r}
-
-plasma_data <- read.csv("./data/plasma_proteins.csv", row.names = 1) 
-colnames(plasma_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_data))
-  
-sf_data <- read.csv("./data/sf_proteins.csv", row.names = 1)
-colnames(sf_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_data))
-
-plasma_pheno <- read.csv("./data/plasma_pheno.csv")
-plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
-
-sf_pheno <- read.csv("./data/sf_pheno.csv")
-sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
-
-```
-
-```{r}
-
-rawData <- log2(plasma_data) %>%  as.data.frame() %>%
-  gather() 
-
-```
 
