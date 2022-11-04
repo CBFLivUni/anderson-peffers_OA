@@ -9,10 +9,13 @@ editor_options:
 
 # Load libraries
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 library(tidyverse)
 library(edgeR)
+library(cowplot) # ggplot2 theme
+library(patchwork)
+source("./code/utility-functions.R") # load helper functions 
 
 ```
 
@@ -36,16 +39,36 @@ Next, load and process each type of sequencing data.
 
 ## miRNA
 
+The data was provided in CPM format. The reports TAmiRNA provided contain the raw counts for the miRNA. 
+To assess the normalisation the raw counts and the CPM normalised counts were both read in. 
+
+
+Plasma:
+
 ```{r}
 
-# Data
-plasma_miRNA_data <- read.csv("./data/raw_miRNA_plasma.csv", row.names = 1) 
+# Raw miRNA counts
+plasma_miRNA_data_raw <- read.csv("./data/raw_miRNA_plasma.csv", row.names = 1) 
+colnames(plasma_miRNA_data_raw) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_miRNA_data_raw))
+
+
+# CPM normalised plasma miRNA data
+plasma_miRNA_data <- read.csv("./data/miRNA_plasma.csv", row.names = 1)
 colnames(plasma_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_miRNA_data))
-  
+
+```
+
+
+Synovial fluid: 
+
+```{r}
+
+# CPM normalised SF miRNA data
 sf_miRNA_data <- read.csv("./data/miRNA_sf.csv", row.names = 1)
 colnames(sf_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_miRNA_data))
 
 ```
+
 
 Process phenotype table and make sure it is in the same order as the raw data: 
 
@@ -64,15 +87,65 @@ sf_pheno <- sf_pheno[match(colnames(sf_miRNA_data),sf_pheno$Sample.Number),]
 
 ### Normalisation
 
+Manually applied TMM normalisation then converted the counts into CPM. 
+
 ```{r}
 
-plasma_miRNA_data_DGE <- DGEList(counts = plasma_miRNA_data, lib.size = colSums(plasma_miRNA_data), samples = plasma_pheno)
-check <- calcNormFactors(plasma_miRNA_data_DGE, method = "TMM")
+plasma_miRNA_data_DGE <- DGEList(counts = plasma_miRNA_data_raw, lib.size = colSums(plasma_miRNA_data), samples = plasma_pheno)
+plasma_miRNA_data_DGE_TMM <- calcNormFactors(plasma_miRNA_data_DGE, method = "TMM")
 
-check1 <- cpm(plasma_miRNA_data_DGE, log=FALSE)
-check2 <- cpm(check, log=FALSE)
+raw_counts_CPM <- cpm(plasma_miRNA_data_DGE, log=FALSE)
+raw_counts_CPM_TMM <- cpm(plasma_miRNA_data_DGE_TMM, log=FALSE)
 
 ```
+
+
+Compared the distribution of the data provided to the TMM normalised CPM values. 
+
+
+```{r, message=FALSE}
+
+bp_plasma_miRNA_data <- gg_boxplot(plasma_miRNA_data,
+                                   log.transform=T,
+                                   title="Plasma miRNA - original CPM data provided",
+                                   xlab="Sample ID", ylab="Log2 CPM")
+
+
+
+bp_raw_counts_CPM_TMM <- gg_boxplot(raw_counts_CPM_TMM,
+                                   log.transform=T,
+                                   title="Plasma miRNA - raw counts, TMM and CPM normalised",
+                                   xlab="Sample ID", ylab="Log2 CPM")
+
+
+
+bp_plasma_miRNA_data_raw <- gg_boxplot(plasma_miRNA_data_raw,
+                                   log.transform=T,
+                                   title="Plasma miRNA - Log2 raw counts",
+                                   xlab="Sample ID", ylab="Log2 CPM")
+
+  
+
+bp_raw_counts_CPM <- gg_boxplot(raw_counts_CPM,
+                                   log.transform=T,
+                                   title="Plasma miRNA - raw counts, just CPM normalised",
+                                   xlab="Sample ID", ylab="Log2 CPM")
+
+  
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_plasma_miRNA_data
+bp_raw_counts_CPM_TMM
+bp_plasma_miRNA_data_raw
+bp_raw_counts_CPM
+
+```
+
+
 
 ## lncRNA
 

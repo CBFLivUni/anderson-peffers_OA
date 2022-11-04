@@ -14,13 +14,13 @@ editor_options:
 library(tidyverse)
 library(NormalyzerDE) # compare normalisation strategies 
 library(pheatmap) # visualise whether samples cluster by missingness 
-library(cowplot) # pretty theme 
+library(cowplot) # ggplot2 theme
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 library(proDA) # median normalisation function
 library(HybridMTest) # per-row Pearson corrrelation 
 library(SummarizedExperiment)
 library(DEP)
-source("./code/functions.R") # load helper functions 
+source("./code/utility-functions.R") # load helper functions 
 
 ```
 
