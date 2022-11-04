@@ -20,9 +20,8 @@ source("./code/utility-functions.R") # load helper functions
 ```
 
 
-# Load data 
 
-## Phenotype
+# Phenotype
 
 First load the phenotype data:
 
@@ -32,18 +31,35 @@ First load the phenotype data:
 plasma_pheno <- read.csv("./data/plasma_pheno.csv")
 sf_pheno <- read.csv("./data/sf_pheno.csv")
 
+
+# Sequencing info
+plasma_sequencing_info <- read.csv("./data/plasma_sequencing_info.csv")
+sf_sequencing_info <- read.csv("./data/sf_sequencing_info.csv")
+
+
+# Match pheno data to sequencing info
+plasma_pheno <- plasma_pheno[match(plasma_sequencing_info$customerID, plasma_pheno$Sample.Number),]
+sf_pheno <- sf_pheno[match(sf_sequencing_info$customerID, sf_pheno$Sample.Number),]
+
+
+# Join sequencing and pheno information
+plasma_pheno <- cbind(plasma_pheno, plasma_sequencing_info)
+sf_pheno <- cbind(sf_pheno, sf_sequencing_info)
+
 ```
 
 Next, load and process each type of sequencing data.
 
 
-## miRNA
+# miRNA
 
 The data was provided in CPM format. The reports TAmiRNA provided contain the raw counts for the miRNA. 
 To assess the normalisation the raw counts and the CPM normalised counts were both read in. 
 
 
-Plasma:
+## Plasma
+
+### Read data in
 
 ```{r}
 
@@ -59,17 +75,6 @@ colnames(plasma_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = 
 ```
 
 
-Synovial fluid: 
-
-```{r}
-
-# CPM normalised SF miRNA data
-sf_miRNA_data <- read.csv("./data/miRNA_sf.csv", row.names = 1)
-colnames(sf_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_miRNA_data))
-
-```
-
-
 Process phenotype table and make sure it is in the same order as the raw data: 
 
 ```{r}
@@ -79,11 +84,8 @@ plasma_pheno$Horse <- as.factor(plasma_pheno$Horse)
 plasma_pheno <- plasma_pheno[match(colnames(plasma_miRNA_data),plasma_pheno$Sample.Number),]
 
 
-sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
-sf_pheno$Horse <- as.factor(sf_pheno$Horse)
-sf_pheno <- sf_pheno[match(colnames(sf_miRNA_data),sf_pheno$Sample.Number),]
-
 ```
+
 
 ### Normalisation
 
@@ -99,6 +101,8 @@ raw_counts_CPM_TMM <- cpm(plasma_miRNA_data_DGE_TMM, log=FALSE)
 
 ```
 
+
+### Plot data
 
 Compared the distribution of the data provided to the TMM normalised CPM values. 
 
@@ -147,16 +151,371 @@ bp_raw_counts_CPM
 
 
 
-## lncRNA
+## Synovial fluid 
+
+### Read data in
+
+```{r}
+
+# CPM normalised SF miRNA data
+sf_miRNA_data <- read.csv("./data/miRNA_sf.csv", row.names = 1)
+colnames(sf_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_miRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+
+```{r}
+
+sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
+sf_pheno$Horse <- as.factor(sf_pheno$Horse)
+sf_pheno <- sf_pheno[match(colnames(sf_miRNA_data),sf_pheno$Sample.Number),]
+
+```
 
 
-## snoRNA
+### Plot data
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_sf_miRNA_data <- gg_boxplot(sf_miRNA_data,
+                                   log.transform=T,
+                                   title="Synovial fluid miRNA - original CPM data provided",
+                                   xlab="Sample ID", ylab="Log2 CPM")
+
+```
 
 
-## snRNA
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_sf_miRNA_data
+
+```
 
 
-## tRNA
+# lncRNA
+
+The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the lncRNA, snoRNA, snRNA, tRNA.
+
+## Plasma: 
+
+### Read data in
+
+```{r}
+
+# CPM normalised plasma lncRNA data
+plasma_lncRNA_data <- read.csv("./data/lncRNA_plasma.csv", row.names = 1)
+colnames(plasma_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_lncRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+  
+```{r}
+
+plasma_pheno <- plasma_pheno[match(colnames(plasma_lncRNA_data),plasma_pheno$Sample.Number),]
+
+```
+
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_plasma_lncRNA_data <- gg_boxplot(plasma_lncRNA_data,
+                                log.transform =T,
+                                title="Plasma lncRNA",
+                                xlab="Sample ID", ylab="Log2 CPM")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_plasma_lncRNA_data
+
+```
+
+
+## Synovial fluid: 
+
+### Read data in
+
+```{r}
+
+# CPM normalised SF lncRNA data
+sf_lncRNA_data <- read.csv("./data/lncRNA_sf.csv", row.names = 1)
+colnames(sf_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_lncRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+  
+```{r}
+
+sf_pheno <- sf_pheno[match(colnames(sf_lncRNA_data),sf_pheno$Sample.Number),]
+
+```
+
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_sf_lncRNA_data <- gg_boxplot(sf_lncRNA_data,
+                               log.transform=T,
+                               title="Synovial fluid lncRNA",
+                               xlab="Sample ID", ylab="Log2 CPM")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_sf_lncRNA_data
+
+```
+
+
+
+# snoRNA
+
+The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snoRNA, snoRNA, snRNA, tRNA.
+
+## Plasma: 
+
+### Read data in
+
+```{r}
+
+# CPM normalised plasma snoRNA data
+plasma_snoRNA_data <- read.csv("./data/snoRNA_plasma.csv", row.names = 1)
+colnames(plasma_snoRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_snoRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+  
+```{r}
+
+plasma_pheno <- plasma_pheno[match(colnames(plasma_snoRNA_data),plasma_pheno$Sample.Number),]
+
+```
+
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_plasma_snoRNA_data <- gg_boxplot(plasma_snoRNA_data,
+                                log.transform =T,
+                                title="Plasma snoRNA",
+                                xlab="Sample ID", ylab="Log2 CPM")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_plasma_snoRNA_data
+
+```
+
+
+## Synovial fluid: 
+
+### Read data in
+
+```{r}
+
+# CPM normalised SF snoRNA data
+sf_snoRNA_data <- read.csv("./data/snoRNA_sf.csv", row.names = 1)
+colnames(sf_snoRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_snoRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+  
+```{r}
+
+sf_pheno <- sf_pheno[match(colnames(sf_snoRNA_data),sf_pheno$Sample.Number),]
+
+```
+
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_sf_snoRNA_data <- gg_boxplot(sf_snoRNA_data,
+                               log.transform=T,
+                               title="Synovial fluid snoRNA",
+                               xlab="Sample ID", ylab="Log2 CPM")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_sf_snoRNA_data
+
+```
+
+
+# snRNA
+
+The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snRNA, snRNA, snRNA, tRNA.
+
+## Plasma: 
+
+### Read data in
+
+```{r}
+
+# CPM normalised plasma snRNA data
+plasma_snRNA_data <- read.csv("./data/snRNA_plasma.csv", row.names = 1)
+colnames(plasma_snRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_snRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+  
+```{r}
+
+plasma_pheno <- plasma_pheno[match(colnames(plasma_snRNA_data),plasma_pheno$Sample.Number),]
+
+```
+
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_plasma_snRNA_data <- gg_boxplot(plasma_snRNA_data,
+                                log.transform =T,
+                                title="Plasma snRNA",
+                                xlab="Sample ID", ylab="Log2 CPM")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_plasma_snRNA_data
+
+```
+
+
+## Synovial fluid: 
+
+### Read data in
+
+```{r}
+
+# CPM normalised SF snRNA data
+sf_snRNA_data <- read.csv("./data/snRNA_sf.csv", row.names = 1)
+colnames(sf_snRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_snRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+  
+```{r}
+
+sf_pheno <- sf_pheno[match(colnames(sf_snRNA_data),sf_pheno$Sample.Number),]
+
+```
+
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_sf_snRNA_data <- gg_boxplot(sf_snRNA_data,
+                               log.transform=T,
+                               title="Synovial fluid snRNA",
+                               xlab="Sample ID", ylab="Log2 CPM")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_sf_snRNA_data
+
+```
+
+
+
+# tRNA
+
+The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the tRNA, tRNA, tRNA, tRNA.
+
+## Plasma: 
+
+### Read data in
+
+```{r}
+
+# CPM normalised plasma tRNA data
+plasma_tRNA_data <- read.csv("./data/tRNA_plasma.csv", row.names = 1)
+colnames(plasma_tRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_tRNA_data))
+
+```
+
+Process phenotype table and make sure it is in the same order as the raw data: 
+  
+```{r}
+
+plasma_pheno <- plasma_pheno[match(colnames(plasma_tRNA_data),plasma_pheno$Sample.Number),]
+
+```
+
+
+Look at the distribution of the data provided...
+
+```{r, message=FALSE}
+
+bp_plasma_tRNA_data <- gg_boxplot(plasma_tRNA_data,
+                                log.transform =T,
+                                title="Plasma tRNA",
+                                xlab="Sample ID", ylab="Log2 CPM")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+bp_plasma_tRNA_data
+
+```
+
+
+# Write R data object outputs
+
+```{r}
+
+# Plasma 
+saveRDS(plasma_pheno, "./data/plasma_sequencing_pheno.rds")
+saveRDS(plasma_miRNA_data, "./data/plasma_miRNA_data.rds")
+saveRDS(plasma_lncRNA_data, "./data/plasma_lncRNA_data.rds")
+saveRDS(plasma_snoRNA_data, "./data/plasma_snoRNA_data.rds")
+saveRDS(plasma_snRNA_data, "./data/plasma_snRNA_data.rds")
+saveRDS(plasma_tRNA_data, "./data/plasma_tRNA_data.rds")
+
+# SF
+saveRDS(sf_pheno, "./data/sf_sequencing_pheno.rds")
+saveRDS(sf_miRNA_data, "./data/sf_miRNA_data.rds")
+saveRDS(sf_lncRNA_data, "./data/sf_lncRNA_data.rds")
+saveRDS(sf_snoRNA_data, "./data/sf_snoRNA_data.rds")
+saveRDS(sf_snRNA_data, "./data/sf_snRNA_data.rds")
+
+
+```
+
+
 
 
 
