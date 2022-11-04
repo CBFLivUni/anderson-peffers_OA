@@ -382,7 +382,7 @@ data</h1>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -393,8 +393,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -407,9 +407,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>anderson-peffers_OA/</code> <span
@@ -432,21 +432,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -537,15 +534,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreee34c9f9d885837b14673c528fea1cce3b9824a07targetblanke34c9f9a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreedfeca72852e1aa1a9379ce9bf1c65108b4fec240targetblankdfeca72a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/e34c9f9d885837b14673c528fea1cce3b9824a07" target="_blank">e34c9f9</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/dfeca72852e1aa1a9379ce9bf1c65108b4fec240" target="_blank">dfeca72</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreee34c9f9d885837b14673c528fea1cce3b9824a07targetblanke34c9f9a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreedfeca72852e1aa1a9379ce9bf1c65108b4fec240targetblankdfeca72a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +552,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/e34c9f9d885837b14673c528fea1cce3b9824a07" target="_blank">e34c9f9</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/dfeca72852e1aa1a9379ce9bf1c65108b4fec240" target="_blank">dfeca72</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -575,30 +572,8 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Untracked files:
-    Untracked:  code/utility-functions.R
-    Untracked:  data/lncRNA_plasma.csv
-    Untracked:  data/lncRNA_sf.csv
-    Untracked:  data/miRNA_plasma.csv
-    Untracked:  data/miRNA_sf.csv
-    Untracked:  data/snRNA_plasma.csv
-    Untracked:  data/snRNA_sf.csv
-    Untracked:  data/snoRNA_plasma.csv
-    Untracked:  data/snoRNA_sf.csv
-    Untracked:  data/tRNA_plasma.csv
-
-Unstaged changes:
-    Modified:   analysis/01_QC_normalisation.Rmd
-    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
-    Deleted:    code/functions.R
-    Deleted:    data/cpm/lncRNA_plasma.csv
-    Deleted:    data/cpm/lncRNA_sf.csv
-    Deleted:    data/cpm/miRNA_plasma.csv
-    Deleted:    data/cpm/miRNA_sf.csv
-    Deleted:    data/cpm/snRNA_plasma.csv
-    Deleted:    data/cpm/snRNA_sf.csv
-    Deleted:    data/cpm/snoRNA_plasma.csv
-    Deleted:    data/cpm/snoRNA_sf.csv
-    Deleted:    data/cpm/tRNA_plasma.csv
+    Untracked:  data/plasma_sequencing_pheno.rds
+    Untracked:  data/sf_sequencing_pheno.rds
 
 </code></pre>
 <p>
@@ -645,6 +620,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/dfeca72852e1aa1a9379ce9bf1c65108b4fec240/analysis/04_Sequencing_QC_normalisation.Rmd" target="_blank">dfeca72</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-04
+</td>
+<td>
+Sequencing data processing
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/00c9ca773d66e9a333588cda0f77eb5d9e78346e/analysis/04_Sequencing_QC_normalisation.Rmd" target="_blank">00c9ca7</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-04
+</td>
+<td>
+Helper functions norm etc
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/00c9ca773d66e9a333588cda0f77eb5d9e78346e/docs/04_Sequencing_QC_normalisation.html" target="_blank">00c9ca7</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-04
+</td>
+<td>
+Helper functions norm etc
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -711,22 +737,38 @@ library(cowplot) # ggplot2 theme
 library(patchwork)
 source(&quot;./code/utility-functions.R&quot;) # load helper functions </code></pre>
 </div>
-<div id="load-data" class="section level1">
-<h1>Load data</h1>
-<div id="phenotype" class="section level2">
-<h2>Phenotype</h2>
+<div id="phenotype" class="section level1">
+<h1>Phenotype</h1>
 <p>First load the phenotype data:</p>
 <pre class="r"><code># Pheno
 plasma_pheno &lt;- read.csv(&quot;./data/plasma_pheno.csv&quot;)
-sf_pheno &lt;- read.csv(&quot;./data/sf_pheno.csv&quot;)</code></pre>
+sf_pheno &lt;- read.csv(&quot;./data/sf_pheno.csv&quot;)
+
+
+# Sequencing info
+plasma_sequencing_info &lt;- read.csv(&quot;./data/plasma_sequencing_info.csv&quot;)
+sf_sequencing_info &lt;- read.csv(&quot;./data/sf_sequencing_info.csv&quot;)
+
+
+# Match pheno data to sequencing info
+plasma_pheno &lt;- plasma_pheno[match(plasma_sequencing_info$customerID, plasma_pheno$Sample.Number),]
+sf_pheno &lt;- sf_pheno[match(sf_sequencing_info$customerID, sf_pheno$Sample.Number),]
+
+
+# Join sequencing and pheno information
+plasma_pheno &lt;- cbind(plasma_pheno, plasma_sequencing_info)
+sf_pheno &lt;- cbind(sf_pheno, sf_sequencing_info)</code></pre>
 <p>Next, load and process each type of sequencing data.</p>
 </div>
-<div id="mirna" class="section level2">
-<h2>miRNA</h2>
+<div id="mirna" class="section level1">
+<h1>miRNA</h1>
 <p>The data was provided in CPM format. The reports TAmiRNA provided
 contain the raw counts for the miRNA. To assess the normalisation the
 raw counts and the CPM normalised counts were both read in.</p>
-<p>Plasma:</p>
+<div id="plasma" class="section level2">
+<h2>Plasma</h2>
+<div id="read-data-in" class="section level3">
+<h3>Read data in</h3>
 <pre class="r"><code># Raw miRNA counts
 plasma_miRNA_data_raw &lt;- read.csv(&quot;./data/raw_miRNA_plasma.csv&quot;, row.names = 1) 
 colnames(plasma_miRNA_data_raw) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_miRNA_data_raw))
@@ -735,20 +777,12 @@ colnames(plasma_miRNA_data_raw) &lt;- gsub(pattern = &quot;X&quot;, replacement 
 # CPM normalised plasma miRNA data
 plasma_miRNA_data &lt;- read.csv(&quot;./data/miRNA_plasma.csv&quot;, row.names = 1)
 colnames(plasma_miRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_miRNA_data))</code></pre>
-<p>Synovial fluid:</p>
-<pre class="r"><code># CPM normalised SF miRNA data
-sf_miRNA_data &lt;- read.csv(&quot;./data/miRNA_sf.csv&quot;, row.names = 1)
-colnames(sf_miRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_miRNA_data))</code></pre>
 <p>Process phenotype table and make sure it is in the same order as the
 raw data:</p>
 <pre class="r"><code>plasma_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, plasma_pheno$Sample.Number)
 plasma_pheno$Horse &lt;- as.factor(plasma_pheno$Horse)
-plasma_pheno &lt;- plasma_pheno[match(colnames(plasma_miRNA_data),plasma_pheno$Sample.Number),]
-
-
-sf_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, sf_pheno$Sample.Number)
-sf_pheno$Horse &lt;- as.factor(sf_pheno$Horse)
-sf_pheno &lt;- sf_pheno[match(colnames(sf_miRNA_data),sf_pheno$Sample.Number),]</code></pre>
+plasma_pheno &lt;- plasma_pheno[match(colnames(plasma_miRNA_data),plasma_pheno$Sample.Number),]</code></pre>
+</div>
 <div id="normalisation" class="section level3">
 <h3>Normalisation</h3>
 <p>Manually applied TMM normalisation then converted the counts into
@@ -758,6 +792,9 @@ plasma_miRNA_data_DGE_TMM &lt;- calcNormFactors(plasma_miRNA_data_DGE, method = 
 
 raw_counts_CPM &lt;- cpm(plasma_miRNA_data_DGE, log=FALSE)
 raw_counts_CPM_TMM &lt;- cpm(plasma_miRNA_data_DGE_TMM, log=FALSE)</code></pre>
+</div>
+<div id="plot-data" class="section level3">
+<h3>Plot data</h3>
 <p>Compared the distribution of the data provided to the TMM normalised
 CPM values.</p>
 <pre class="r"><code>bp_plasma_miRNA_data &lt;- gg_boxplot(plasma_miRNA_data,
@@ -785,20 +822,195 @@ bp_raw_counts_CPM &lt;- gg_boxplot(raw_counts_CPM,
                                    log.transform=T,
                                    title=&quot;Plasma miRNA - raw counts, just CPM normalised&quot;,
                                    xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
-<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-8-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-8-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-7-4.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="lncrna" class="section level2">
-<h2>lncRNA</h2>
+<div id="synovial-fluid" class="section level2">
+<h2>Synovial fluid</h2>
+<div id="read-data-in-1" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised SF miRNA data
+sf_miRNA_data &lt;- read.csv(&quot;./data/miRNA_sf.csv&quot;, row.names = 1)
+colnames(sf_miRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_miRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>sf_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, sf_pheno$Sample.Number)
+sf_pheno$Horse &lt;- as.factor(sf_pheno$Horse)
+sf_pheno &lt;- sf_pheno[match(colnames(sf_miRNA_data),sf_pheno$Sample.Number),]</code></pre>
 </div>
-<div id="snorna" class="section level2">
-<h2>snoRNA</h2>
+<div id="plot-data-1" class="section level3">
+<h3>Plot data</h3>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_sf_miRNA_data &lt;- gg_boxplot(sf_miRNA_data,
+                                   log.transform=T,
+                                   title=&quot;Synovial fluid miRNA - original CPM data provided&quot;,
+                                   xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="snrna" class="section level2">
-<h2>snRNA</h2>
 </div>
-<div id="trna" class="section level2">
-<h2>tRNA</h2>
+</div>
+<div id="lncrna" class="section level1">
+<h1>lncRNA</h1>
+<p>The rest of the sequencing data didn’t have raw counts.The CPM data
+provided will be read in for the lncRNA, snoRNA, snRNA, tRNA.</p>
+<div id="plasma-1" class="section level2">
+<h2>Plasma:</h2>
+<div id="read-data-in-2" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised plasma lncRNA data
+plasma_lncRNA_data &lt;- read.csv(&quot;./data/lncRNA_plasma.csv&quot;, row.names = 1)
+colnames(plasma_lncRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_lncRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>plasma_pheno &lt;- plasma_pheno[match(colnames(plasma_lncRNA_data),plasma_pheno$Sample.Number),]</code></pre>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_plasma_lncRNA_data &lt;- gg_boxplot(plasma_lncRNA_data,
+                                log.transform =T,
+                                title=&quot;Plasma lncRNA&quot;,
+                                xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="synovial-fluid-1" class="section level2">
+<h2>Synovial fluid:</h2>
+<div id="read-data-in-3" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised SF lncRNA data
+sf_lncRNA_data &lt;- read.csv(&quot;./data/lncRNA_sf.csv&quot;, row.names = 1)
+colnames(sf_lncRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_lncRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>sf_pheno &lt;- sf_pheno[match(colnames(sf_lncRNA_data),sf_pheno$Sample.Number),]</code></pre>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_sf_lncRNA_data &lt;- gg_boxplot(sf_lncRNA_data,
+                               log.transform=T,
+                               title=&quot;Synovial fluid lncRNA&quot;,
+                               xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="snorna" class="section level1">
+<h1>snoRNA</h1>
+<p>The rest of the sequencing data didn’t have raw counts.The CPM data
+provided will be read in for the snoRNA, snoRNA, snRNA, tRNA.</p>
+<div id="plasma-2" class="section level2">
+<h2>Plasma:</h2>
+<div id="read-data-in-4" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised plasma snoRNA data
+plasma_snoRNA_data &lt;- read.csv(&quot;./data/snoRNA_plasma.csv&quot;, row.names = 1)
+colnames(plasma_snoRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_snoRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>plasma_pheno &lt;- plasma_pheno[match(colnames(plasma_snoRNA_data),plasma_pheno$Sample.Number),]</code></pre>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_plasma_snoRNA_data &lt;- gg_boxplot(plasma_snoRNA_data,
+                                log.transform =T,
+                                title=&quot;Plasma snoRNA&quot;,
+                                xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="synovial-fluid-2" class="section level2">
+<h2>Synovial fluid:</h2>
+<div id="read-data-in-5" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised SF snoRNA data
+sf_snoRNA_data &lt;- read.csv(&quot;./data/snoRNA_sf.csv&quot;, row.names = 1)
+colnames(sf_snoRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_snoRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>sf_pheno &lt;- sf_pheno[match(colnames(sf_snoRNA_data),sf_pheno$Sample.Number),]</code></pre>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_sf_snoRNA_data &lt;- gg_boxplot(sf_snoRNA_data,
+                               log.transform=T,
+                               title=&quot;Synovial fluid snoRNA&quot;,
+                               xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="snrna" class="section level1">
+<h1>snRNA</h1>
+<p>The rest of the sequencing data didn’t have raw counts.The CPM data
+provided will be read in for the snRNA, snRNA, snRNA, tRNA.</p>
+<div id="plasma-3" class="section level2">
+<h2>Plasma:</h2>
+<div id="read-data-in-6" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised plasma snRNA data
+plasma_snRNA_data &lt;- read.csv(&quot;./data/snRNA_plasma.csv&quot;, row.names = 1)
+colnames(plasma_snRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_snRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>plasma_pheno &lt;- plasma_pheno[match(colnames(plasma_snRNA_data),plasma_pheno$Sample.Number),]</code></pre>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_plasma_snRNA_data &lt;- gg_boxplot(plasma_snRNA_data,
+                                log.transform =T,
+                                title=&quot;Plasma snRNA&quot;,
+                                xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="synovial-fluid-3" class="section level2">
+<h2>Synovial fluid:</h2>
+<div id="read-data-in-7" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised SF snRNA data
+sf_snRNA_data &lt;- read.csv(&quot;./data/snRNA_sf.csv&quot;, row.names = 1)
+colnames(sf_snRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_snRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>sf_pheno &lt;- sf_pheno[match(colnames(sf_snRNA_data),sf_pheno$Sample.Number),]</code></pre>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_sf_snRNA_data &lt;- gg_boxplot(sf_snRNA_data,
+                               log.transform=T,
+                               title=&quot;Synovial fluid snRNA&quot;,
+                               xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="trna" class="section level1">
+<h1>tRNA</h1>
+<p>The rest of the sequencing data didn’t have raw counts.The CPM data
+provided will be read in for the tRNA, tRNA, tRNA, tRNA.</p>
+<div id="plasma-4" class="section level2">
+<h2>Plasma:</h2>
+<div id="read-data-in-8" class="section level3">
+<h3>Read data in</h3>
+<pre class="r"><code># CPM normalised plasma tRNA data
+plasma_tRNA_data &lt;- read.csv(&quot;./data/tRNA_plasma.csv&quot;, row.names = 1)
+colnames(plasma_tRNA_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_tRNA_data))</code></pre>
+<p>Process phenotype table and make sure it is in the same order as the
+raw data:</p>
+<pre class="r"><code>plasma_pheno &lt;- plasma_pheno[match(colnames(plasma_tRNA_data),plasma_pheno$Sample.Number),]</code></pre>
+<p>Look at the distribution of the data provided…</p>
+<pre class="r"><code>bp_plasma_tRNA_data &lt;- gg_boxplot(plasma_tRNA_data,
+                                log.transform =T,
+                                title=&quot;Plasma tRNA&quot;,
+                                xlab=&quot;Sample ID&quot;, ylab=&quot;Log2 CPM&quot;)</code></pre>
+<p><img src="figure/04_Sequencing_QC_normalisation.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="write-r-data-object-outputs" class="section level1">
+<h1>Write R data object outputs</h1>
+<pre class="r"><code># Plasma 
+saveRDS(plasma_pheno, &quot;./data/plasma_sequencing_pheno.rds&quot;)
+saveRDS(plasma_miRNA_data, &quot;./data/plasma_miRNA_data.rds&quot;)
+saveRDS(plasma_lncRNA_data, &quot;./data/plasma_lncRNA_data.rds&quot;)
+saveRDS(plasma_snoRNA_data, &quot;./data/plasma_snoRNA_data.rds&quot;)
+saveRDS(plasma_snRNA_data, &quot;./data/plasma_snRNA_data.rds&quot;)
+saveRDS(plasma_tRNA_data, &quot;./data/plasma_tRNA_data.rds&quot;)
+
+# SF
+saveRDS(sf_pheno, &quot;./data/sf_sequencing_pheno.rds&quot;)
+saveRDS(sf_miRNA_data, &quot;./data/sf_miRNA_data.rds&quot;)
+saveRDS(sf_lncRNA_data, &quot;./data/sf_lncRNA_data.rds&quot;)
+saveRDS(sf_snoRNA_data, &quot;./data/sf_snoRNA_data.rds&quot;)
+saveRDS(sf_snRNA_data, &quot;./data/sf_snRNA_data.rds&quot;)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -848,7 +1060,6 @@ loaded via a namespace (and not attached):
 [57] generics_0.1.2   vctrs_0.4.1      tools_4.2.0      glue_1.6.2      
 [61] hms_1.1.1        fastmap_1.1.0    yaml_2.3.5       colorspace_2.0-3
 [65] rvest_1.0.2      knitr_1.39       haven_2.5.0      sass_0.4.1      </code></pre>
-</div>
 </div>
 </div>
 
