@@ -13,12 +13,12 @@
 
 <meta name="date" content="2022-09-28" />
 
-<title>QC_normalisation</title>
+<title>Multi-omics - joint dimensionality reduction</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -371,7 +371,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">QC_normalisation</h1>
+<h1 class="title toc-ignore">Multi-omics - joint dimensionality
+reduction</h1>
 <h4 class="author">ejjohnson93</h4>
 <h4 class="date">2022-09-28</h4>
 
@@ -402,7 +403,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-01
+<strong>Last updated:</strong> 2022-11-08
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -440,10 +441,10 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
 </div>
@@ -536,15 +537,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea565a7229efecdb8d199d958227b805ef10af687targetblanka565a72a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeae6f5f4c77d2458fec583f75b216e34d5a9478adtargetblankae6f5f4a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a565a7229efecdb8d199d958227b805ef10af687" target="_blank">a565a72</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/ae6f5f4c77d2458fec583f75b216e34d5a9478ad" target="_blank">ae6f5f4</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreea565a7229efecdb8d199d958227b805ef10af687targetblanka565a72a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeae6f5f4c77d2458fec583f75b216e34d5a9478adtargetblankae6f5f4a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -554,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/a565a7229efecdb8d199d958227b805ef10af687" target="_blank">a565a72</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/ae6f5f4c77d2458fec583f75b216e34d5a9478ad" target="_blank">ae6f5f4</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -574,23 +575,29 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Untracked files:
-    Untracked:  analysis/03_Differential_expression.Rmd
-    Untracked:  analysis/04_Sequencing_QC_normalisation.Rmd
-    Untracked:  analysis/05_Sequencing_EDA.Rmd
-    Untracked:  analysis/06_jDR.Rmd
-    Untracked:  data/miRNA_plasma.csv
-    Untracked:  data/miRNA_sf.csv
-    Untracked:  data/tRNA_plasma.csv
-    Untracked:  output/~$plasma_proDA_DE_results.xlsx
+    Untracked:  analysis/images/
+    Untracked:  analysis/references.bib
+    Untracked:  external_imgs/
+    Untracked:  model.hdf5
+    Untracked:  plasma_model.hdf5
 
 Unstaged changes:
-    Modified:   analysis/02_EDA.Rmd
-    Deleted:    analysis/03_DE_and_clustering.Rmd
-    Deleted:    analysis/04_Functional_enrichment.Rmd
-    Modified:   analysis/index.Rmd
-    Modified:   output/plasma_limma_DE_results_log2.xlsx
-    Modified:   output/plasma_proDA_DE_results.xlsx
-    Modified:   output/sf_proDA_DE_results.xlsx
+    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
+    Modified:   analysis/05_Sequencing_EDA.Rmd
+    Modified:   analysis/06_jDR.Rmd
+    Modified:   code/utility-functions.R
+    Modified:   data/plasma_lncRNA_data.rds
+    Modified:   data/plasma_miRNA_data.rds
+    Modified:   data/plasma_sequencing_info.csv
+    Modified:   data/plasma_sequencing_pheno.rds
+    Modified:   data/plasma_snRNA_data.rds
+    Modified:   data/plasma_snoRNA_data.rds
+    Modified:   data/plasma_tRNA_data.rds
+    Modified:   data/sf_lncRNA_data.rds
+    Modified:   data/sf_miRNA_data.rds
+    Modified:   data/sf_sequencing_pheno.rds
+    Modified:   data/sf_snRNA_data.rds
+    Modified:   data/sf_snoRNA_data.rds
 
 </code></pre>
 <p>
@@ -605,16 +612,96 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/06_jDR.Rmd</code>) and HTML
+(<code>docs/06_jDR.html</code>) files. If you’ve configured a remote Git
+repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
+in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/e34c9f9d885837b14673c528fea1cce3b9824a07/analysis/06_jDR.Rmd" target="_blank">e34c9f9</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-03
+</td>
+<td>
+Updated theme + additional analysis docs
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/c63c64ff60364617182a11660b1352d65c910cac/analysis/06_jDR.Rmd" target="_blank">c63c64f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Sequencing files created
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/c63c64ff60364617182a11660b1352d65c910cac/docs/06_jDR.html" target="_blank">c63c64f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-01
+</td>
+<td>
+Sequencing files created
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
 </div>
-<div id="load-libraries" class="section level2">
-<h2>Load libraries</h2>
+<div id="load-libraries" class="section level1">
+<h1>Load libraries</h1>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
@@ -624,22 +711,226 @@ There are no past versions. Publish this analysis with
 <pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(MOFA2)</code></pre>
+<pre><code>
+Attaching package: &#39;MOFA2&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:stats&#39;:
+
+    predict</code></pre>
 </div>
-<div id="load-data" class="section level2">
-<h2>Load data</h2>
-<pre class="r"><code>plasma_data &lt;- read.csv(&quot;./data/plasma_proteins.csv&quot;, row.names = 1) 
-colnames(plasma_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(plasma_data))
-  
-sf_data &lt;- read.csv(&quot;./data/sf_proteins.csv&quot;, row.names = 1)
-colnames(sf_data) &lt;- gsub(pattern = &quot;X&quot;, replacement = &quot;Sample_&quot;, x = colnames(sf_data))
+<div id="load-data" class="section level1">
+<h1>Load data</h1>
+<pre class="r"><code># Plasma 
+plasma_pheno &lt;- readRDS(&quot;./data/plasma_pheno.rds&quot;) 
+plasma_proteomics_data &lt;- readRDS(&quot;./data/plasma_data_norm.rds&quot;)
+plasma_miRNA_data &lt;- readRDS(&quot;./data/plasma_miRNA_data.rds&quot;) 
+plasma_lncRNA_data &lt;- readRDS(&quot;./data/plasma_lncRNA_data.rds&quot;)
+plasma_snRNA_data &lt;- readRDS(&quot;./data/plasma_snRNA_data.rds&quot;)
 
-plasma_pheno &lt;- read.csv(&quot;./data/plasma_pheno.csv&quot;)
-plasma_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, plasma_pheno$Sample.Number)
+# SF
+sf_pheno &lt;- readRDS(&quot;./data/sf_pheno.rds&quot;)
+sf_proteomics_data &lt;- readRDS(&quot;./data/sf_data_norm.rds&quot;)
+sf_miRNA_data &lt;- readRDS(&quot;./data/sf_miRNA_data.rds&quot;)
+sf_lncRNA_data &lt;- readRDS(&quot;./data/sf_lncRNA_data.rds&quot;)
+sf_snRNA_data &lt;- readRDS(&quot;./data/sf_snRNA_data.rds&quot;)</code></pre>
+</div>
+<div id="mofa" class="section level1">
+<h1>MOFA</h1>
+<div id="plasma" class="section level2">
+<h2>Plasma</h2>
+<pre class="r"><code>colnames(plasma_pheno)[5] &lt;- &quot;sample&quot;</code></pre>
+<pre class="r"><code>plasma_mofa_dat &lt;- list(proteomics = as.matrix(plasma_proteomics_data),
+                 miRNA = as.matrix(plasma_miRNA_data),
+                 lncRNA = as.matrix(plasma_lncRNA_data),
+                 snRNA = as.matrix(plasma_snRNA_data))</code></pre>
+<p>Create MOFAojbect:</p>
+<pre class="r"><code>MOFAobject &lt;- create_mofa(plasma_mofa_dat)</code></pre>
+<pre><code>Creating MOFA object from a list of matrices (features as rows, sample as columns)...</code></pre>
+<pre class="r"><code>print(MOFAobject)</code></pre>
+<pre><code>Untrained MOFA model with the following characteristics: 
+ Number of views: 4 
+ Views names: proteomics miRNA lncRNA snRNA 
+ Number of features (per view): 223 56 29 14 
+ Number of groups: 1 
+ Groups names: group1 
+ Number of samples (per group): 26 
+ </code></pre>
+<pre class="r"><code>plot_data_overview(MOFAobject)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Modify model parameters:</p>
+<pre class="r"><code># Scale views
+data_opts &lt;- get_default_data_options(MOFAobject)
+data_opts$scale_views &lt;- TRUE
+head(data_opts)</code></pre>
+<pre><code>$scale_views
+[1] TRUE
 
-sf_pheno &lt;- read.csv(&quot;./data/sf_pheno.csv&quot;)
-sf_pheno$Sample.Number &lt;- paste0(&quot;Sample_&quot;, sf_pheno$Sample.Number)</code></pre>
-<pre class="r"><code>rawData &lt;- log2(plasma_data) %&gt;%  as.data.frame() %&gt;%
-  gather() </code></pre>
+$scale_groups
+[1] FALSE
+
+$center_groups
+[1] TRUE
+
+$use_float32
+[1] FALSE
+
+$views
+[1] &quot;proteomics&quot; &quot;miRNA&quot;      &quot;lncRNA&quot;     &quot;snRNA&quot;     
+
+$groups
+[1] &quot;group1&quot;</code></pre>
+<pre class="r"><code># Set number of factors
+model_opts &lt;- get_default_model_options(MOFAobject)
+model_opts$num_factors &lt;- 6
+head(model_opts)</code></pre>
+<pre><code>$likelihoods
+proteomics      miRNA     lncRNA      snRNA 
+&quot;gaussian&quot; &quot;gaussian&quot; &quot;gaussian&quot; &quot;gaussian&quot; 
+
+$num_factors
+[1] 6
+
+$spikeslab_factors
+[1] FALSE
+
+$spikeslab_weights
+[1] TRUE
+
+$ard_factors
+[1] FALSE
+
+$ard_weights
+[1] TRUE</code></pre>
+<pre class="r"><code># Set training options
+train_opts &lt;- get_default_training_options(MOFAobject)
+train_opts$convergence_mode &lt;- &quot;slow&quot;
+head(train_opts)</code></pre>
+<pre><code>$maxiter
+[1] 1000
+
+$convergence_mode
+[1] &quot;slow&quot;
+
+$drop_factor_threshold
+[1] -1
+
+$verbose
+[1] FALSE
+
+$startELBO
+[1] 1
+
+$freqELBO
+[1] 5</code></pre>
+<p>Prepare MOFA object with modified parameters:</p>
+<pre class="r"><code>MOFAobject &lt;- prepare_mofa(
+  object = MOFAobject,
+  data_options = data_opts,
+  model_options = model_opts,
+  training_options = train_opts
+)</code></pre>
+<pre><code>Warning in prepare_mofa(object = MOFAobject, data_options = data_opts,
+model_options = model_opts, : Some view(s) have less than 15 features, MOFA will
+have little power to to learn meaningful factors for these view(s)....</code></pre>
+<pre><code>Checking data options...</code></pre>
+<pre><code>Checking training options...</code></pre>
+<pre><code>Checking model options...</code></pre>
+<p>Train model:</p>
+<pre class="r"><code>outfile &lt;- file.path(getwd(),&quot;plasma_model.hdf5&quot;)
+MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile)</code></pre>
+<pre><code>Warning: Output file C:/Users/Emily/Documents/GitHub/anderson-peffers_OA/plasma_model.hdf5 already exists, it will be replaced</code></pre>
+<pre><code>Connecting to the mofapy2 python package using reticulate (use_basilisk = FALSE)... 
+    Please make sure to manually specify the right python binary when loading R with reticulate::use_python(..., force=TRUE) or the right conda environment with reticulate::use_condaenv(..., force=TRUE)
+    If you prefer to let us automatically install a conda environment with &#39;mofapy2&#39; installed using the &#39;basilisk&#39; package, please use the argument &#39;use_basilisk = TRUE&#39;</code></pre>
+<pre><code>+ &quot;C:/Users/Emily/AppData/Local/r-miniconda/condabin/conda.bat&quot; &quot;create&quot; &quot;--yes&quot; &quot;--prefix&quot; &quot;C:/Users/Emily/AppData/Local/r-miniconda/envs/r-reticulate&quot; &quot;python=3.8&quot; &quot;numpy&quot; &quot;--quiet&quot; &quot;-c&quot; &quot;conda-forge&quot;</code></pre>
+<pre><code>Warning in run_mofa(MOFAobject, outfile): mofapy2_0.6.4 is not detected in the
+specified python binary, see reticulate::py_config(). Setting use_basilisk =
+TRUE...</code></pre>
+<pre><code>Connecting to the mofapy2 package using basilisk. 
+    Set &#39;use_basilisk&#39; to FALSE if you prefer to manually set the python binary using &#39;reticulate&#39;.</code></pre>
+<pre><code>Warning in .quality_control(object, verbose = verbose): Factor(s) 1, 2 are strongly correlated with the total number of expressed features for at least one of your omics. Such factors appear when there are differences in the total &#39;levels&#39; between your samples, *sometimes* because of poor normalisation in the preprocessing steps.</code></pre>
+<p>Add phenotype data to the model:</p>
+<pre class="r"><code>samples_metadata(MOFAobject.trained) &lt;- plasma_pheno</code></pre>
+<p>Visualise variance explained:</p>
+<pre class="r"><code>plot_variance_explained(
+  MOFAobject.trained, 
+  x = &quot;view&quot;, 
+  y = &quot;factor&quot;, 
+  plot_total = T
+)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-11-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Majority is from proteomics data - likely due to the higher number of
+features.</p>
+<p>Plot correlation between factors:</p>
+<pre class="r"><code>plot_factor_cor(MOFAobject.trained)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Correlation between factors and metadata:</p>
+<pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c(&quot;Day&quot;, &quot;Horse&quot;), 
+  plot=&quot;log_pval&quot;
+)</code></pre>
+<pre><code>Warning in correlate_factors_with_covariates(MOFAobject.trained, covariates =
+c(&quot;Day&quot;, : There are non-numeric values in the covariates data.frame, converting
+to numeric...</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 1 is correlated with day. Factors 5 and 6 are correlated with
+horse.</p>
+<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
+                  view = &quot;proteomics&quot;, 
+                  factor = 1, 
+                  nfeatures = 5,
+                  scale = T, 
+                  abs = T
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_weights(MOFAobject.trained,
+ #view = &quot;proteomics&quot;,
+ factor = 1,
+ nfeatures = 15,     # Top number of features to highlight
+ scale = T           # Scale weights from -1 to 1
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
+                  view = &quot;miRNA&quot;, 
+                  factor = 2, 
+                  nfeatures = 5,
+                  scale = T, 
+                  abs = T
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_factors(MOFAobject.trained, 
+  factors = c(1,2,3),
+  color_by = &quot;Day&quot;
+) </code></pre>
+<pre><code>Registered S3 method overwritten by &#39;GGally&#39;:
+  method from   
+  +.gg   ggplot2</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_data_heatmap(MOFAobject.trained, 
+  view = &quot;proteomics&quot;,
+  factor = 1,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = TRUE,
+  scale = &quot;row&quot;,
+  denoise = TRUE
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p &lt;- plot_factors(MOFAobject.trained, 
+  factors = c(1,2), 
+  color_by = &quot;Day&quot;,
+  shape_by = &quot;Horse&quot;,
+  dot_size = 2.5,
+  show_missing = T
+)
+
+p &lt;- p + 
+  geom_hline(yintercept=-1, linetype=&quot;dashed&quot;) +
+  geom_vline(xintercept=(-0.5), linetype=&quot;dashed&quot;)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -666,28 +957,46 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9     purrr_0.3.4    
- [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    ggplot2_3.3.6  
- [9] tidyverse_1.3.1 workflowr_1.7.0
+ [1] MOFA2_1.6.0     forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9    
+ [5] purrr_0.3.4     readr_2.1.2     tidyr_1.2.0     tibble_3.1.7   
+ [9] ggplot2_3.3.6   tidyverse_1.3.1
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.8.3     lubridate_1.8.0  getPass_0.2-2    ps_1.7.0        
- [5] assertthat_0.2.1 rprojroot_2.0.3  digest_0.6.29    utf8_1.2.2      
- [9] R6_2.5.1         cellranger_1.1.0 backports_1.4.1  reprex_2.0.1    
-[13] evaluate_0.15    httr_1.4.3       pillar_1.7.0     rlang_1.0.2     
-[17] readxl_1.4.0     rstudioapi_0.13  whisker_0.4      callr_3.7.0     
-[21] jquerylib_0.1.4  rmarkdown_2.14   munsell_0.5.0    broom_0.8.0     
-[25] compiler_4.2.0   httpuv_1.6.5     modelr_0.1.8     xfun_0.31       
-[29] pkgconfig_2.0.3  htmltools_0.5.2  tidyselect_1.1.2 fansi_1.0.3     
-[33] withr_2.5.0      crayon_1.5.1     tzdb_0.3.0       dbplyr_2.2.0    
-[37] later_1.3.0      grid_4.2.0       jsonlite_1.8.0   gtable_0.3.0    
-[41] lifecycle_1.0.1  DBI_1.1.2        git2r_0.30.1     magrittr_2.0.3  
-[45] scales_1.2.0     cli_3.3.0        stringi_1.7.6    fs_1.5.2        
-[49] promises_1.2.0.1 xml2_1.3.3       bslib_0.3.1      ellipsis_0.3.2  
-[53] generics_0.1.2   vctrs_0.4.1      tools_4.2.0      glue_1.6.2      
-[57] hms_1.1.1        processx_3.6.0   fastmap_1.1.0    yaml_2.3.5      
-[61] colorspace_2.0-3 rvest_1.0.2      knitr_1.39       haven_2.5.0     
-[65] sass_0.4.1      </code></pre>
+  [1] nlme_3.1-157         matrixStats_0.62.0   fs_1.5.2            
+  [4] lubridate_1.8.0      filelock_1.0.2       RColorBrewer_1.1-3  
+  [7] httr_1.4.3           rprojroot_2.0.3      tools_4.2.0         
+ [10] backports_1.4.1      bslib_0.3.1          utf8_1.2.2          
+ [13] R6_2.5.1             HDF5Array_1.24.1     uwot_0.1.11         
+ [16] DBI_1.1.2            BiocGenerics_0.42.0  colorspace_2.0-3    
+ [19] rhdf5filters_1.8.0   withr_2.5.0          GGally_2.1.2        
+ [22] mnormt_2.1.0         tidyselect_1.1.2     compiler_4.2.0      
+ [25] git2r_0.30.1         cli_3.3.0            rvest_1.0.2         
+ [28] basilisk.utils_1.8.0 xml2_1.3.3           DelayedArray_0.22.0 
+ [31] labeling_0.4.2       sass_0.4.1           scales_1.2.0        
+ [34] psych_2.2.5          rappdirs_0.3.3       digest_0.6.29       
+ [37] rmarkdown_2.14       basilisk_1.8.0       pkgconfig_2.0.3     
+ [40] htmltools_0.5.2      MatrixGenerics_1.8.0 highr_0.9           
+ [43] dbplyr_2.2.0         fastmap_1.1.0        rlang_1.0.2         
+ [46] readxl_1.4.0         rstudioapi_0.13      farver_2.1.0        
+ [49] jquerylib_0.1.4      generics_0.1.2       jsonlite_1.8.0      
+ [52] magrittr_2.0.3       Matrix_1.4-1         Rhdf5lib_1.18.2     
+ [55] Rcpp_1.0.8.3         munsell_0.5.0        S4Vectors_0.34.0    
+ [58] fansi_1.0.3          reticulate_1.25      lifecycle_1.0.1     
+ [61] stringi_1.7.6        whisker_0.4          yaml_2.3.5          
+ [64] Rtsne_0.16           rhdf5_2.40.0         plyr_1.8.7          
+ [67] grid_4.2.0           ggrepel_0.9.1        parallel_4.2.0      
+ [70] promises_1.2.0.1     crayon_1.5.1         dir.expiry_1.4.0    
+ [73] lattice_0.20-45      haven_2.5.0          cowplot_1.1.1       
+ [76] hms_1.1.1            knitr_1.39           pillar_1.7.0        
+ [79] reshape2_1.4.4       stats4_4.2.0         reprex_2.0.1        
+ [82] glue_1.6.2           evaluate_0.15        modelr_0.1.8        
+ [85] png_0.1-7            vctrs_0.4.1          tzdb_0.3.0          
+ [88] httpuv_1.6.5         cellranger_1.1.0     gtable_0.3.0        
+ [91] reshape_0.8.9        assertthat_0.2.1     xfun_0.31           
+ [94] broom_0.8.0          later_1.3.0          pheatmap_1.0.12     
+ [97] IRanges_2.30.0       corrplot_0.92        workflowr_1.7.0     
+[100] ellipsis_0.3.2       here_1.0.1          </code></pre>
+</div>
 </div>
 </div>
 

@@ -5,25 +5,27 @@ date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
+bibliography: references.bib
 ---
 
 # Load libraries
 
 ```{r, message=FALSE, warning=FALSE}
 
+source("./code/utility-functions.R") # load helper functions 
 library(tidyverse)
 library(edgeR)
 library(cowplot) # ggplot2 theme
-library(patchwork)
-source("./code/utility-functions.R") # load helper functions 
+library(viridis) # colour schemes
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(R.utils) # function to count zero values
+library(PCAtools) # pca & correlation plot
 
 ```
 
-
-
 # Phenotype
 
-First load the phenotype data:
+First load the phenotype and sequencing info data:
 
 ```{r}
 
@@ -37,25 +39,43 @@ plasma_sequencing_info <- read.csv("./data/plasma_sequencing_info.csv")
 sf_sequencing_info <- read.csv("./data/sf_sequencing_info.csv")
 
 
+```
+
+Process the phenotype and sequencing info tables and combine them:
+
+```{r}
+
 # Match pheno data to sequencing info
 plasma_pheno <- plasma_pheno[match(plasma_sequencing_info$customerID, plasma_pheno$Sample.Number),]
 sf_pheno <- sf_pheno[match(sf_sequencing_info$customerID, sf_pheno$Sample.Number),]
+
+
+# Convert sequencing info to numeric
+#plasma_sequencing_info[, 3:17] <- sapply(plasma_sequencing_info[, 3:17], as.numeric)
+#sf_sequencing_info[, 3:17] <- sapply(sf_sequencing_info[, 3:17], as.numeric)
 
 
 # Join sequencing and pheno information
 plasma_pheno <- cbind(plasma_pheno, plasma_sequencing_info)
 sf_pheno <- cbind(sf_pheno, sf_sequencing_info)
 
+
+# Process phenotype data to include a 'sample_' prefix in front of the sample IDs
+# Convert horse ID to a factor
+plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
+plasma_pheno$Horse <- as.factor(plasma_pheno$Horse)
+
+sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
+sf_pheno$Horse <- as.factor(sf_pheno$Horse)
+sf_pheno <- sf_pheno[,-8]
+
 ```
 
 Next, load and process each type of sequencing data.
 
-
 # miRNA
 
-The data was provided in CPM format. The reports TAmiRNA provided contain the raw counts for the miRNA. 
-To assess the normalisation the raw counts and the CPM normalised counts were both read in. 
-
+The data was provided in CPM format. The reports TAmiRNA provided contain the raw counts for the miRNA. To assess the normalisation the raw counts and the CPM normalised counts were both read in.
 
 ## Plasma
 
@@ -74,22 +94,17 @@ colnames(plasma_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = 
 
 ```
 
-
-Process phenotype table and make sure it is in the same order as the raw data: 
+Process raw data and make sure its in the same order as the phenotype table:
 
 ```{r}
 
-plasma_pheno$Sample.Number <- paste0("Sample_", plasma_pheno$Sample.Number)
-plasma_pheno$Horse <- as.factor(plasma_pheno$Horse)
-plasma_pheno <- plasma_pheno[match(colnames(plasma_miRNA_data),plasma_pheno$Sample.Number),]
-
+plasma_miRNA_data <- plasma_miRNA_data[,match(plasma_pheno$Sample.Number, colnames(plasma_miRNA_data))]
 
 ```
 
-
 ### Normalisation
 
-Manually applied TMM normalisation then converted the counts into CPM. 
+Manually applied TMM normalisation then converted the counts into CPM.
 
 ```{r}
 
@@ -101,11 +116,9 @@ raw_counts_CPM_TMM <- cpm(plasma_miRNA_data_DGE_TMM, log=FALSE)
 
 ```
 
-
 ### Plot data
 
-Compared the distribution of the data provided to the TMM normalised CPM values. 
-
+Compared the distribution of the data provided to the TMM normalised CPM values.
 
 ```{r, message=FALSE}
 
@@ -139,7 +152,6 @@ bp_raw_counts_CPM <- gg_boxplot(raw_counts_CPM,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_plasma_miRNA_data
@@ -149,9 +161,7 @@ bp_raw_counts_CPM
 
 ```
 
-
-
-## Synovial fluid 
+## Synovial fluid
 
 ### Read data in
 
@@ -163,16 +173,13 @@ colnames(sf_miRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = coln
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
+Process raw data and make sure its in the same order as the phenotype table:
 
 ```{r}
 
-sf_pheno$Sample.Number <- paste0("Sample_", sf_pheno$Sample.Number)
-sf_pheno$Horse <- as.factor(sf_pheno$Horse)
-sf_pheno <- sf_pheno[match(colnames(sf_miRNA_data),sf_pheno$Sample.Number),]
+sf_miRNA_data <- sf_miRNA_data[,match(sf_pheno$Sample.Number, colnames(sf_miRNA_data))]
 
 ```
-
 
 ### Plot data
 
@@ -187,19 +194,17 @@ bp_sf_miRNA_data <- gg_boxplot(sf_miRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_sf_miRNA_data
 
 ```
 
-
 # lncRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the lncRNA, snoRNA, snRNA, tRNA.
 
-## Plasma: 
+## Plasma:
 
 ### Read data in
 
@@ -211,14 +216,13 @@ colnames(plasma_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x =
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
-  
+Process raw data and make sure its in the same order as the phenotype table:
+
 ```{r}
 
-plasma_pheno <- plasma_pheno[match(colnames(plasma_lncRNA_data),plasma_pheno$Sample.Number),]
+plasma_lncRNA_data <- plasma_lncRNA_data[,match(plasma_pheno$Sample.Number, colnames(plasma_lncRNA_data))]
 
 ```
-
 
 Look at the distribution of the data provided...
 
@@ -231,15 +235,13 @@ bp_plasma_lncRNA_data <- gg_boxplot(plasma_lncRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_plasma_lncRNA_data
 
 ```
 
-
-## Synovial fluid: 
+## Synovial fluid:
 
 ### Read data in
 
@@ -251,14 +253,13 @@ colnames(sf_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = col
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
-  
+Process raw data and make sure its in the same order as the phenotype table:
+
 ```{r}
 
-sf_pheno <- sf_pheno[match(colnames(sf_lncRNA_data),sf_pheno$Sample.Number),]
+sf_lncRNA_data <- sf_lncRNA_data[,match(sf_pheno$Sample.Number, colnames(sf_lncRNA_data))]
 
 ```
-
 
 Look at the distribution of the data provided...
 
@@ -271,20 +272,17 @@ bp_sf_lncRNA_data <- gg_boxplot(sf_lncRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_sf_lncRNA_data
 
 ```
 
-
-
 # snoRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snoRNA, snoRNA, snRNA, tRNA.
 
-## Plasma: 
+## Plasma:
 
 ### Read data in
 
@@ -296,14 +294,13 @@ colnames(plasma_snoRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x =
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
-  
+Process raw data and make sure its in the same order as the phenotype table:
+
 ```{r}
 
-plasma_pheno <- plasma_pheno[match(colnames(plasma_snoRNA_data),plasma_pheno$Sample.Number),]
+plasma_snoRNA_data <- plasma_snoRNA_data[,match(plasma_pheno$Sample.Number, colnames(plasma_snoRNA_data))]
 
 ```
-
 
 Look at the distribution of the data provided...
 
@@ -316,15 +313,13 @@ bp_plasma_snoRNA_data <- gg_boxplot(plasma_snoRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_plasma_snoRNA_data
 
 ```
 
-
-## Synovial fluid: 
+## Synovial fluid:
 
 ### Read data in
 
@@ -336,14 +331,13 @@ colnames(sf_snoRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = col
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
-  
+Process raw data and make sure its in the same order as the phenotype table:
+
 ```{r}
 
-sf_pheno <- sf_pheno[match(colnames(sf_snoRNA_data),sf_pheno$Sample.Number),]
+sf_snoRNA_data <- sf_snoRNA_data[,match(sf_pheno$Sample.Number, colnames(sf_snoRNA_data))]
 
 ```
-
 
 Look at the distribution of the data provided...
 
@@ -356,19 +350,17 @@ bp_sf_snoRNA_data <- gg_boxplot(sf_snoRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_sf_snoRNA_data
 
 ```
 
-
 # snRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snRNA, snRNA, snRNA, tRNA.
 
-## Plasma: 
+## Plasma:
 
 ### Read data in
 
@@ -380,14 +372,13 @@ colnames(plasma_snRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = 
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
-  
+Process raw data and make sure its in the same order as the phenotype table:
+
 ```{r}
 
-plasma_pheno <- plasma_pheno[match(colnames(plasma_snRNA_data),plasma_pheno$Sample.Number),]
+plasma_snRNA_data <- plasma_snRNA_data[,match(plasma_pheno$Sample.Number, colnames(plasma_snRNA_data))]
 
 ```
-
 
 Look at the distribution of the data provided...
 
@@ -400,15 +391,13 @@ bp_plasma_snRNA_data <- gg_boxplot(plasma_snRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_plasma_snRNA_data
 
 ```
 
-
-## Synovial fluid: 
+## Synovial fluid:
 
 ### Read data in
 
@@ -420,14 +409,13 @@ colnames(sf_snRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = coln
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
-  
+Process raw data and make sure its in the same order as the phenotype table:
+
 ```{r}
 
-sf_pheno <- sf_pheno[match(colnames(sf_snRNA_data),sf_pheno$Sample.Number),]
+sf_snRNA_data <- sf_snRNA_data[,match(sf_pheno$Sample.Number, colnames(sf_snRNA_data))]
 
 ```
-
 
 Look at the distribution of the data provided...
 
@@ -440,20 +428,17 @@ bp_sf_snRNA_data <- gg_boxplot(sf_snRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_sf_snRNA_data
 
 ```
 
-
-
 # tRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the tRNA, tRNA, tRNA, tRNA.
 
-## Plasma: 
+## Plasma:
 
 ### Read data in
 
@@ -465,14 +450,13 @@ colnames(plasma_tRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = c
 
 ```
 
-Process phenotype table and make sure it is in the same order as the raw data: 
-  
+Process raw data and make sure its in the same order as the phenotype table:
+
 ```{r}
 
-plasma_pheno <- plasma_pheno[match(colnames(plasma_tRNA_data),plasma_pheno$Sample.Number),]
+plasma_tRNA_data <- plasma_tRNA_data[,match(plasma_pheno$Sample.Number, colnames(plasma_tRNA_data))]
 
 ```
-
 
 Look at the distribution of the data provided...
 
@@ -485,7 +469,6 @@ bp_plasma_tRNA_data <- gg_boxplot(plasma_tRNA_data,
 
 ```
 
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 bp_plasma_tRNA_data
@@ -493,29 +476,245 @@ bp_plasma_tRNA_data
 ```
 
 
-# Write R data object outputs
+# Additional QC - missing values
+
+## PCA
+
+A problem with this analysis is the high number of zeroes present in the data. These could be biological zeroes or sampling zeroes. This problem has been reviewed in depth [elsewhere](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7568192/) [@silverman2020].
+
+
+It is normal in sequencing analysis to add a small constant to the count data before log2 transforming it. In the case of sampling zeroes adding a small constant to all the data before log-transforming would be inappropriate. The plasma miRNA data will be used to demonstrate this problem below.
+
+Create two dataframes, one a log transformed matrix with all the zeroes removed, the other a matrix with a small constant added before log transformation. 
 
 ```{r}
 
-# Plasma 
-saveRDS(plasma_pheno, "./data/plasma_sequencing_pheno.rds")
-saveRDS(plasma_miRNA_data, "./data/plasma_miRNA_data.rds")
-saveRDS(plasma_lncRNA_data, "./data/plasma_lncRNA_data.rds")
-saveRDS(plasma_snoRNA_data, "./data/plasma_snoRNA_data.rds")
-saveRDS(plasma_snRNA_data, "./data/plasma_snRNA_data.rds")
-saveRDS(plasma_tRNA_data, "./data/plasma_tRNA_data.rds")
+# Log2 transform data then remove the Inf values resulting from log2 transforming 0
+# Inf2NA is a custom helper function
+plasma_miRNA_data_log2 <- plasma_miRNA_data %>% log2(.) %>% Inf2NA(.)
 
-# SF
-saveRDS(sf_pheno, "./data/sf_sequencing_pheno.rds")
-saveRDS(sf_miRNA_data, "./data/sf_miRNA_data.rds")
-saveRDS(sf_lncRNA_data, "./data/sf_lncRNA_data.rds")
-saveRDS(sf_snoRNA_data, "./data/sf_snoRNA_data.rds")
-saveRDS(sf_snRNA_data, "./data/sf_snRNA_data.rds")
 
+# Add a small constant to the data then log transform
+plasma_miRNA_data_log2_constant <- log2(plasma_miRNA_data+1)
+
+```
+
+
+PCAtools requires the row names in the metadata to be the same as the column names.
+
+```{r}
+
+row.names(plasma_pheno) <- plasma_pheno$Sample.Number
+
+```
+
+
+Carry out PCA on the log2 transformed data and the log2+1 transformed data:
+
+```{r}
+
+# Log2
+plasma_miRNA_data_log2_PCA <- pca(na.omit(plasma_miRNA_data_log2), metadata = plasma_pheno, scale = TRUE, center = TRUE)
+
+# Log2+1
+plasma_miRNA_data_log2_constant_PCA <- pca(na.omit(plasma_miRNA_data_log2_constant), metadata = plasma_pheno, scale = TRUE, center = TRUE)
+
+```
+
+
+Now create PCA plots and correlation plots for the data. 
+
+```{r, message=FALSE, warning=FALSE}
+
+# Log2
+
+# Correlation plot
+log2_corplot <- eigencorplotPCA(plasma_miRNA_data_log2_PCA,
+    metavars = c("Day", "Horse", "Date", "miRNA")) 
+
+
+# PCA plot
+log2_PCAplot <- plotPCA(plasma_miRNA_data_log2_PCA,
+        PCs=c(1,2),
+        colour.data=plasma_pheno$Day,
+        shape.data=plasma_pheno$Horse,
+        colour.lab="Day",
+        shape.lab="Horse")
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+# Log2 + 1
+
+# Correlation plot
+log2_constant_corplot <- eigencorplotPCA(plasma_miRNA_data_log2_constant_PCA,
+    metavars = c("Day", "Horse", "Date", "miRNA")) 
+
+
+# PCA plot
+log2_constant_PCAplot <- plotPCA(plasma_miRNA_data_log2_constant_PCA,
+        PCs=c(1,2),
+        colour.data=plasma_pheno$Day,
+        shape.data=plasma_pheno$Horse,
+        colour.lab="Day",
+        shape.lab="Horse")
+
+```
+
+
+```{r, echo=FALSE, fig.height = 13, fig.width = 9, fig.align="center"}
+
+ggarrange(ggarrange(log2_PCAplot, log2_constant_PCAplot, nrow = 1, ncol = 2, labels = c("A", "B")), log2_corplot, log2_constant_corplot,
+          nrow = 3, 
+          ncol = 1,
+          labels = c("", "C", "D"))
+
+```
+
+
+## Pearson's correlation
+
+Pearson's correlation of small RNA sequencing depth vs number of missing values:
+
+```{r}
+
+cor.test(colSums(isZero(plasma_miRNA_data)), plasma_pheno$miRNA, method = "pearson")
+
+```
+
+
+### Plasma 
+
+```{r, echo=FALSE, message=FALSE, fig.height = 9, fig.width = 7, fig.align="center"}
+
+# miRNA
+plasma_miRNA_scatter <- depth_by_missing_scatter(plasma_miRNA_data,
+                                          read.count=plasma_pheno$miRNA,
+                                          x.lab="# missing plasma miRNA values",
+                                          y.lab="# plasma miRNA reads")
+
+
+# lncRNA
+plasma_lncRNA_scatter <- depth_by_missing_scatter(plasma_lncRNA_data,
+                                                 read.count=plasma_pheno$lncRNA,
+                                                 x.lab="# missing plasma lncRNA values",
+                                                 y.lab="# plasma lncRNA reads")
+
+
+# snoRNA
+plasma_snoRNA_scatter <- depth_by_missing_scatter(plasma_snoRNA_data,
+                                                 read.count=plasma_pheno$snoRNA,
+                                                 x.lab="# missing plasma snoRNA values",
+                                                 y.lab="# plasma snoRNA reads")
+
+# snRNA
+plasma_snRNA_scatter <- depth_by_missing_scatter(plasma_snRNA_data,
+                                                 read.count=plasma_pheno$snRNA,
+                                                 x.lab="# missing plasma snRNA values",
+                                                 y.lab="# plasma snRNA reads")
+
+# tRNA
+plasma_tRNA_scatter <- depth_by_missing_scatter(plasma_tRNA_data,
+                                                 read.count=plasma_pheno$tRNA,
+                                                 x.lab="# missing plasma tRNA values",
+                                                 y.lab="# plasma tRNA reads")
+
+
+ggarrange(plasma_miRNA_scatter, plasma_lncRNA_scatter, plasma_snoRNA_scatter, plasma_snRNA_scatter, plasma_tRNA_scatter,
+          nrow = 3, 
+          ncol = 2,
+          labels = c("A", "B", "C", "D", "E"))
 
 ```
 
 
 
 
+### Synovial fluid
 
+```{r, echo=FALSE, message=FALSE, fig.height = 6, fig.width = 7, fig.align="center"}
+
+# miRNA
+sf_miRNA_scatter <- depth_by_missing_scatter(sf_miRNA_data,
+                                                 read.count=sf_pheno$miRNA,
+                                                 x.lab="# missing sf miRNA values",
+                                                 y.lab="# sf miRNA reads")
+
+
+# lncRNA
+sf_lncRNA_scatter <- depth_by_missing_scatter(sf_lncRNA_data,
+                                                  read.count=sf_pheno$lncRNA,
+                                                  x.lab="# missing sf lncRNA values",
+                                                  y.lab="# sf lncRNA reads")
+
+
+# snoRNA
+sf_snoRNA_scatter <- depth_by_missing_scatter(sf_snoRNA_data,
+                                                  read.count=sf_pheno$snoRNA,
+                                                  x.lab="# missing sf snoRNA values",
+                                                  y.lab="# sf snoRNA reads")
+
+# snRNA
+sf_snRNA_scatter <- depth_by_missing_scatter(sf_snRNA_data,
+                                                 read.count=sf_pheno$snRNA,
+                                                 x.lab="# missing sf snRNA values",
+                                                 y.lab="# sf snRNA reads")
+
+
+ggarrange(sf_miRNA_scatter, sf_lncRNA_scatter, sf_snoRNA_scatter, sf_snRNA_scatter,
+          nrow = 2, 
+          ncol = 2,
+          labels = c("A", "B", "C", "D"))
+
+```
+
+
+
+## Filter data by missingness 
+
+```{r}
+
+# Plasma
+plasma_miRNA_data <- plasma_miRNA_data[rowSums(plasma_miRNA_data>0)>=round(ncol(plasma_miRNA_data)*0.6),]
+plasma_lncRNA_data <- plasma_lncRNA_data[rowSums(plasma_lncRNA_data>0)>=round(ncol(plasma_lncRNA_data)*0.6),]
+plasma_snoRNA_data <- plasma_snoRNA_data[rowSums(plasma_snoRNA_data>0)>=round(ncol(plasma_snoRNA_data)*0.6),]
+plasma_snRNA_data <- plasma_snRNA_data[rowSums(plasma_snRNA_data>0)>=round(ncol(plasma_snRNA_data)*0.6),]
+plasma_tRNA_data <- plasma_tRNA_data[rowSums(plasma_tRNA_data>0)>=round(ncol(plasma_tRNA_data)*0.6),]
+
+# SF
+sf_miRNA_data <- sf_miRNA_data[rowSums(sf_miRNA_data>0)>=round(ncol(sf_miRNA_data)*0.6),]
+sf_lncRNA_data <- sf_lncRNA_data[rowSums(sf_lncRNA_data>0)>=round(ncol(sf_lncRNA_data)*0.6),]
+sf_snoRNA_data <- sf_snoRNA_data[rowSums(sf_snoRNA_data>0)>=round(ncol(sf_snoRNA_data)*0.6),]
+sf_snRNA_data <- sf_snRNA_data[rowSums(sf_snRNA_data>0)>=round(ncol(sf_snRNA_data)*0.6),]
+
+```
+
+
+# Write R data object outputs
+
+Now that data has been filtered for sampling bias, log2 normalise and add constant to filtered data: 
+
+```{r}
+
+# Plasma 
+saveRDS(plasma_pheno, "./data/plasma_sequencing_pheno.rds")
+saveRDS(log2(plasma_miRNA_data+1), "./data/plasma_miRNA_data.rds")
+saveRDS(log2(plasma_lncRNA_data+1), "./data/plasma_lncRNA_data.rds")
+saveRDS(log2(plasma_snoRNA_data+1), "./data/plasma_snoRNA_data.rds")
+saveRDS(log2(plasma_snRNA_data+1), "./data/plasma_snRNA_data.rds")
+saveRDS(log2(plasma_tRNA_data+1), "./data/plasma_tRNA_data.rds")
+
+# SF
+saveRDS(sf_pheno, "./data/sf_sequencing_pheno.rds")
+saveRDS(log2(sf_miRNA_data+1), "./data/sf_miRNA_data.rds")
+saveRDS(log2(sf_lncRNA_data+1), "./data/sf_lncRNA_data.rds")
+saveRDS(log2(sf_snoRNA_data+1), "./data/sf_snoRNA_data.rds")
+saveRDS(log2(sf_snRNA_data+1), "./data/sf_snRNA_data.rds")
+
+
+```
+
+
+
+# References

@@ -1,18 +1,398 @@
 ---
-title: "Exploratory data analysis - proteomics data"
+title: "Exploratory data analysis - sequencing data"
 author: "ejjohnson93"
 date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
+bibliography: references.bib
 ---
 
-## Load libraries
+# Load libraries
+
+```{r, message=FALSE, warning=FALSE}
+
+source("./code/utility-functions.R") # load helper functions 
+library(tidyverse)
+library(cowplot) # plot theme
+library(mixOmics) # multi-level PCA
+library(viridis) # colour schemes
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(PCAtools) # pca & correlation plot
+
+```
+
+# Load data
 
 ```{r}
 
-library(tidyverse)
+# Plasma 
+plasma_pheno_seq <- readRDS("./data/plasma_sequencing_pheno.rds") 
+plasma_miRNA_data <- readRDS("./data/plasma_miRNA_data.rds") 
+plasma_lncRNA_data <- readRDS("./data/plasma_lncRNA_data.rds")
+plasma_snoRNA_data <- readRDS("./data/plasma_snoRNA_data.rds")
+plasma_snRNA_data <- readRDS("./data/plasma_snRNA_data.rds")
+plasma_tRNA_data <- readRDS("./data/plasma_tRNA_data.rds")
+
+# SF
+sf_pheno_seq <- readRDS("./data/sf_sequencing_pheno.rds")
+sf_miRNA_data <- readRDS("./data/sf_miRNA_data.rds")
+sf_lncRNA_data <- readRDS("./data/sf_lncRNA_data.rds")
+sf_snoRNA_data <- readRDS("./data/sf_snoRNA_data.rds")
+sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
+
 
 ```
+
+
+# miRNA
+
+## PCA
+
+### Plasma
+
+
+```{r}
+
+row.names(plasma_pheno_seq) <- plasma_pheno_seq$Sample.Number
+
+
+```
+
+
+```{r}
+
+miRNA_plasma_pca_res <- pca(na.omit(plasma_miRNA_data), metadata = plasma_pheno_seq, scale = TRUE, center = TRUE)
+
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+plasma_miRNA_PCA <- plotPCA(miRNA_plasma_pca_res,
+        PCs=c(1,2),
+        colour.data=plasma_pheno_seq$Day,
+        shape.data=plasma_pheno_seq$Horse,
+        colour.lab="Day",
+        shape.lab="Horse")
+
+plasma_miRNA_PCA
+
+
+# Correlation plot
+plasma_miRNA_corplot <- eigencorplotPCA(miRNA_plasma_pca_res,
+    metavars = c("Day", "Horse", "Date", "miRNA")) 
+
+
+plasma_miRNA_corplot
+
+```
+
+
+### SF
+
+
+```{r}
+
+row.names(sf_pheno_seq) <- sf_pheno_seq$Sample.Number
+
+
+```
+
+
+```{r}
+
+miRNA_sf_pca_res <- pca(na.omit(sf_miRNA_data), metadata = sf_pheno_seq, scale = TRUE, center = TRUE)
+
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+sf_miRNA_PCA <- plotPCA(miRNA_sf_pca_res,
+                            PCs=c(1,2),
+                            colour.data=sf_pheno_seq$Day,
+                            shape.data=sf_pheno_seq$Horse,
+                            colour.lab="Day",
+                            shape.lab="Horse")
+
+sf_miRNA_PCA
+
+
+# Correlation plot
+sf_miRNA_corplot <- eigencorplotPCA(miRNA_sf_pca_res,
+                                        metavars = c("Day", "Horse", "Date", "miRNA", "Group")) 
+
+
+sf_miRNA_corplot
+
+```
+
+
+## Multi-level PCA
+
+### Plasma
+
+```{r, fig.show="hide", message=FALSE}
+
+plasma_miRNA_ml_PCA <- multi_level_pca(na.omit(plasma_miRNA_data),
+                multilevel = plasma_pheno_seq$Horse,
+                group = plasma_pheno_seq$Day, group.lab = "Day", title = "miRNA - Plasma multi-level PCA")
+
+
+```
+
+```{r}
+
+plasma_miRNA_ml_PCA
+
+```
+
+
+### SF
+
+```{r, fig.show="hide", message=FALSE}
+
+sf_miRNA_ml_PCA <- multi_level_pca(na.omit(sf_miRNA_data),
+                multilevel = sf_pheno_seq$Horse,
+                group = sf_pheno_seq$Day, group.lab = "Day", title = "miRNA - Synovial fluid multi-level PCA")
+
+
+```
+
+```{r}
+
+sf_miRNA_ml_PCA
+
+```
+
+
+
+# lncRNA
+
+## PCA
+
+### Plasma
+
+
+```{r}
+
+lncRNA_plasma_pca_res <- pca(na.omit(plasma_lncRNA_data), metadata = plasma_pheno_seq, scale = TRUE, center = TRUE)
+
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+plasma_lncRNA_PCA <- plotPCA(lncRNA_plasma_pca_res,
+                            PCs=c(1,2),
+                            colour.data=plasma_pheno_seq$Day,
+                            shape.data=plasma_pheno_seq$Horse,
+                            colour.lab="Day",
+                            shape.lab="Horse")
+
+plasma_lncRNA_PCA
+
+
+# Correlation plot
+plasma_lncRNA_corplot <- eigencorplotPCA(lncRNA_plasma_pca_res,
+                                        metavars = c("Day", "Horse", "Date", "lncRNA")) 
+
+
+plasma_lncRNA_corplot
+
+```
+
+
+### SF
+
+
+```{r}
+
+lncRNA_sf_pca_res <- pca(na.omit(sf_lncRNA_data), metadata = sf_pheno_seq, scale = TRUE, center = TRUE)
+
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+sf_lncRNA_PCA <- plotPCA(lncRNA_sf_pca_res,
+                        PCs=c(1,2),
+                        colour.data=sf_pheno_seq$Day,
+                        shape.data=sf_pheno_seq$Horse,
+                        colour.lab="Day",
+                        shape.lab="Horse")
+
+sf_lncRNA_PCA
+
+
+# Correlation plot
+sf_lncRNA_corplot <- eigencorplotPCA(lncRNA_sf_pca_res,
+                                    metavars = c("Day", "Horse", "Date", "lncRNA", "Group")) 
+
+
+sf_lncRNA_corplot
+
+```
+
+
+## Multi-level PCA
+
+### Plasma
+
+```{r, fig.show="hide", message=FALSE}
+
+plasma_lncRNA_ml_PCA <- multi_level_pca(na.omit(plasma_lncRNA_data),
+                                       multilevel = plasma_pheno_seq$Horse,
+                                       group = plasma_pheno_seq$Day, group.lab = "Day", title = "lncRNA - Plasma multi-level PCA")
+
+
+```
+
+```{r}
+
+plasma_lncRNA_ml_PCA
+
+```
+
+
+### SF
+
+```{r, fig.show="hide", message=FALSE}
+
+sf_lncRNA_ml_PCA <- multi_level_pca(na.omit(sf_lncRNA_data),
+                                   multilevel = sf_pheno_seq$Horse,
+                                   group = sf_pheno_seq$Day, group.lab = "Day", title = "lncRNA - Synovial fluid multi-level PCA")
+
+```
+
+```{r}
+
+sf_lncRNA_ml_PCA
+
+```
+
+
+# snRNA
+
+## PCA
+
+### Plasma
+
+
+```{r}
+
+snRNA_plasma_pca_res <- pca(na.omit(plasma_snRNA_data), metadata = plasma_pheno_seq, scale = TRUE, center = TRUE)
+
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+plasma_snRNA_PCA <- plotPCA(snRNA_plasma_pca_res,
+                             PCs=c(1,2),
+                             colour.data=plasma_pheno_seq$Day,
+                             shape.data=plasma_pheno_seq$Horse,
+                             colour.lab="Day",
+                             shape.lab="Horse")
+
+plasma_snRNA_PCA
+
+
+# Correlation plot
+plasma_snRNA_corplot <- eigencorplotPCA(snRNA_plasma_pca_res,
+                                         metavars = c("Day", "Horse", "Date", "snRNA")) 
+
+
+plasma_snRNA_corplot
+
+```
+
+
+### SF
+
+
+```{r}
+
+snRNA_sf_pca_res <- pca(na.omit(sf_snRNA_data), metadata = sf_pheno_seq, scale = TRUE, center = TRUE)
+
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+sf_snRNA_PCA <- plotPCA(snRNA_sf_pca_res,
+                         PCs=c(1,2),
+                         colour.data=sf_pheno_seq$Day,
+                         shape.data=sf_pheno_seq$Horse,
+                         colour.lab="Day",
+                         shape.lab="Horse")
+
+sf_snRNA_PCA
+
+
+# Correlation plot
+sf_snRNA_corplot <- eigencorplotPCA(snRNA_sf_pca_res,
+                                     metavars = c("Day", "Horse", "Date", "snRNA", "Group")) 
+
+
+sf_snRNA_corplot
+
+```
+
+
+## Multi-level PCA
+
+### Plasma
+
+```{r, fig.show="hide", message=FALSE}
+
+plasma_snRNA_ml_PCA <- multi_level_pca(na.omit(plasma_snRNA_data),
+                                        multilevel = plasma_pheno_seq$Horse,
+                                        group = plasma_pheno_seq$Day, group.lab = "Day", title = "snRNA - Plasma multi-level PCA")
+
+
+```
+
+```{r}
+
+plasma_snRNA_ml_PCA
+
+```
+
+
+### SF
+
+```{r, fig.show="hide", message=FALSE}
+
+sf_snRNA_ml_PCA <- multi_level_pca(na.omit(sf_snRNA_data),
+                                    multilevel = sf_pheno_seq$Horse,
+                                    group = sf_pheno_seq$Day, group.lab = "Day", title = "snRNA - Synovial fluid multi-level PCA")
+
+```
+
+```{r}
+
+sf_snRNA_ml_PCA
+
+```
+
+
+# Conclusions
+
+Will not include snoRNA data in clustering analysis due to extremely high proportion of missing values (only 3 rows in SF data and plasma data after filtering). 
+Notable perhaps that URS00006ACE58_9796 and URS000068B4BE_9796 present in both.
 
 
