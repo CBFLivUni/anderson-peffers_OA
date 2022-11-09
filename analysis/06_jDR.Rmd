@@ -13,6 +13,8 @@ editor_options:
 
 library(tidyverse)
 library(MOFA2)
+library(cowplot) # plot theme
+library(viridis) # colour schemes
 
 ```
 
@@ -95,6 +97,8 @@ head(model_opts)
 # Set training options
 train_opts <- get_default_training_options(MOFAobject)
 train_opts$convergence_mode <- "slow"
+train_opts$seed <- 123
+train_opts$maxiter <- 3000
 head(train_opts)
 
 ```
@@ -147,7 +151,7 @@ plot_variance_explained(
 
 ```
 
-Majority is from proteomics data - likely due to the higher number of features.
+Majority is from proteomics data - likely due to the higher number of features. 
 
 
 Plot correlation between factors:
@@ -166,7 +170,14 @@ Correlation between factors and metadata:
 
 correlate_factors_with_covariates(MOFAobject.trained, 
   covariates = c("Day", "Horse"), 
-  plot="log_pval"
+  plot="log_pval", 
+  alpha="0.05" # p-value threshold
+)
+
+
+correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c("Day", "Horse"), 
+  plot="r"
 )
 
 
@@ -181,29 +192,47 @@ Factor 1 is correlated with day. Factors 5 and 6 are correlated with horse.
 plot_top_weights(MOFAobject.trained, 
                   view = "proteomics", 
                   factor = 1, 
-                  nfeatures = 5,
+                  nfeatures = 10,
                   scale = T, 
                   abs = T
 )
 
 ```
 
+
+Plot weights for factor 1:
+
 ```{r}
 
 plot_weights(MOFAobject.trained,
- #view = "proteomics",
+ view = "proteomics",
  factor = 1,
- nfeatures = 15,     # Top number of features to highlight
- scale = T           # Scale weights from -1 to 1
+ nfeatures = 50,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
 )
 
+
+plot_weights(MOFAobject.trained,
+ view = "miRNA",
+ factor = 1,
+ nfeatures = 25,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)
+
+
+
 ```
+
+The distribution of weights for the top ranked proteins contributing towards factor 1 are heavily negatively skewed. Only Q28377, F7DZE7 and A0A5F5PWX5 are positively associated in the top 50. If the weights for miRNA are plotted it can be seen their contribution to factor 1 is low overall, as the weights range from -0.001 to 0.001.
+
+
+
 
 ```{r}
 
 plot_top_weights(MOFAobject.trained, 
                   view = "miRNA", 
-                  factor = 2, 
+                  factor = 3, 
                   nfeatures = 5,
                   scale = T, 
                   abs = T
@@ -223,7 +252,15 @@ plot_factors(MOFAobject.trained,
 ```
 
 
+
+Create heatmap for proteomics data:
+
 ```{r}
+
+# Create annotation for heatmap
+my_sample_col <- data.frame(Day = plasma_pheno$Day)
+rownames(my_sample_col) <- colnames(plasma_proteomics_data)
+
 
 plot_data_heatmap(MOFAobject.trained, 
   view = "proteomics",
@@ -232,11 +269,14 @@ plot_data_heatmap(MOFAobject.trained,
   cluster_rows = TRUE, cluster_cols = TRUE,
   show_rownames = TRUE, show_colnames = TRUE,
   scale = "row",
-  denoise = TRUE
+  denoise = TRUE, 
+  annotation_col = my_sample_col
 )
 
 ```
 
+
+Plot factors 1 and 2 together (equivalent to PCA):
 
 ```{r}
 
@@ -248,8 +288,277 @@ p <- plot_factors(MOFAobject.trained,
   show_missing = T
 )
 
-p <- p + 
-  geom_hline(yintercept=-1, linetype="dashed") +
-  geom_vline(xintercept=(-0.5), linetype="dashed")
+p
 
 ```
+
+
+Project the samples onto factor 1 for each time point.
+
+```{r}
+
+# Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$day_group <- as.factor(plasma_pheno$Day)
+
+plot_factor(MOFAobject.trained, 
+  factors = 1, 
+  color_by = "day_group",
+  add_violin = TRUE,
+  dodge = TRUE
+)
+```
+
+
+
+## Synovial fluid
+
+```{r}
+
+colnames(sf_pheno)[6] <- "sample"
+
+```
+
+```{r}
+
+sf_mofa_dat <- list(proteomics = as.matrix(sf_proteomics_data),
+                        miRNA = as.matrix(sf_miRNA_data),
+                        lncRNA = as.matrix(sf_lncRNA_data),
+                        snRNA = as.matrix(sf_snRNA_data))
+
+```
+
+
+Create MOFAojbect:
+  
+```{r}
+
+MOFAobject <- create_mofa(sf_mofa_dat)
+print(MOFAobject)
+
+```
+
+
+```{r}
+
+plot_data_overview(MOFAobject)
+
+```
+
+
+Modify model parameters: 
+  
+```{r}
+
+# Scale views
+data_opts <- get_default_data_options(MOFAobject)
+data_opts$scale_views <- TRUE
+head(data_opts)
+
+
+# Set number of factors
+model_opts <- get_default_model_options(MOFAobject)
+model_opts$num_factors <- 6
+head(model_opts)
+
+
+# Set training options
+train_opts <- get_default_training_options(MOFAobject)
+train_opts$convergence_mode <- "slow"
+train_opts$seed <- 123
+train_opts$maxiter <- 3000
+head(train_opts)
+
+```
+
+
+Prepare MOFA object with modified parameters:
+  
+```{r}
+
+MOFAobject <- prepare_mofa(
+  object = MOFAobject,
+  data_options = data_opts,
+  model_options = model_opts,
+  training_options = train_opts
+)
+
+```
+
+
+Train model:
+  
+```{r}
+
+outfile <- file.path(getwd(),"sf_model.hdf5")
+MOFAobject.trained <- run_mofa(MOFAobject, outfile)
+
+```
+
+
+Add phenotype data to the model:
+  
+```{r}
+
+samples_metadata(MOFAobject.trained) <- sf_pheno
+
+```
+
+
+Visualise variance explained:
+  
+```{r}
+
+plot_variance_explained(
+  MOFAobject.trained, 
+  x = "view", 
+  y = "factor", 
+  plot_total = T
+)
+
+
+```
+
+Majority is from proteomics data - likely due to the higher number of features.
+
+
+Plot correlation between factors:
+  
+```{r}
+
+plot_factor_cor(MOFAobject.trained)
+
+```
+
+
+
+Correlation between factors and metadata:
+  
+```{r, error=TRUE}
+
+correlate_factors_with_covariates(MOFAobject.trained, 
+                                  covariates = c("Day", "Horse", "Group"), 
+                                  plot="log_pval",
+                                  alpha="0.05" # p-value threshold
+)
+
+
+correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c("Day", "Horse"), 
+  plot="r"
+)
+
+```
+
+Factor 4 is significantly correlated with day, though factors 2-5 seem to have some correlation with day.
+For factor 4 miRNA and lncRNA explain more of the variance. Look at factors 2 and 5 too as more of their variance is explained by the proteomics. 
+
+
+```{r}
+
+plot_top_weights(MOFAobject.trained, 
+                  view = "miRNA", 
+                  factor = 4, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+```{r}
+
+plot_top_weights(MOFAobject.trained, 
+                  view = "lncRNA", 
+                  factor = 4, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+```{r}
+
+plot_top_weights(MOFAobject.trained, 
+                  view = "proteomics", 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+
+Plot weights for factor 4:
+
+```{r}
+
+plot_weights(MOFAobject.trained,
+ view = "miRNA",
+ factor = 4,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)
+
+
+plot_weights(MOFAobject.trained,
+ view = "lncRNA",
+ factor = 4,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)
+
+
+
+```
+
+
+```{r}
+
+plot_factors(MOFAobject.trained, 
+             factors = c(2:5),
+             color_by = "Day"
+) 
+
+```
+
+
+```{r}
+
+plot_data_heatmap(MOFAobject.trained, 
+                  view = "miRNA",
+                  factor = 4,  
+                  features = 10,
+                  cluster_rows = TRUE, cluster_cols = TRUE,
+                  show_rownames = TRUE, show_colnames = TRUE,
+                  scale = "row",
+                  denoise = TRUE
+)
+
+```
+
+
+Project the samples onto factor 1 for each time point.
+
+```{r}
+
+# Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$group <- as.factor(paste0(sf_pheno$Group, "_", sf_pheno$Day))
+
+plot_factor(MOFAobject.trained, 
+  factors = 4, 
+  color_by = "group",
+  add_violin = TRUE,
+  dodge = TRUE
+)
+```
+
+
+
+
+# JIVE
+
+
+# iCluster
+  

@@ -537,15 +537,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeae6f5f4c77d2458fec583f75b216e34d5a9478adtargetblankae6f5f4a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree928fd819c7a6726f3ea0bc9bedec6e1910242471targetblank928fd81a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/ae6f5f4c77d2458fec583f75b216e34d5a9478ad" target="_blank">ae6f5f4</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/928fd819c7a6726f3ea0bc9bedec6e1910242471" target="_blank">928fd81</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeae6f5f4c77d2458fec583f75b216e34d5a9478adtargetblankae6f5f4a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree928fd819c7a6726f3ea0bc9bedec6e1910242471targetblank928fd81a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/ae6f5f4c77d2458fec583f75b216e34d5a9478ad" target="_blank">ae6f5f4</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/928fd819c7a6726f3ea0bc9bedec6e1910242471" target="_blank">928fd81</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -573,31 +573,14 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
+    Ignored:    analysis/figure/
 
 Untracked files:
-    Untracked:  analysis/images/
-    Untracked:  analysis/references.bib
-    Untracked:  external_imgs/
-    Untracked:  model.hdf5
-    Untracked:  plasma_model.hdf5
+    Untracked:  sf_model.hdf5
 
 Unstaged changes:
-    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
-    Modified:   analysis/05_Sequencing_EDA.Rmd
     Modified:   analysis/06_jDR.Rmd
-    Modified:   code/utility-functions.R
-    Modified:   data/plasma_lncRNA_data.rds
-    Modified:   data/plasma_miRNA_data.rds
-    Modified:   data/plasma_sequencing_info.csv
-    Modified:   data/plasma_sequencing_pheno.rds
-    Modified:   data/plasma_snRNA_data.rds
-    Modified:   data/plasma_snoRNA_data.rds
-    Modified:   data/plasma_tRNA_data.rds
-    Modified:   data/sf_lncRNA_data.rds
-    Modified:   data/sf_miRNA_data.rds
-    Modified:   data/sf_sequencing_pheno.rds
-    Modified:   data/sf_snRNA_data.rds
-    Modified:   data/sf_snoRNA_data.rds
+    Modified:   plasma_model.hdf5
 
 </code></pre>
 <p>
@@ -642,6 +625,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/928fd819c7a6726f3ea0bc9bedec6e1910242471/analysis/06_jDR.Rmd" target="_blank">928fd81</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-08
+</td>
+<td>
+jDR + EDA
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/928fd819c7a6726f3ea0bc9bedec6e1910242471/docs/06_jDR.html" target="_blank">928fd81</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-08
+</td>
+<td>
+jDR + EDA
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -930,7 +947,199 @@ horse.</p>
 
 p &lt;- p + 
   geom_hline(yintercept=-1, linetype=&quot;dashed&quot;) +
-  geom_vline(xintercept=(-0.5), linetype=&quot;dashed&quot;)</code></pre>
+  geom_vline(xintercept=(-0.5), linetype=&quot;dashed&quot;)
+
+
+p</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="synovial-fluid" class="section level2">
+<h2>Synovial fluid</h2>
+<pre class="r"><code>colnames(sf_pheno)[6] &lt;- &quot;sample&quot;</code></pre>
+<pre class="r"><code>sf_mofa_dat &lt;- list(proteomics = as.matrix(sf_proteomics_data),
+                        miRNA = as.matrix(sf_miRNA_data),
+                        lncRNA = as.matrix(sf_lncRNA_data),
+                        snRNA = as.matrix(sf_snRNA_data))</code></pre>
+<p>Create MOFAojbect:</p>
+<pre class="r"><code>MOFAobject &lt;- create_mofa(sf_mofa_dat)</code></pre>
+<pre><code>Creating MOFA object from a list of matrices (features as rows, sample as columns)...</code></pre>
+<pre class="r"><code>print(MOFAobject)</code></pre>
+<pre><code>Untrained MOFA model with the following characteristics: 
+ Number of views: 4 
+ Views names: proteomics miRNA lncRNA snRNA 
+ Number of features (per view): 622 64 38 15 
+ Number of groups: 1 
+ Groups names: group1 
+ Number of samples (per group): 52 
+ </code></pre>
+<pre class="r"><code>plot_data_overview(MOFAobject)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Modify model parameters:</p>
+<pre class="r"><code># Scale views
+data_opts &lt;- get_default_data_options(MOFAobject)
+data_opts$scale_views &lt;- TRUE
+head(data_opts)</code></pre>
+<pre><code>$scale_views
+[1] TRUE
+
+$scale_groups
+[1] FALSE
+
+$center_groups
+[1] TRUE
+
+$use_float32
+[1] FALSE
+
+$views
+[1] &quot;proteomics&quot; &quot;miRNA&quot;      &quot;lncRNA&quot;     &quot;snRNA&quot;     
+
+$groups
+[1] &quot;group1&quot;</code></pre>
+<pre class="r"><code># Set number of factors
+model_opts &lt;- get_default_model_options(MOFAobject)
+model_opts$num_factors &lt;- 6
+head(model_opts)</code></pre>
+<pre><code>$likelihoods
+proteomics      miRNA     lncRNA      snRNA 
+&quot;gaussian&quot; &quot;gaussian&quot; &quot;gaussian&quot; &quot;gaussian&quot; 
+
+$num_factors
+[1] 6
+
+$spikeslab_factors
+[1] FALSE
+
+$spikeslab_weights
+[1] TRUE
+
+$ard_factors
+[1] FALSE
+
+$ard_weights
+[1] TRUE</code></pre>
+<pre class="r"><code># Set training options
+train_opts &lt;- get_default_training_options(MOFAobject)
+train_opts$convergence_mode &lt;- &quot;slow&quot;
+head(train_opts)</code></pre>
+<pre><code>$maxiter
+[1] 1000
+
+$convergence_mode
+[1] &quot;slow&quot;
+
+$drop_factor_threshold
+[1] -1
+
+$verbose
+[1] FALSE
+
+$startELBO
+[1] 1
+
+$freqELBO
+[1] 5</code></pre>
+<p>Prepare MOFA object with modified parameters:</p>
+<pre class="r"><code>MOFAobject &lt;- prepare_mofa(
+  object = MOFAobject,
+  data_options = data_opts,
+  model_options = model_opts,
+  training_options = train_opts
+)</code></pre>
+<pre><code>Checking data options...</code></pre>
+<pre><code>Checking training options...</code></pre>
+<pre><code>Checking model options...</code></pre>
+<p>Train model:</p>
+<pre class="r"><code>outfile &lt;- file.path(getwd(),&quot;sf_model.hdf5&quot;)
+MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile)</code></pre>
+<pre><code>Warning: Output file C:/Users/Emily/Documents/GitHub/anderson-peffers_OA/sf_model.hdf5 already exists, it will be replaced</code></pre>
+<pre><code>Connecting to the mofapy2 python package using reticulate (use_basilisk = FALSE)... 
+    Please make sure to manually specify the right python binary when loading R with reticulate::use_python(..., force=TRUE) or the right conda environment with reticulate::use_condaenv(..., force=TRUE)
+    If you prefer to let us automatically install a conda environment with &#39;mofapy2&#39; installed using the &#39;basilisk&#39; package, please use the argument &#39;use_basilisk = TRUE&#39;</code></pre>
+<pre><code>Warning in .quality_control(object, verbose = verbose): Factor(s) 1 are strongly correlated with the total number of expressed features for at least one of your omics. Such factors appear when there are differences in the total &#39;levels&#39; between your samples, *sometimes* because of poor normalisation in the preprocessing steps.</code></pre>
+<p>Add phenotype data to the model:</p>
+<pre class="r"><code>samples_metadata(MOFAobject.trained) &lt;- sf_pheno</code></pre>
+<p>Visualise variance explained:</p>
+<pre class="r"><code>plot_variance_explained(
+  MOFAobject.trained, 
+  x = &quot;view&quot;, 
+  y = &quot;factor&quot;, 
+  plot_total = T
+)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Majority is from proteomics data - likely due to the higher number of
+features.</p>
+<p>Plot correlation between factors:</p>
+<pre class="r"><code>plot_factor_cor(MOFAobject.trained)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Correlation between factors and metadata:</p>
+<pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
+                                  covariates = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Group&quot;), 
+                                  plot=&quot;log_pval&quot;
+)</code></pre>
+<pre><code>Warning in correlate_factors_with_covariates(MOFAobject.trained, covariates =
+c(&quot;Day&quot;, : There are non-numeric values in the covariates data.frame, converting
+to numeric...</code></pre>
+<pre><code>Error in correlate_factors_with_covariates(MOFAobject.trained, covariates = c(&quot;Day&quot;, : All p-values are 1.0, nothing to plot</code></pre>
+<p>Factor 1 is correlated with day. Factors 5 and 6 are correlated with
+horse.</p>
+<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
+                 view = &quot;proteomics&quot;, 
+                 factor = 1, 
+                 nfeatures = 5,
+                 scale = T, 
+                 abs = T
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_weights(MOFAobject.trained,
+             #view = &quot;proteomics&quot;,
+             factor = 1,
+             nfeatures = 15,     # Top number of features to highlight
+             scale = T           # Scale weights from -1 to 1
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
+                 view = &quot;miRNA&quot;, 
+                 factor = 2, 
+                 nfeatures = 5,
+                 scale = T, 
+                 abs = T
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_factors(MOFAobject.trained, 
+             factors = c(1,2,3),
+             color_by = &quot;Day&quot;
+) </code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_data_heatmap(MOFAobject.trained, 
+                  view = &quot;proteomics&quot;,
+                  factor = 1,  
+                  features = 25,
+                  cluster_rows = TRUE, cluster_cols = TRUE,
+                  show_rownames = TRUE, show_colnames = TRUE,
+                  scale = &quot;row&quot;,
+                  denoise = TRUE
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p &lt;- plot_factors(MOFAobject.trained, 
+                  factors = c(1,2), 
+                  color_by = &quot;Day&quot;,
+                  shape_by = &quot;Horse&quot;,
+                  dot_size = 2.5,
+                  show_missing = T
+)
+
+p &lt;- p + 
+  geom_hline(yintercept=-1, linetype=&quot;dashed&quot;) +
+  geom_vline(xintercept=(-0.5), linetype=&quot;dashed&quot;)
+
+
+p</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
