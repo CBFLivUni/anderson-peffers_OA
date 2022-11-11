@@ -1,18 +1,205 @@
 ---
 title: "Multi-omics - clustering"
-author: "ejjohnson93"
+author: "Emily Johnson"
 date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
 ---
 
-## Load libraries
+# Load libraries
+
+```{r, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(Mfuzz)
+library(dtwclust)
+library(cowplot) # ggplot2 theme
+
+```
+
+# Load and process data
 
 ```{r}
 
-library(tidyverse)
+# Plasma 
+plasma_annotation <- readRDS("./data/plasma_proteomics_annotation.rds")
+plasma_pheno <- readRDS("./data/plasma_pheno.rds") 
+plasma_proteomics_data <- readRDS("./data/plasma_data_norm.rds")
+plasma_miRNA_data <- readRDS("./data/plasma_miRNA_data.rds") 
+plasma_lncRNA_data <- readRDS("./data/plasma_lncRNA_data.rds")
+plasma_snRNA_data <- readRDS("./data/plasma_snRNA_data.rds")
+
+# SF
+sf_annotation <- readRDS("./data/sf_proteomics_annotation.rds")
+sf_pheno <- readRDS("./data/sf_pheno.rds")
+sf_proteomics_data <- readRDS("./data/sf_data_norm.rds")
+sf_miRNA_data <- readRDS("./data/sf_miRNA_data.rds")
+sf_lncRNA_data <- readRDS("./data/sf_lncRNA_data.rds")
+sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
+
+
+```
+
+Convert 0s to NAs as previous analysis showed they were sampling zeroes rather than biological zeroes: 
+
+```{r}
+
+# Plasma 
+plasma_miRNA_data[plasma_miRNA_data == 0] <- NA
+plasma_lncRNA_data[plasma_lncRNA_data == 0] <- NA
+plasma_snRNA_data[plasma_snRNA_data == 0] <- NA
+
+# SF
+sf_miRNA_data[sf_miRNA_data == 0] <- NA
+sf_lncRNA_data[sf_lncRNA_data == 0] <- NA
+sf_snRNA_data[sf_snRNA_data == 0] <- NA
+
 
 ```
 
 
+
+## Z-score normalisation
+
+### Plasma
+
+```{r}
+
+# Proteomics
+plasma_proteomics_Znorm <- t(apply(plasma_proteomics_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(plasma_proteomics_Znorm) <- colnames(plasma_proteomics_data)
+
+# miRNA
+plasma_miRNA_Znorm <- t(apply(plasma_miRNA_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(plasma_miRNA_Znorm) <- colnames(plasma_miRNA_data)
+
+
+# lncRNA
+plasma_lncRNA_Znorm <- t(apply(plasma_lncRNA_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(plasma_lncRNA_Znorm) <- colnames(plasma_lncRNA_data)
+
+
+# snRNA
+plasma_snRNA_Znorm <- t(apply(plasma_snRNA_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(plasma_snRNA_Znorm) <- colnames(plasma_snRNA_data)
+
+```
+
+
+Concatenate plasma data together:
+
+```{r}
+
+plasma_data <- rbind(plasma_proteomics_Znorm, plasma_miRNA_Znorm, plasma_lncRNA_Znorm, plasma_snRNA_Znorm)
+
+```
+
+
+### Synovial fluid
+
+```{r}
+
+# Proteomics
+sf_proteomics_Znorm <- t(apply(sf_proteomics_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(sf_proteomics_Znorm) <- colnames(sf_proteomics_data)
+
+# miRNA
+sf_miRNA_Znorm <- t(apply(sf_miRNA_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(sf_miRNA_Znorm) <- colnames(sf_miRNA_data)
+
+
+# lncRNA
+sf_lncRNA_Znorm <- t(apply(sf_lncRNA_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(sf_lncRNA_Znorm) <- colnames(sf_lncRNA_data)
+
+
+# snRNA
+sf_snRNA_Znorm <- t(apply(sf_snRNA_data, 1, function(x) scale(x, center = T, scale = T)))
+colnames(sf_snRNA_Znorm) <- colnames(sf_snRNA_data)
+
+```
+
+
+Concatenate sf data together:
+  
+```{r}
+
+sf_data <- rbind(sf_proteomics_Znorm, sf_miRNA_Znorm, sf_lncRNA_Znorm, sf_snRNA_Znorm)
+
+```
+
+
+
+## Collapse replicates and re-order by time
+
+Plasma:
+
+```{r}
+
+plasma_time_df <- data.frame("Day_0" = rowMeans(plasma_data[,plasma_pheno$Day == "0"], na.rm=TRUE),
+         "Day_10" = rowMeans(plasma_data[,plasma_pheno$Day == "10"], na.rm=TRUE),
+         "Day_35" = rowMeans(plasma_data[,plasma_pheno$Day == "35"], na.rm=TRUE),
+         "Day_42" = rowMeans(plasma_data[,plasma_pheno$Day == "42"], na.rm=TRUE),
+         "Day_49" = rowMeans(plasma_data[,plasma_pheno$Day == "49"], na.rm=TRUE),
+         "Day_56" = rowMeans(plasma_data[,plasma_pheno$Day == "56"], na.rm=TRUE),
+         "Day_63" = rowMeans(plasma_data[,plasma_pheno$Day == "63"], na.rm=TRUE))
+
+
+```
+
+
+
+# Mfuzz
+
+
+
+
+# dtwclust
+
+```{r, fig.show='hide', message=FALSE}
+
+pc <- tsclust(na.omit(plasma_time_df), type = "partitional", k = 4L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247L, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+
+
+
+time=gsub("Day_", "", colnames(plasma_time_df))
+
+pc_plot <- plot(pc, time=time) + 
+            theme_cowplot() +
+            xlab("Time (days") +
+            ylab("Z-score") 
+
+```
+
+```{r, echo=FALSE}
+
+pc_plot 
+
+```
+
+```{r, fig.show='hide', message=FALSE}
+
+fc <- tsclust(na.omit(plasma_time_df), type = "fuzzy", k = 4L,
+              distance = "L2",
+              seed = 123L)
+
+
+fc_plot <- plot(fc, time=time) + 
+            theme_cowplot() +
+            xlab("Time (days") +
+            ylab("Z-score") 
+
+
+```
+
+```{r, echo=FALSE}
+
+fc_plot 
+
+```
+
+https://stackoverflow.com/questions/42197984/how-to-get-the-result-of-dtwclust

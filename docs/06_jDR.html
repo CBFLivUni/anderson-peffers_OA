@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="ejjohnson93" />
+<meta name="author" content="Emily Johnson" />
 
 <meta name="date" content="2022-09-28" />
 
@@ -344,14 +344,56 @@ div.tocify {
 <li>
   <a href="license.html">License</a>
 </li>
-<li>
-  <a href="01_QC_normalisation.html">QC and normalisation</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Proteomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_QC_normalisation.html">QC and normalisation</a>
+    </li>
+    <li>
+      <a href="02_EDA.html">Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="03_Differential_expression.html">Differential expression analysis</a>
+    </li>
+  </ul>
 </li>
-<li>
-  <a href="02_EDA.html">EDA</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Small RNA sequencing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_Sequencing_QC_normalisation.html">QC and normalisation</a>
+    </li>
+    <li>
+      <a href="05_Sequencing_EDA.html">Exploratory data analysis</a>
+    </li>
+  </ul>
 </li>
-<li>
-  <a href="03_DE_and_clustering.html">DE</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Multi-omics analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="06_jDR.html">Joint dimensionality reduction</a>
+    </li>
+    <li>
+      <a href="07_Clustering.html">Clustering</a>
+    </li>
+    <li>
+      <a href="08_Functional_enrichment.html">Functional enrichment</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -373,7 +415,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Multi-omics - joint dimensionality
 reduction</h1>
-<h4 class="author">ejjohnson93</h4>
+<h4 class="author">Emily Johnson</h4>
 <h4 class="date">2022-09-28</h4>
 
 </div>
@@ -403,7 +445,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-08
+<strong>Last updated:</strong> 2022-11-11
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -537,15 +579,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree928fd819c7a6726f3ea0bc9bedec6e1910242471targetblank928fd81a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/928fd819c7a6726f3ea0bc9bedec6e1910242471" target="_blank">928fd81</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree928fd819c7a6726f3ea0bc9bedec6e1910242471targetblank928fd81a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +597,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/928fd819c7a6726f3ea0bc9bedec6e1910242471" target="_blank">928fd81</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -573,14 +615,20 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
-    Ignored:    analysis/figure/
-
-Untracked files:
-    Untracked:  sf_model.hdf5
 
 Unstaged changes:
+    Modified:   analysis/03_Differential_expression.Rmd
+    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
     Modified:   analysis/06_jDR.Rmd
+    Modified:   analysis/07_Clustering.Rmd
+    Modified:   analysis/08_Functional_enrichment.Rmd
+    Modified:   analysis/_site.yml
+    Modified:   analysis/index.Rmd
+    Modified:   code/utility-functions.R
+    Modified:   data/plasma_lncRNA_data.rds
+    Modified:   data/sf_lncRNA_data.rds
     Modified:   plasma_model.hdf5
+    Modified:   sf_model.hdf5
 
 </code></pre>
 <p>
@@ -625,6 +673,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/b8abb7ebb24e6e1d60f8a8c601795873111a34e1/analysis/06_jDR.Rmd" target="_blank">b8abb7e</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-09
+</td>
+<td>
+MOFA2
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/b8abb7ebb24e6e1d60f8a8c601795873111a34e1/docs/06_jDR.html" target="_blank">b8abb7e</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-09
+</td>
+<td>
+MOFA2
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -719,25 +801,17 @@ Sequencing files created
 </div>
 <div id="load-libraries" class="section level1">
 <h1>Load libraries</h1>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-✔ tibble  3.1.7     ✔ dplyr   1.0.9
-✔ tidyr   1.2.0     ✔ stringr 1.4.0
-✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(MOFA2)</code></pre>
-<pre><code>
-Attaching package: &#39;MOFA2&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:stats&#39;:
-
-    predict</code></pre>
+<pre class="r"><code>source(&quot;./code/utility-functions.R&quot;) # load helper functions 
+library(tidyverse)
+library(MOFA2) # factor analysis
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(cowplot) # plot theme
+library(viridis) # colour schemes</code></pre>
 </div>
-<div id="load-data" class="section level1">
-<h1>Load data</h1>
+<div id="load-and-process-data" class="section level1">
+<h1>Load and process data</h1>
 <pre class="r"><code># Plasma 
+plasma_annotation &lt;- readRDS(&quot;./data/plasma_proteomics_annotation.rds&quot;)
 plasma_pheno &lt;- readRDS(&quot;./data/plasma_pheno.rds&quot;) 
 plasma_proteomics_data &lt;- readRDS(&quot;./data/plasma_data_norm.rds&quot;)
 plasma_miRNA_data &lt;- readRDS(&quot;./data/plasma_miRNA_data.rds&quot;) 
@@ -745,36 +819,62 @@ plasma_lncRNA_data &lt;- readRDS(&quot;./data/plasma_lncRNA_data.rds&quot;)
 plasma_snRNA_data &lt;- readRDS(&quot;./data/plasma_snRNA_data.rds&quot;)
 
 # SF
+sf_annotation &lt;- readRDS(&quot;./data/sf_proteomics_annotation.rds&quot;)
 sf_pheno &lt;- readRDS(&quot;./data/sf_pheno.rds&quot;)
 sf_proteomics_data &lt;- readRDS(&quot;./data/sf_data_norm.rds&quot;)
 sf_miRNA_data &lt;- readRDS(&quot;./data/sf_miRNA_data.rds&quot;)
 sf_lncRNA_data &lt;- readRDS(&quot;./data/sf_lncRNA_data.rds&quot;)
 sf_snRNA_data &lt;- readRDS(&quot;./data/sf_snRNA_data.rds&quot;)</code></pre>
+<p>Convert 0s to NAs as previous analysis showed they were sampling
+zeroes rather than biological zeroes:</p>
+<pre class="r"><code># Plasma 
+plasma_miRNA_data[plasma_miRNA_data == 0] &lt;- NA
+plasma_lncRNA_data[plasma_lncRNA_data == 0] &lt;- NA
+plasma_snRNA_data[plasma_snRNA_data == 0] &lt;- NA
+
+# SF
+sf_miRNA_data[sf_miRNA_data == 0] &lt;- NA
+sf_lncRNA_data[sf_lncRNA_data == 0] &lt;- NA
+sf_snRNA_data[sf_snRNA_data == 0] &lt;- NA</code></pre>
+<p>Remove universal spike-ins:</p>
+<pre class="r"><code>plasma_miRNA_data &lt;- plasma_miRNA_data[-c(1:3),]
+sf_miRNA_data &lt;- sf_miRNA_data[-c(1:3),]</code></pre>
 </div>
 <div id="mofa" class="section level1">
 <h1>MOFA</h1>
 <div id="plasma" class="section level2">
 <h2>Plasma</h2>
+<p>Visualuse the distributions of the data:</p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>MOFA2 needs a column in the phenotype data called ‘sample’. Rename
+the ‘Sample_ID’ column to ‘sample’.</p>
 <pre class="r"><code>colnames(plasma_pheno)[5] &lt;- &quot;sample&quot;</code></pre>
+<p>As an input MOFA2 will take a list containing all the different data.
+Create this list:</p>
 <pre class="r"><code>plasma_mofa_dat &lt;- list(proteomics = as.matrix(plasma_proteomics_data),
                  miRNA = as.matrix(plasma_miRNA_data),
                  lncRNA = as.matrix(plasma_lncRNA_data),
                  snRNA = as.matrix(plasma_snRNA_data))</code></pre>
-<p>Create MOFAojbect:</p>
+<p>Create MOFAobject:</p>
 <pre class="r"><code>MOFAobject &lt;- create_mofa(plasma_mofa_dat)</code></pre>
 <pre><code>Creating MOFA object from a list of matrices (features as rows, sample as columns)...</code></pre>
 <pre class="r"><code>print(MOFAobject)</code></pre>
 <pre><code>Untrained MOFA model with the following characteristics: 
  Number of views: 4 
  Views names: proteomics miRNA lncRNA snRNA 
- Number of features (per view): 223 56 29 14 
+ Number of features (per view): 223 53 29 14 
  Number of groups: 1 
  Groups names: group1 
  Number of samples (per group): 26 
  </code></pre>
+<p>The number of features per view can be visualised with
+<code>plot_data_overview</code>. Missing samples would be represented as
+gaps in the block colours.</p>
 <pre class="r"><code>plot_data_overview(MOFAobject)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Modify model parameters:</p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Set model parameters. Here three objects are created containing the
+data options, model options and training options. If the raw counts were
+used a poisson distribution would be more appropriate.</p>
 <pre class="r"><code># Scale views
 data_opts &lt;- get_default_data_options(MOFAobject)
 data_opts$scale_views &lt;- TRUE
@@ -799,6 +899,7 @@ $groups
 <pre class="r"><code># Set number of factors
 model_opts &lt;- get_default_model_options(MOFAobject)
 model_opts$num_factors &lt;- 6
+#model_opts$likelihoods[2:4] &lt;- &quot;poisson&quot;
 head(model_opts)</code></pre>
 <pre><code>$likelihoods
 proteomics      miRNA     lncRNA      snRNA 
@@ -821,9 +922,11 @@ $ard_weights
 <pre class="r"><code># Set training options
 train_opts &lt;- get_default_training_options(MOFAobject)
 train_opts$convergence_mode &lt;- &quot;slow&quot;
+train_opts$seed &lt;- 123
+train_opts$maxiter &lt;- 3000
 head(train_opts)</code></pre>
 <pre><code>$maxiter
-[1] 1000
+[1] 3000
 
 $convergence_mode
 [1] &quot;slow&quot;
@@ -854,18 +957,7 @@ have little power to to learn meaningful factors for these view(s)....</code></p
 <pre><code>Checking model options...</code></pre>
 <p>Train model:</p>
 <pre class="r"><code>outfile &lt;- file.path(getwd(),&quot;plasma_model.hdf5&quot;)
-MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile)</code></pre>
-<pre><code>Warning: Output file C:/Users/Emily/Documents/GitHub/anderson-peffers_OA/plasma_model.hdf5 already exists, it will be replaced</code></pre>
-<pre><code>Connecting to the mofapy2 python package using reticulate (use_basilisk = FALSE)... 
-    Please make sure to manually specify the right python binary when loading R with reticulate::use_python(..., force=TRUE) or the right conda environment with reticulate::use_condaenv(..., force=TRUE)
-    If you prefer to let us automatically install a conda environment with &#39;mofapy2&#39; installed using the &#39;basilisk&#39; package, please use the argument &#39;use_basilisk = TRUE&#39;</code></pre>
-<pre><code>+ &quot;C:/Users/Emily/AppData/Local/r-miniconda/condabin/conda.bat&quot; &quot;create&quot; &quot;--yes&quot; &quot;--prefix&quot; &quot;C:/Users/Emily/AppData/Local/r-miniconda/envs/r-reticulate&quot; &quot;python=3.8&quot; &quot;numpy&quot; &quot;--quiet&quot; &quot;-c&quot; &quot;conda-forge&quot;</code></pre>
-<pre><code>Warning in run_mofa(MOFAobject, outfile): mofapy2_0.6.4 is not detected in the
-specified python binary, see reticulate::py_config(). Setting use_basilisk =
-TRUE...</code></pre>
-<pre><code>Connecting to the mofapy2 package using basilisk. 
-    Set &#39;use_basilisk&#39; to FALSE if you prefer to manually set the python binary using &#39;reticulate&#39;.</code></pre>
-<pre><code>Warning in .quality_control(object, verbose = verbose): Factor(s) 1, 2 are strongly correlated with the total number of expressed features for at least one of your omics. Such factors appear when there are differences in the total &#39;levels&#39; between your samples, *sometimes* because of poor normalisation in the preprocessing steps.</code></pre>
+MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)</code></pre>
 <p>Add phenotype data to the model:</p>
 <pre class="r"><code>samples_metadata(MOFAobject.trained) &lt;- plasma_pheno</code></pre>
 <p>Visualise variance explained:</p>
@@ -876,85 +968,172 @@ TRUE...</code></pre>
   plot_total = T
 )</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-11-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Majority is from proteomics data - likely due to the higher number of
 features.</p>
 <p>Plot correlation between factors:</p>
 <pre class="r"><code>plot_factor_cor(MOFAobject.trained)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Correlation between factors and metadata:</p>
 <pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
   covariates = c(&quot;Day&quot;, &quot;Horse&quot;), 
-  plot=&quot;log_pval&quot;
-)</code></pre>
-<pre><code>Warning in correlate_factors_with_covariates(MOFAobject.trained, covariates =
-c(&quot;Day&quot;, : There are non-numeric values in the covariates data.frame, converting
-to numeric...</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Factor 1 is correlated with day. Factors 5 and 6 are correlated with
-horse.</p>
-<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
-                  view = &quot;proteomics&quot;, 
-                  factor = 1, 
-                  nfeatures = 5,
-                  scale = T, 
-                  abs = T
-)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_weights(MOFAobject.trained,
- #view = &quot;proteomics&quot;,
- factor = 1,
- nfeatures = 15,     # Top number of features to highlight
- scale = T           # Scale weights from -1 to 1
-)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
-                  view = &quot;miRNA&quot;, 
-                  factor = 2, 
-                  nfeatures = 5,
-                  scale = T, 
-                  abs = T
+  plot=&quot;log_pval&quot;, 
+  alpha=&quot;0.15&quot; # p-value threshold
 )</code></pre>
 <p><img src="figure/06_jDR.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_factors(MOFAobject.trained, 
-  factors = c(1,2,3),
-  color_by = &quot;Day&quot;
-) </code></pre>
-<pre><code>Registered S3 method overwritten by &#39;GGally&#39;:
-  method from   
-  +.gg   ggplot2</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_data_heatmap(MOFAobject.trained, 
+<pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c(&quot;Day&quot;, &quot;Horse&quot;), 
+  plot=&quot;r&quot;
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 2 is significantly correlated with “day”. Factors 5 and 6 are
+correlated with horse. Most of the variance in factor 2 is explained by
+the proteomics data. The variance in factor 1 mostly comes from the
+miRNA and lncRNA data, however that doesn’t appear to correspond to a
+biological effect. Factor 3 shows slight correlation with “day”. As the
+variance is explained by the proteomics and snRNA data this might also
+be interesting to explore.</p>
+<p>We can inspect the weights of the different features contributing to
+each factor.</p>
+<pre class="r"><code>proteomics_f2 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;proteomics&quot;, 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f2$data$feature_id &lt;- plasma_annotation[as.character(proteomics_f2$data$feature_id),]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot weights for factor 2:</p>
+<pre class="r"><code>plot_weights(MOFAobject.trained,
+ view = &quot;proteomics&quot;,
+ factor = 2,
+ nfeatures = 50,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_weights(MOFAobject.trained,
+ view = &quot;miRNA&quot;,
+ factor = 2,
+ nfeatures = 25,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-19-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The distribution of weights for the top ranked proteins contributing
+towards factor 2 are heavily negatively skewed. Only Q28377, F7DZE7,
+A0A5F5PEG5, and A0A5F5PWX5 are positively associated in the top 50. If
+the weights for miRNA are plotted it can be seen their contribution to
+factor 2 is low overall, as the weights range from -0.001 to 0.001.</p>
+<p>If we plot factor 1 instead, the weight of the miRNAs is much
+higher.</p>
+<pre class="r"><code>miRNA_f2 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;miRNA&quot;, 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+miRNA_f1 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;miRNA&quot;, 
+                  factor = 1, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>It is interesting that miR-126-5P and miR-126-3P are among the miRNAs
+contributing to factor 2. <a
+href="https://pubmed.ncbi.nlm.nih.gov/33627637/"
+class="uri">https://pubmed.ncbi.nlm.nih.gov/33627637/</a></p>
+<p>Visualise the weights for the proteomics and snRNA data contributing
+to factor 3:</p>
+<pre class="r"><code>snRNA_f3 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;snRNA&quot;, 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+
+snRNA_f4 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;snRNA&quot;, 
+                  factor = 4, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>proteomics_f3 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;proteomics&quot;, 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f3$data$feature_id &lt;- plasma_annotation[as.character(proteomics_f3$data$feature_id),]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Create heatmap for proteomics data:</p>
+<pre class="r"><code># Create annotation for heatmap
+my_sample_col &lt;- data.frame(Day = plasma_pheno$Day)
+rownames(my_sample_col) &lt;- colnames(plasma_proteomics_data)
+
+
+plot_data_heatmap(MOFAobject.trained, 
   view = &quot;proteomics&quot;,
-  factor = 1,  
+  factor = 2,  
   features = 25,
   cluster_rows = TRUE, cluster_cols = TRUE,
   show_rownames = TRUE, show_colnames = TRUE,
   scale = &quot;row&quot;,
-  denoise = TRUE
+  denoise = TRUE,
+  color = viridis(10),
+  border_color = NA
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot factors 2 and 3 together (equivalent to PCA):</p>
 <pre class="r"><code>p &lt;- plot_factors(MOFAobject.trained, 
-  factors = c(1,2), 
+  factors = c(2,3), 
   color_by = &quot;Day&quot;,
   shape_by = &quot;Horse&quot;,
-  dot_size = 2.5,
+  dot_size = 4,
   show_missing = T
 )
 
-p &lt;- p + 
-  geom_hline(yintercept=-1, linetype=&quot;dashed&quot;) +
-  geom_vline(xintercept=(-0.5), linetype=&quot;dashed&quot;)
+p + theme_cowplot()</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Project the samples onto factor 2 for each time point.</p>
+<pre class="r"><code># Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$day_group &lt;- as.factor(plasma_pheno$Day)
 
-
-p</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+plot_factor(MOFAobject.trained, 
+  factors = 2, 
+  color_by = &quot;day_group&quot;,
+  add_violin = TRUE,
+  dodge = TRUE
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_factor(MOFAobject.trained, 
+  factors = 3, 
+  color_by = &quot;day_group&quot;,
+  add_violin = TRUE,
+  dodge = TRUE
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="synovial-fluid" class="section level2">
 <h2>Synovial fluid</h2>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>colnames(sf_pheno)[6] &lt;- &quot;sample&quot;</code></pre>
 <pre class="r"><code>sf_mofa_dat &lt;- list(proteomics = as.matrix(sf_proteomics_data),
                         miRNA = as.matrix(sf_miRNA_data),
@@ -967,13 +1146,13 @@ p</code></pre>
 <pre><code>Untrained MOFA model with the following characteristics: 
  Number of views: 4 
  Views names: proteomics miRNA lncRNA snRNA 
- Number of features (per view): 622 64 38 15 
+ Number of features (per view): 622 61 38 15 
  Number of groups: 1 
  Groups names: group1 
  Number of samples (per group): 52 
  </code></pre>
 <pre class="r"><code>plot_data_overview(MOFAobject)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Modify model parameters:</p>
 <pre class="r"><code># Scale views
 data_opts &lt;- get_default_data_options(MOFAobject)
@@ -1021,9 +1200,11 @@ $ard_weights
 <pre class="r"><code># Set training options
 train_opts &lt;- get_default_training_options(MOFAobject)
 train_opts$convergence_mode &lt;- &quot;slow&quot;
+train_opts$seed &lt;- 123
+train_opts$maxiter &lt;- 3000
 head(train_opts)</code></pre>
 <pre><code>$maxiter
-[1] 1000
+[1] 3000
 
 $convergence_mode
 [1] &quot;slow&quot;
@@ -1051,14 +1232,12 @@ $freqELBO
 <pre><code>Checking model options...</code></pre>
 <p>Train model:</p>
 <pre class="r"><code>outfile &lt;- file.path(getwd(),&quot;sf_model.hdf5&quot;)
-MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile)</code></pre>
-<pre><code>Warning: Output file C:/Users/Emily/Documents/GitHub/anderson-peffers_OA/sf_model.hdf5 already exists, it will be replaced</code></pre>
-<pre><code>Connecting to the mofapy2 python package using reticulate (use_basilisk = FALSE)... 
-    Please make sure to manually specify the right python binary when loading R with reticulate::use_python(..., force=TRUE) or the right conda environment with reticulate::use_condaenv(..., force=TRUE)
-    If you prefer to let us automatically install a conda environment with &#39;mofapy2&#39; installed using the &#39;basilisk&#39; package, please use the argument &#39;use_basilisk = TRUE&#39;</code></pre>
-<pre><code>Warning in .quality_control(object, verbose = verbose): Factor(s) 1 are strongly correlated with the total number of expressed features for at least one of your omics. Such factors appear when there are differences in the total &#39;levels&#39; between your samples, *sometimes* because of poor normalisation in the preprocessing steps.</code></pre>
+MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)</code></pre>
 <p>Add phenotype data to the model:</p>
-<pre class="r"><code>samples_metadata(MOFAobject.trained) &lt;- sf_pheno</code></pre>
+<pre class="r"><code>samples_metadata(MOFAobject.trained) &lt;- sf_pheno
+
+# Add a group-by-day factor 
+MOFAobject.trained@samples_metadata$Group_day &lt;- as.factor(paste0(sf_pheno$Group, &quot;_&quot;, sf_pheno$Day))</code></pre>
 <p>Visualise variance explained:</p>
 <pre class="r"><code>plot_variance_explained(
   MOFAobject.trained, 
@@ -1067,79 +1246,123 @@ MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile)</code></pre>
   plot_total = T
 )</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-38-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Majority is from proteomics data - likely due to the higher number of
 features.</p>
 <p>Plot correlation between factors:</p>
 <pre class="r"><code>plot_factor_cor(MOFAobject.trained)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Correlation between factors and metadata:</p>
 <pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
-                                  covariates = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Group&quot;), 
-                                  plot=&quot;log_pval&quot;
+                                  covariates = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Group&quot;, &quot;Group_day&quot;), 
+                                  plot=&quot;log_pval&quot;,
+                                  alpha=&quot;0.05&quot; # p-value threshold
 )</code></pre>
-<pre><code>Warning in correlate_factors_with_covariates(MOFAobject.trained, covariates =
-c(&quot;Day&quot;, : There are non-numeric values in the covariates data.frame, converting
-to numeric...</code></pre>
-<pre><code>Error in correlate_factors_with_covariates(MOFAobject.trained, covariates = c(&quot;Day&quot;, : All p-values are 1.0, nothing to plot</code></pre>
-<p>Factor 1 is correlated with day. Factors 5 and 6 are correlated with
-horse.</p>
-<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
-                 view = &quot;proteomics&quot;, 
-                 factor = 1, 
-                 nfeatures = 5,
-                 scale = T, 
-                 abs = T
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Group&quot;, &quot;Group_day&quot;), 
+  plot=&quot;r&quot;
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-40-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 4 is significantly correlated with day, though factors 2-5
+seem to have some correlation with day. Factor 4 is mostly explained by
+variance in the miRNA. Factor 2 is correlated with the ‘group_day’
+variable, though its worth noting this factor had to be coerced into a
+numeric variable. For factor 2 miRNA and lncRNA explain more of the
+variance.</p>
+<p>It may be worth looking at the proteomics weight for factor 1 and 5.
+In factor 1’s case the variance is most strongly correlated with the
+proteomics but this may be because there is a much higher number of
+features. Factor 5 seems to have a slight correlation with the
+biological factors of interest.</p>
+<pre class="r"><code>miRNA_f2 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;miRNA&quot;, 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)</code></pre>
+<pre class="r"><code>lncRNA_f2 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;lncRNA&quot;, 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)</code></pre>
+<pre class="r"><code>miRNA_f4 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;miRNA&quot;, 
+                  factor = 4, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)</code></pre>
+<pre class="r"><code>proteomics_f5 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;proteomics&quot;, 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f5$data$feature_id &lt;- sf_annotation[as.character(proteomics_f5$data$feature_id),]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/06_jDR.Rmd/unnamed-chunk-45-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot weights for factor 2:</p>
 <pre class="r"><code>plot_weights(MOFAobject.trained,
-             #view = &quot;proteomics&quot;,
-             factor = 1,
-             nfeatures = 15,     # Top number of features to highlight
-             scale = T           # Scale weights from -1 to 1
+ view = &quot;miRNA&quot;,
+ factor = 2,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_top_weights(MOFAobject.trained, 
-                 view = &quot;miRNA&quot;, 
-                 factor = 2, 
-                 nfeatures = 5,
-                 scale = T, 
-                 abs = T
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_weights(MOFAobject.trained,
+ view = &quot;lncRNA&quot;,
+ factor = 2,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_factors(MOFAobject.trained, 
-             factors = c(1,2,3),
-             color_by = &quot;Day&quot;
-) </code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-46-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_data_heatmap(MOFAobject.trained, 
-                  view = &quot;proteomics&quot;,
-                  factor = 1,  
-                  features = 25,
+                  view = &quot;miRNA&quot;,
+                  factor = 4,  
+                  features = 10,
                   cluster_rows = TRUE, cluster_cols = TRUE,
                   show_rownames = TRUE, show_colnames = TRUE,
                   scale = &quot;row&quot;,
-                  denoise = TRUE
+                  denoise = TRUE,
+                  color = viridis(10),
+                  border_color = NA
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>p &lt;- plot_factors(MOFAobject.trained, 
-                  factors = c(1,2), 
-                  color_by = &quot;Day&quot;,
-                  shape_by = &quot;Horse&quot;,
-                  dot_size = 2.5,
-                  show_missing = T
-)
-
-p &lt;- p + 
-  geom_hline(yintercept=-1, linetype=&quot;dashed&quot;) +
-  geom_vline(xintercept=(-0.5), linetype=&quot;dashed&quot;)
-
-
-p</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Project the samples onto factor 2 &amp; 4 for each time point.</p>
+<pre class="r"><code># Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$group &lt;- as.factor(paste0(sf_pheno$Group, &quot;_&quot;, sf_pheno$Day))</code></pre>
+<pre class="r"><code>plot_factor(MOFAobject.trained, 
+  factors = 2, 
+  color_by = &quot;group&quot;,
+  add_violin = TRUE,
+  dodge = TRUE
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_factor(MOFAobject.trained, 
+  factors = 4, 
+  color_by = &quot;group&quot;,
+  add_violin = TRUE,
+  dodge = TRUE
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="jive" class="section level1">
+<h1>JIVE</h1>
+</div>
+<div id="icluster" class="section level1">
+<h1>iCluster</h1>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1166,46 +1389,72 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] MOFA2_1.6.0     forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9    
- [5] purrr_0.3.4     readr_2.1.2     tidyr_1.2.0     tibble_3.1.7   
- [9] ggplot2_3.3.6   tidyverse_1.3.1
+ [1] viridis_0.6.2     viridisLite_0.4.0 ggpubr_0.4.0      MOFA2_1.6.0      
+ [5] R.utils_2.11.0    R.oo_1.25.0       R.methodsS3_1.8.2 PCAtools_2.8.0   
+ [9] ggrepel_0.9.1     mixOmics_6.20.0   lattice_0.20-45   MASS_7.3-56      
+[13] cowplot_1.1.1     reshape2_1.4.4    forcats_0.5.1     stringr_1.4.0    
+[17] dplyr_1.0.9       purrr_0.3.4       readr_2.1.2       tidyr_1.2.0      
+[21] tibble_3.1.7      ggplot2_3.3.6     tidyverse_1.3.1  
 
 loaded via a namespace (and not attached):
-  [1] nlme_3.1-157         matrixStats_0.62.0   fs_1.5.2            
-  [4] lubridate_1.8.0      filelock_1.0.2       RColorBrewer_1.1-3  
-  [7] httr_1.4.3           rprojroot_2.0.3      tools_4.2.0         
- [10] backports_1.4.1      bslib_0.3.1          utf8_1.2.2          
- [13] R6_2.5.1             HDF5Array_1.24.1     uwot_0.1.11         
- [16] DBI_1.1.2            BiocGenerics_0.42.0  colorspace_2.0-3    
- [19] rhdf5filters_1.8.0   withr_2.5.0          GGally_2.1.2        
- [22] mnormt_2.1.0         tidyselect_1.1.2     compiler_4.2.0      
- [25] git2r_0.30.1         cli_3.3.0            rvest_1.0.2         
- [28] basilisk.utils_1.8.0 xml2_1.3.3           DelayedArray_0.22.0 
- [31] labeling_0.4.2       sass_0.4.1           scales_1.2.0        
- [34] psych_2.2.5          rappdirs_0.3.3       digest_0.6.29       
- [37] rmarkdown_2.14       basilisk_1.8.0       pkgconfig_2.0.3     
- [40] htmltools_0.5.2      MatrixGenerics_1.8.0 highr_0.9           
- [43] dbplyr_2.2.0         fastmap_1.1.0        rlang_1.0.2         
- [46] readxl_1.4.0         rstudioapi_0.13      farver_2.1.0        
- [49] jquerylib_0.1.4      generics_0.1.2       jsonlite_1.8.0      
- [52] magrittr_2.0.3       Matrix_1.4-1         Rhdf5lib_1.18.2     
- [55] Rcpp_1.0.8.3         munsell_0.5.0        S4Vectors_0.34.0    
- [58] fansi_1.0.3          reticulate_1.25      lifecycle_1.0.1     
- [61] stringi_1.7.6        whisker_0.4          yaml_2.3.5          
- [64] Rtsne_0.16           rhdf5_2.40.0         plyr_1.8.7          
- [67] grid_4.2.0           ggrepel_0.9.1        parallel_4.2.0      
- [70] promises_1.2.0.1     crayon_1.5.1         dir.expiry_1.4.0    
- [73] lattice_0.20-45      haven_2.5.0          cowplot_1.1.1       
- [76] hms_1.1.1            knitr_1.39           pillar_1.7.0        
- [79] reshape2_1.4.4       stats4_4.2.0         reprex_2.0.1        
- [82] glue_1.6.2           evaluate_0.15        modelr_0.1.8        
- [85] png_0.1-7            vctrs_0.4.1          tzdb_0.3.0          
- [88] httpuv_1.6.5         cellranger_1.1.0     gtable_0.3.0        
- [91] reshape_0.8.9        assertthat_0.2.1     xfun_0.31           
- [94] broom_0.8.0          later_1.3.0          pheatmap_1.0.12     
- [97] IRanges_2.30.0       corrplot_0.92        workflowr_1.7.0     
-[100] ellipsis_0.3.2       here_1.0.1          </code></pre>
-</div>
+  [1] readxl_1.4.0              backports_1.4.1          
+  [3] corrplot_0.92             workflowr_1.7.0          
+  [5] plyr_1.8.7                igraph_1.3.2             
+  [7] BiocParallel_1.30.3       digest_0.6.29            
+  [9] htmltools_0.5.2           fansi_1.0.3              
+ [11] magrittr_2.0.3            ScaledMatrix_1.4.0       
+ [13] tzdb_0.3.0                modelr_0.1.8             
+ [15] matrixStats_0.62.0        rARPACK_0.11-0           
+ [17] colorspace_2.0-3          rvest_1.0.2              
+ [19] haven_2.5.0               xfun_0.31                
+ [21] crayon_1.5.1              jsonlite_1.8.0           
+ [23] glue_1.6.2                gtable_0.3.0             
+ [25] DelayedArray_0.22.0       car_3.1-0                
+ [27] BiocSingular_1.12.0       Rhdf5lib_1.18.2          
+ [29] BiocGenerics_0.42.0       HDF5Array_1.24.1         
+ [31] abind_1.4-5               scales_1.2.0             
+ [33] pheatmap_1.0.12           DBI_1.1.2                
+ [35] rstatix_0.7.0             Rcpp_1.0.8.3             
+ [37] reticulate_1.25           dqrng_0.3.0              
+ [39] rsvd_1.0.5                stats4_4.2.0             
+ [41] httr_1.4.3                dir.expiry_1.4.0         
+ [43] RColorBrewer_1.1-3        ellipsis_0.3.2           
+ [45] pkgconfig_2.0.3           farver_2.1.0             
+ [47] sass_0.4.1                uwot_0.1.11              
+ [49] dbplyr_2.2.0              utf8_1.2.2               
+ [51] here_1.0.1                tidyselect_1.1.2         
+ [53] labeling_0.4.2            rlang_1.0.2              
+ [55] later_1.3.0               munsell_0.5.0            
+ [57] cellranger_1.1.0          tools_4.2.0              
+ [59] cli_3.3.0                 generics_0.1.2           
+ [61] broom_0.8.0               evaluate_0.15            
+ [63] fastmap_1.1.0             yaml_2.3.5               
+ [65] knitr_1.39                fs_1.5.2                 
+ [67] nlme_3.1-157              sparseMatrixStats_1.8.0  
+ [69] whisker_0.4               xml2_1.3.3               
+ [71] compiler_4.2.0            rstudioapi_0.13          
+ [73] filelock_1.0.2            png_0.1-7                
+ [75] ggsignif_0.6.3            reprex_2.0.1             
+ [77] bslib_0.3.1               stringi_1.7.6            
+ [79] highr_0.9                 basilisk.utils_1.8.0     
+ [81] RSpectra_0.16-1           Matrix_1.4-1             
+ [83] psych_2.2.5               vctrs_0.4.1              
+ [85] pillar_1.7.0              lifecycle_1.0.1          
+ [87] rhdf5filters_1.8.0        jquerylib_0.1.4          
+ [89] irlba_2.3.5               corpcor_1.6.10           
+ [91] httpuv_1.6.5              R6_2.5.1                 
+ [93] promises_1.2.0.1          gridExtra_2.3            
+ [95] IRanges_2.30.0            codetools_0.2-18         
+ [97] assertthat_0.2.1          rhdf5_2.40.0             
+ [99] rprojroot_2.0.3           withr_2.5.0              
+[101] mnormt_2.1.0              S4Vectors_0.34.0         
+[103] parallel_4.2.0            hms_1.1.1                
+[105] grid_4.2.0                beachmat_2.12.0          
+[107] basilisk_1.8.0            rmarkdown_2.14           
+[109] DelayedMatrixStats_1.18.0 MatrixGenerics_1.8.0     
+[111] carData_3.0-5             Rtsne_0.16               
+[113] git2r_0.30.1              lubridate_1.8.0          
+[115] ellipse_0.4.3            </code></pre>
 </div>
 </div>
 

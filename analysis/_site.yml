@@ -9,12 +9,28 @@ navbar:
     href: about.html
   - text: License
     href: license.html
-  - text: QC and normalisation
-    href: 01_QC_normalisation.html
-  - text: EDA
-    href: 02_EDA.html
-  - text: DE
-    href: 03_DE_and_clustering.html
+  - text: Proteomics
+    menu:
+    - text: QC and normalisation
+      href: 01_QC_normalisation.html
+    - text: Exploratory data analysis
+      href: 02_EDA.html
+    - text: Differential expression analysis
+      href: 03_Differential_expression.html
+  - text: Small RNA sequencing
+    menu:
+    - text: QC and normalisation
+      href: 04_Sequencing_QC_normalisation.html
+    - text: Exploratory data analysis
+      href: 05_Sequencing_EDA.html
+  - text: Multi-omics analysis
+    menu:
+    - text: Joint dimensionality reduction
+      href: 06_jDR.html
+    - text: Clustering
+      href: 07_Clustering.html
+    - text: Functional enrichment
+      href: 08_Functional_enrichment.html
   right:
   - icon: fab fa-github
     text: Source code

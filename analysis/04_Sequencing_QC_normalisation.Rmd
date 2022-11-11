@@ -1,6 +1,6 @@
 ---
 title: "QC & normalisation - sequencing data"
-author: "ejjohnson93"
+author: "Emily Johnson"
 date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
@@ -50,11 +50,6 @@ plasma_pheno <- plasma_pheno[match(plasma_sequencing_info$customerID, plasma_phe
 sf_pheno <- sf_pheno[match(sf_sequencing_info$customerID, sf_pheno$Sample.Number),]
 
 
-# Convert sequencing info to numeric
-#plasma_sequencing_info[, 3:17] <- sapply(plasma_sequencing_info[, 3:17], as.numeric)
-#sf_sequencing_info[, 3:17] <- sapply(sf_sequencing_info[, 3:17], as.numeric)
-
-
 # Join sequencing and pheno information
 plasma_pheno <- cbind(plasma_pheno, plasma_sequencing_info)
 sf_pheno <- cbind(sf_pheno, sf_sequencing_info)
@@ -73,9 +68,11 @@ sf_pheno <- sf_pheno[,-8]
 
 Next, load and process each type of sequencing data.
 
+
 # miRNA
 
 The data was provided in CPM format. The reports TAmiRNA provided contain the raw counts for the miRNA. To assess the normalisation the raw counts and the CPM normalised counts were both read in.
+
 
 ## Plasma
 
@@ -161,6 +158,7 @@ bp_raw_counts_CPM
 
 ```
 
+
 ## Synovial fluid
 
 ### Read data in
@@ -200,9 +198,11 @@ bp_sf_miRNA_data
 
 ```
 
+
 # lncRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the lncRNA, snoRNA, snRNA, tRNA.
+
 
 ## Plasma:
 
@@ -213,6 +213,7 @@ The rest of the sequencing data didn't have raw counts.The CPM data provided wil
 # CPM normalised plasma lncRNA data
 plasma_lncRNA_data <- read.csv("./data/lncRNA_plasma.csv", row.names = 1)
 colnames(plasma_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_lncRNA_data))
+row.names(plasma_lncRNA_data) <- gsub(pattern = "_9796", replacement = "", x = row.names(plasma_lncRNA_data))
 
 ```
 
@@ -241,6 +242,7 @@ bp_plasma_lncRNA_data
 
 ```
 
+
 ## Synovial fluid:
 
 ### Read data in
@@ -250,6 +252,7 @@ bp_plasma_lncRNA_data
 # CPM normalised SF lncRNA data
 sf_lncRNA_data <- read.csv("./data/lncRNA_sf.csv", row.names = 1)
 colnames(sf_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_lncRNA_data))
+row.names(sf_lncRNA_data) <- gsub(pattern = "_9796", replacement = "", x = row.names(sf_lncRNA_data))
 
 ```
 
@@ -278,9 +281,11 @@ bp_sf_lncRNA_data
 
 ```
 
+
 # snoRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snoRNA, snoRNA, snRNA, tRNA.
+
 
 ## Plasma:
 
@@ -319,6 +324,7 @@ bp_plasma_snoRNA_data
 
 ```
 
+
 ## Synovial fluid:
 
 ### Read data in
@@ -356,9 +362,11 @@ bp_sf_snoRNA_data
 
 ```
 
+
 # snRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snRNA, snRNA, snRNA, tRNA.
+
 
 ## Plasma:
 
@@ -397,6 +405,7 @@ bp_plasma_snRNA_data
 
 ```
 
+
 ## Synovial fluid:
 
 ### Read data in
@@ -434,9 +443,11 @@ bp_sf_snRNA_data
 
 ```
 
+
 # tRNA
 
 The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the tRNA, tRNA, tRNA, tRNA.
+
 
 ## Plasma:
 
@@ -628,7 +639,7 @@ ggarrange(plasma_miRNA_scatter, plasma_lncRNA_scatter, plasma_snoRNA_scatter, pl
 
 ```
 
-
+The results demonstrate a relationship between sequencing depth and missingness. However, that result doesn't appear to be perfectly linear. 
 
 
 ### Synovial fluid
@@ -691,6 +702,7 @@ sf_snRNA_data <- sf_snRNA_data[rowSums(sf_snRNA_data>0)>=round(ncol(sf_snRNA_dat
 ```
 
 
+
 # Write R data object outputs
 
 Now that data has been filtered for sampling bias, log2 normalise and add constant to filtered data: 
@@ -714,7 +726,6 @@ saveRDS(log2(sf_snRNA_data+1), "./data/sf_snRNA_data.rds")
 
 
 ```
-
 
 
 # References

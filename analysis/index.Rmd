@@ -25,7 +25,6 @@ An integrated analysis was carried out of all the multi-omics data:
 
 -   jDR - MOFA and JIVE [here](06_jDR.html)
 -   Time series clustering [here](07_Clustering.html)
+-   Functional enrichment for all analysis found [here](08_Functional_enrichment.html)
 
-Finally, functional enrichment contextualising the results:
 
--   Results for all analysis found [here](08_Functional_enrichment.html)

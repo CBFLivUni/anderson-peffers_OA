@@ -1,6 +1,6 @@
 ---
 title: "Multi-omics - joint dimensionality reduction"
-author: "ejjohnson93"
+author: "Emily Johnson"
 date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
@@ -9,21 +9,24 @@ editor_options:
 
 # Load libraries
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
+source("./code/utility-functions.R") # load helper functions 
 library(tidyverse)
-library(MOFA2)
+library(MOFA2) # factor analysis
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 library(cowplot) # plot theme
 library(viridis) # colour schemes
 
 ```
 
 
-# Load data
+# Load and process data
 
 ```{r}
 
 # Plasma 
+plasma_annotation <- readRDS("./data/plasma_proteomics_annotation.rds")
 plasma_pheno <- readRDS("./data/plasma_pheno.rds") 
 plasma_proteomics_data <- readRDS("./data/plasma_data_norm.rds")
 plasma_miRNA_data <- readRDS("./data/plasma_miRNA_data.rds") 
@@ -31,6 +34,7 @@ plasma_lncRNA_data <- readRDS("./data/plasma_lncRNA_data.rds")
 plasma_snRNA_data <- readRDS("./data/plasma_snRNA_data.rds")
 
 # SF
+sf_annotation <- readRDS("./data/sf_proteomics_annotation.rds")
 sf_pheno <- readRDS("./data/sf_pheno.rds")
 sf_proteomics_data <- readRDS("./data/sf_data_norm.rds")
 sf_miRNA_data <- readRDS("./data/sf_miRNA_data.rds")
@@ -41,15 +45,63 @@ sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
 ```
 
 
+Convert 0s to NAs as previous analysis showed they were sampling zeroes rather than biological zeroes: 
+
+```{r}
+
+# Plasma 
+plasma_miRNA_data[plasma_miRNA_data == 0] <- NA
+plasma_lncRNA_data[plasma_lncRNA_data == 0] <- NA
+plasma_snRNA_data[plasma_snRNA_data == 0] <- NA
+
+# SF
+sf_miRNA_data[sf_miRNA_data == 0] <- NA
+sf_lncRNA_data[sf_lncRNA_data == 0] <- NA
+sf_snRNA_data[sf_snRNA_data == 0] <- NA
+
+
+```
+
+
+Remove universal spike-ins:
+
+```{r}
+
+plasma_miRNA_data <- plasma_miRNA_data[-c(1:3),]
+sf_miRNA_data <- sf_miRNA_data[-c(1:3),]
+
+```
+
+
 # MOFA
 
 ## Plasma
+
+Visualuse the distributions of the data:
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+proteomics_hist <- gg_histogram(plasma_proteomics_data, ylab="Frequency", xlab="Log2 Intensity")
+miRNA_hist <- gg_histogram(plasma_miRNA_data, ylab="Frequency", xlab="Log2 CPM")
+lncRNA_hist <- gg_histogram(plasma_lncRNA_data, ylab="Frequency", xlab="Log2 CPM")
+snRNA_hist <- gg_histogram(plasma_snRNA_data, ylab="Frequency", xlab="Log2 CPM")
+
+
+ggarrange(proteomics_hist, miRNA_hist, lncRNA_hist, snRNA_hist)
+
+```
+
+
+MOFA2 needs a column in the phenotype data called 'sample'. Rename the 'Sample_ID' column to 'sample'. 
 
 ```{r}
 
 colnames(plasma_pheno)[5] <- "sample"
 
 ```
+
+
+As an input MOFA2 will take a list containing all the different data. Create this list: 
 
 ```{r}
 
@@ -61,7 +113,7 @@ plasma_mofa_dat <- list(proteomics = as.matrix(plasma_proteomics_data),
 ```
 
 
-Create MOFAojbect:
+Create MOFAobject:
 
 ```{r}
 
@@ -71,6 +123,8 @@ print(MOFAobject)
 ```
 
 
+The number of features per view can be visualised with `plot_data_overview`. Missing samples would be represented as gaps in the block colours.
+
 ```{r}
 
 plot_data_overview(MOFAobject)
@@ -78,7 +132,7 @@ plot_data_overview(MOFAobject)
 ```
 
 
-Modify model parameters: 
+Set model parameters. Here three objects are created containing the data options, model options and training options. If the raw counts were used a poisson distribution would be more appropriate.
 
 ```{r}
 
@@ -91,6 +145,7 @@ head(data_opts)
 # Set number of factors
 model_opts <- get_default_model_options(MOFAobject)
 model_opts$num_factors <- 6
+#model_opts$likelihoods[2:4] <- "poisson"
 head(model_opts)
 
 
@@ -120,10 +175,10 @@ MOFAobject <- prepare_mofa(
 
 Train model:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 outfile <- file.path(getwd(),"plasma_model.hdf5")
-MOFAobject.trained <- run_mofa(MOFAobject, outfile)
+MOFAobject.trained <- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)
 
 ```
 
@@ -148,7 +203,6 @@ plot_variance_explained(
   plot_total = T
 )
 
-
 ```
 
 Majority is from proteomics data - likely due to the higher number of features. 
@@ -166,12 +220,12 @@ plot_factor_cor(MOFAobject.trained)
 
 Correlation between factors and metadata:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 correlate_factors_with_covariates(MOFAobject.trained, 
   covariates = c("Day", "Horse"), 
   plot="log_pval", 
-  alpha="0.05" # p-value threshold
+  alpha="0.15" # p-value threshold
 )
 
 
@@ -183,30 +237,42 @@ correlate_factors_with_covariates(MOFAobject.trained,
 
 ```
 
-Factor 1 is correlated with day. Factors 5 and 6 are correlated with horse.
+Factor 2 is significantly correlated with "day". Factors 5 and 6 are correlated with horse.
+Most of the variance in factor 2 is explained by the proteomics data. The variance in factor 1 mostly comes from the miRNA and lncRNA data, however that doesn't appear to correspond to a biological effect. 
+Factor 3 shows slight correlation with "day". As the variance is explained by the proteomics and snRNA data this might also be interesting to explore.
 
 
+We can inspect the weights of the different features contributing to each factor. 
 
 ```{r}
 
-plot_top_weights(MOFAobject.trained, 
+proteomics_f2 <- plot_top_weights(MOFAobject.trained, 
                   view = "proteomics", 
-                  factor = 1, 
+                  factor = 2, 
                   nfeatures = 10,
-                  scale = T, 
+                  scale = F, 
                   abs = T
 )
 
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f2$data$feature_id <- plasma_annotation[as.character(proteomics_f2$data$feature_id),]
+
 ```
 
+```{r, echo=FALSE}
 
-Plot weights for factor 1:
+proteomics_f2
+
+```
+
+Plot weights for factor 2:
 
 ```{r}
 
 plot_weights(MOFAobject.trained,
  view = "proteomics",
- factor = 1,
+ factor = 2,
  nfeatures = 50,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )
@@ -214,43 +280,101 @@ plot_weights(MOFAobject.trained,
 
 plot_weights(MOFAobject.trained,
  view = "miRNA",
- factor = 1,
+ factor = 2,
  nfeatures = 25,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )
 
 
-
 ```
 
-The distribution of weights for the top ranked proteins contributing towards factor 1 are heavily negatively skewed. Only Q28377, F7DZE7 and A0A5F5PWX5 are positively associated in the top 50. If the weights for miRNA are plotted it can be seen their contribution to factor 1 is low overall, as the weights range from -0.001 to 0.001.
 
+The distribution of weights for the top ranked proteins contributing towards factor 2 are heavily negatively skewed. Only Q28377, F7DZE7, A0A5F5PEG5, and A0A5F5PWX5 are positively associated in the top 50. If the weights for miRNA are plotted it can be seen their contribution to factor 2 is low overall, as the weights range from -0.001 to 0.001.
 
+If we plot factor 1 instead, the weight of the miRNAs is much higher.
 
 
 ```{r}
 
-plot_top_weights(MOFAobject.trained, 
+miRNA_f2 <- plot_top_weights(MOFAobject.trained, 
                   view = "miRNA", 
-                  factor = 3, 
-                  nfeatures = 5,
-                  scale = T, 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+miRNA_f1 <- plot_top_weights(MOFAobject.trained, 
+                  view = "miRNA", 
+                  factor = 1, 
+                  nfeatures = 10,
+                  scale = F, 
                   abs = T
 )
 
 ```
 
 
+```{r, echo=FALSE}
 
-```{r}
-
-plot_factors(MOFAobject.trained, 
-  factors = c(1,2,3),
-  color_by = "Day"
-) 
+ggarrange(miRNA_f2, miRNA_f1)
 
 ```
 
+It is interesting that miR-126-5P and miR-126-3P are among the miRNAs contributing to factor 2.
+https://pubmed.ncbi.nlm.nih.gov/33627637/
+
+
+Visualise the weights for the proteomics and snRNA data contributing to factor 3:
+
+```{r}
+
+snRNA_f3 <- plot_top_weights(MOFAobject.trained, 
+                  view = "snRNA", 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+
+snRNA_f4 <- plot_top_weights(MOFAobject.trained, 
+                  view = "snRNA", 
+                  factor = 4, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+```{r, echo=FALSE}
+
+ggarrange(snRNA_f3, snRNA_f4)
+
+```
+
+```{r}
+
+proteomics_f3 <- plot_top_weights(MOFAobject.trained, 
+                  view = "proteomics", 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f3$data$feature_id <- plasma_annotation[as.character(proteomics_f3$data$feature_id),]
+
+```
+
+```{r, echo=FALSE}
+
+proteomics_f3
+
+```
 
 
 Create heatmap for proteomics data:
@@ -264,36 +388,37 @@ rownames(my_sample_col) <- colnames(plasma_proteomics_data)
 
 plot_data_heatmap(MOFAobject.trained, 
   view = "proteomics",
-  factor = 1,  
+  factor = 2,  
   features = 25,
   cluster_rows = TRUE, cluster_cols = TRUE,
   show_rownames = TRUE, show_colnames = TRUE,
   scale = "row",
-  denoise = TRUE, 
-  annotation_col = my_sample_col
+  denoise = TRUE,
+  color = viridis(10),
+  border_color = NA
 )
 
 ```
 
 
-Plot factors 1 and 2 together (equivalent to PCA):
+Plot factors 2 and 3 together (equivalent to PCA):
 
 ```{r}
 
 p <- plot_factors(MOFAobject.trained, 
-  factors = c(1,2), 
+  factors = c(2,3), 
   color_by = "Day",
   shape_by = "Horse",
-  dot_size = 2.5,
+  dot_size = 4,
   show_missing = T
 )
 
-p
+p + theme_cowplot()
 
 ```
 
 
-Project the samples onto factor 1 for each time point.
+Project the samples onto factor 2 for each time point.
 
 ```{r}
 
@@ -301,16 +426,37 @@ Project the samples onto factor 1 for each time point.
 MOFAobject.trained@samples_metadata$day_group <- as.factor(plasma_pheno$Day)
 
 plot_factor(MOFAobject.trained, 
-  factors = 1, 
+  factors = 2, 
   color_by = "day_group",
   add_violin = TRUE,
   dodge = TRUE
 )
+
+
+plot_factor(MOFAobject.trained, 
+  factors = 3, 
+  color_by = "day_group",
+  add_violin = TRUE,
+  dodge = TRUE
+)
+
 ```
 
 
 
 ## Synovial fluid
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+proteomics_hist <- gg_histogram(sf_proteomics_data, ylab="Frequency", xlab="Log2 Intensity")
+miRNA_hist <- gg_histogram(sf_miRNA_data, ylab="Frequency", xlab="Log2 CPM")
+lncRNA_hist <- gg_histogram(sf_lncRNA_data, ylab="Frequency", xlab="Log2 CPM")
+snRNA_hist <- gg_histogram(sf_snRNA_data, ylab="Frequency", xlab="Log2 CPM")
+
+
+ggarrange(proteomics_hist, miRNA_hist, lncRNA_hist, snRNA_hist)
+
+```
 
 ```{r}
 
@@ -387,10 +533,10 @@ MOFAobject <- prepare_mofa(
 
 Train model:
   
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 outfile <- file.path(getwd(),"sf_model.hdf5")
-MOFAobject.trained <- run_mofa(MOFAobject, outfile)
+MOFAobject.trained <- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)
 
 ```
 
@@ -400,6 +546,9 @@ Add phenotype data to the model:
 ```{r}
 
 samples_metadata(MOFAobject.trained) <- sf_pheno
+
+# Add a group-by-day factor 
+MOFAobject.trained@samples_metadata$Group_day <- as.factor(paste0(sf_pheno$Group, "_", sf_pheno$Day))
 
 ```
 
@@ -433,29 +582,55 @@ plot_factor_cor(MOFAobject.trained)
 
 Correlation between factors and metadata:
   
-```{r, error=TRUE}
+```{r, message=FALSE, warning=FALSE}
 
 correlate_factors_with_covariates(MOFAobject.trained, 
-                                  covariates = c("Day", "Horse", "Group"), 
+                                  covariates = c("Day", "Horse", "Group", "Group_day"), 
                                   plot="log_pval",
                                   alpha="0.05" # p-value threshold
 )
 
 
 correlate_factors_with_covariates(MOFAobject.trained, 
-  covariates = c("Day", "Horse"), 
+  covariates = c("Day", "Horse", "Group", "Group_day"), 
   plot="r"
 )
 
 ```
 
-Factor 4 is significantly correlated with day, though factors 2-5 seem to have some correlation with day.
-For factor 4 miRNA and lncRNA explain more of the variance. Look at factors 2 and 5 too as more of their variance is explained by the proteomics. 
+Factor 4 is significantly correlated with day, though factors 2-5 seem to have some correlation with day. Factor 4 is mostly explained by variance in the miRNA.
+Factor 2 is correlated with the 'group_day' variable, though its worth noting this factor had to be coerced into a numeric variable. For factor 2 miRNA and lncRNA explain more of the variance. 
+
+It may be worth looking at the proteomics weight for factor 1 and 5. In factor 1's case the variance is most strongly correlated with the proteomics but this may be because there is a much higher number of features. Factor 5 seems to have a slight correlation with the biological factors of interest.
 
 
 ```{r}
 
-plot_top_weights(MOFAobject.trained, 
+miRNA_f2 <- plot_top_weights(MOFAobject.trained, 
+                  view = "miRNA", 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+```{r}
+
+lncRNA_f2 <- plot_top_weights(MOFAobject.trained, 
+                  view = "lncRNA", 
+                  factor = 2, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+```{r}
+
+miRNA_f4 <- plot_top_weights(MOFAobject.trained, 
                   view = "miRNA", 
                   factor = 4, 
                   nfeatures = 10,
@@ -467,36 +642,38 @@ plot_top_weights(MOFAobject.trained,
 
 ```{r}
 
-plot_top_weights(MOFAobject.trained, 
-                  view = "lncRNA", 
-                  factor = 4, 
-                  nfeatures = 10,
-                  scale = F, 
-                  abs = T
-)
-
-```
-
-```{r}
-
-plot_top_weights(MOFAobject.trained, 
+proteomics_f5 <- plot_top_weights(MOFAobject.trained, 
                   view = "proteomics", 
-                  factor = 2, 
+                  factor = 3, 
                   nfeatures = 10,
                   scale = F, 
                   abs = T
 )
 
+
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f5$data$feature_id <- sf_annotation[as.character(proteomics_f5$data$feature_id),]
+
+```
+
+```{r, echo=FALSE}
+
+ggarrange(miRNA_f2, lncRNA_f2, miRNA_f4)
+
+
+proteomics_f3
+
 ```
 
 
-Plot weights for factor 4:
+Plot weights for factor 2:
 
 ```{r}
 
 plot_weights(MOFAobject.trained,
  view = "miRNA",
- factor = 4,
+ factor = 2,
  nfeatures = 20,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )
@@ -504,7 +681,7 @@ plot_weights(MOFAobject.trained,
 
 plot_weights(MOFAobject.trained,
  view = "lncRNA",
- factor = 4,
+ factor = 2,
  nfeatures = 20,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )
@@ -513,15 +690,6 @@ plot_weights(MOFAobject.trained,
 
 ```
 
-
-```{r}
-
-plot_factors(MOFAobject.trained, 
-             factors = c(2:5),
-             color_by = "Day"
-) 
-
-```
 
 
 ```{r}
@@ -533,18 +701,35 @@ plot_data_heatmap(MOFAobject.trained,
                   cluster_rows = TRUE, cluster_cols = TRUE,
                   show_rownames = TRUE, show_colnames = TRUE,
                   scale = "row",
-                  denoise = TRUE
+                  denoise = TRUE,
+                  color = viridis(10),
+                  border_color = NA
 )
 
 ```
 
 
-Project the samples onto factor 1 for each time point.
+Project the samples onto factor 2 & 4 for each time point.
 
 ```{r}
 
 # Add day as a factor to metadata for visualisation purposes
 MOFAobject.trained@samples_metadata$group <- as.factor(paste0(sf_pheno$Group, "_", sf_pheno$Day))
+
+```
+
+```{r}
+
+plot_factor(MOFAobject.trained, 
+  factors = 2, 
+  color_by = "group",
+  add_violin = TRUE,
+  dodge = TRUE
+)
+
+```
+
+```{r}
 
 plot_factor(MOFAobject.trained, 
   factors = 4, 
@@ -552,8 +737,8 @@ plot_factor(MOFAobject.trained,
   add_violin = TRUE,
   dodge = TRUE
 )
-```
 
+```
 
 
 

@@ -9,8 +9,90 @@ save_pheatmap_png <- function(x, filename, width=1200, height=1000, res = 150) {
 
 
 
+#### Function to make a ggplot2 boxplot #####
 
-#### Function for multi-level PCA
+library(tidyverse)
+library(reshape2)
+library(cowplot)
+
+gg_boxplot <- function(x, log.transform=F, pheno=NULL, title="", xlab="", ylab="", pheno.lab="") {
+
+  # Function to create a ggplot2 boxplot from a matrix
+  # Intended to have similar functionality to the default boxplot function
+  # Data can be log transformed as an argument
+  # Axis labels and titles can be provided
+  # Phenotype information can also be provided, if so, the boxplots will be coloured by the pheno
+  # Data in phenotype needs to be in the same order as the raw data
+
+  if(!is.null(pheno)==TRUE){
+
+    if(log.transform){
+
+      t(log2(x)) %>%
+        as.data.frame() %>%
+        mutate(pheno = pheno) %>%
+        rownames_to_column("Sample_ID") %>%
+        melt(id.vars=c("Sample_ID", "pheno")) %>%
+        ggplot(aes(x=Sample_ID, y=value, fill=pheno)) +
+        geom_boxplot() + theme_cowplot() +
+        theme(axis.text.x = element_text(angle = 90, size = 8)) +
+        xlab(xlab) +
+        ylab(ylab) +
+        labs(fill=pheno.lab) +
+        ggtitle(title)
+
+    } else {
+
+      t(x) %>%
+        as.data.frame() %>%
+        rownames_to_column("Sample_ID") %>%
+        melt(id.vars=c("Sample_ID", "pheno")) %>%
+        ggplot(aes(x=Sample_ID, y=value, fill=pheno)) +
+        geom_boxplot() + theme_cowplot() +
+        theme(axis.text.x = element_text(angle = 90, size = 8)) +
+        xlab(xlab) +
+        ylab(ylab) +
+        labs(fill=pheno.lab) +
+        ggtitle(title)
+    }
+
+  } else {
+
+    if(log.transform){
+
+      t(log2(x)) %>%
+        as.data.frame() %>%
+        rownames_to_column("Sample_ID") %>%
+        melt() %>%
+        ggplot(aes(x=Sample_ID, y=value, fill=Sample_ID)) +
+        geom_boxplot(show.legend = FALSE) + theme_cowplot() +
+        theme(axis.text.x = element_text(angle = 90, size = 8)) +
+        xlab(xlab) +
+        ylab(ylab) +
+        ggtitle(title)
+
+    } else {
+
+      t(x) %>%
+        as.data.frame() %>%
+        rownames_to_column("Sample_ID") %>%
+        melt() %>%
+        ggplot(aes(x=Sample_ID, y=value, fill=Sample_ID)) +
+        geom_boxplot(show.legend = FALSE) + theme_cowplot() +
+        theme(axis.text.x = element_text(angle = 90, size = 8)) +
+        xlab(xlab) +
+        ylab(ylab) +
+        ggtitle(title)
+    }
+
+
+  }
+
+}
+
+
+
+#### Function for multi-level PCA ####
 
 library(mixOmics)
 
@@ -34,71 +116,6 @@ multi_level_pca <- function(x, multilevel="", group="", group.lab="", title="") 
 
 
   return(pca_multi_level_plot)
-
-}
-
-
-
-#### Function to make a ggplot2 boxplot #####
-
-library(tidyverse)
-library(reshape2)
-library(cowplot)
-
-gg_boxplot <- function(x, log.transform=F, title="", xlab="", ylab="") {
-
-  # Function to create a ggplot2 boxplot from a matrix
-  # Intended to have similar functionality to the default boxplot function
-  # Data can be log transformed as an argument
-  # Axis labels and titles can be provided
-
-  if(log.transform){
-
-    t(log2(x)) %>%
-      as.data.frame() %>%
-      rownames_to_column("Sample_ID") %>%
-      melt() %>%
-        ggplot(aes(x=Sample_ID, y=value, fill=Sample_ID)) +
-        geom_boxplot(show.legend = FALSE) + theme_cowplot() +
-        theme(axis.text.x = element_text(angle = 90, size = 8)) +
-        xlab(xlab) +
-        ylab(ylab) +
-        ggtitle(title)
-
-  } else {
-
-    t(x) %>%
-      as.data.frame() %>%
-      rownames_to_column("Sample_ID") %>%
-      melt() %>%
-      ggplot(aes(x=Sample_ID, y=value, fill=Sample_ID)) +
-      geom_boxplot(show.legend = FALSE) + theme_cowplot() +
-      theme(axis.text.x = element_text(angle = 90, size = 8)) +
-      xlab(xlab) +
-      ylab(ylab) +
-      ggtitle(title)
-  }
-
-}
-
-
-
-#### Function to make a ggplot2 boxplot with phenotype information ####
-
-gg_boxplot_pheno <- function(x, title="", xlab="", ylab="", pheno=pheno, pheno.lab="") {
-
-    t(x) %>%
-      as.data.frame() %>%
-      mutate(Pheno = as.factor(pheno)) %>%
-      rownames_to_column("Sample_ID") %>%
-      melt(., id.vars=c("Sample_ID", "Pheno")) %>%
-      ggplot(aes(x=Sample_ID, y=value, fill=Pheno)) +
-      geom_boxplot() + theme_cowplot() +
-      theme(axis.text.x = element_text(angle = 90, size = 8)) +
-      xlab(xlab) +
-      ylab(ylab) +
-      labs(fill=pheno.lab) +
-      ggtitle(title)
 
 }
 
@@ -129,20 +146,20 @@ eigencorplotPCA <- function(x, metavars="") {
 
   use_cex <- 16/16
 
-  corplot <- eigencorplot(x,
-                                 metavars = metavars,
-                                 col = c( "blue2", "blue1", "black", "red1", "red2"),
-                                 colCorval = "white",
-                                 scale = TRUE,
-                                 main = "",
-                                 plotRsquared = FALSE,
-                                 cexTitleX= use_cex,
-                                 cexTitleY= use_cex,
-                                 cexLabX = use_cex,
-                                 cexLabY = use_cex,
-                                 cexMain = use_cex,
-                                 cexLabColKey = use_cex,
-                                 cexCorval = use_cex)
+  corplot <- PCAtools::eigencorplot(x,
+                   metavars = metavars,
+                   col = c( "blue2", "blue1", "black", "red1", "red2"),
+                   colCorval = "white",
+                   scale = TRUE,
+                   main = "",
+                   plotRsquared = FALSE,
+                   cexTitleX= use_cex,
+                   cexTitleY= use_cex,
+                   cexLabX = use_cex,
+                   cexLabY = use_cex,
+                   cexMain = use_cex,
+                   cexLabColKey = use_cex,
+                   cexCorval = use_cex)
 
 return(corplot)
 
@@ -157,7 +174,7 @@ library(PCAtools)
 plotPCA <- function(x, PCs="", colour.data=NULL, shape.data=NULL, colour.lab="", shape.lab="") {
 
 
-  if(!is.null(colour.data & !is.null(shape.data) )){
+  if(!is.null(colour.data) & !is.null(shape.data)){
 
       df_out <- data.frame(PC1=x$rotated[,PCs[1]], PC2=x$rotated[,PCs[2]])
 
@@ -212,6 +229,10 @@ library(R.utils) # function to count zero values
 
 depth_by_missing_scatter <- function(x, read.count="", x.lab="", y.lab="") {
 
+  # 'x' is a matrix with the missing values
+  # read.count is a vector containing the sequencing depth for each column in x
+  # They need to be in the same order
+
   df <- data.frame(MissingCount = colSums(isZero(x)), ReadCount = read.count)
 
   scatter_plot <- ggscatter(df, x = "MissingCount", y = "ReadCount",
@@ -225,6 +246,50 @@ depth_by_missing_scatter <- function(x, read.count="", x.lab="", y.lab="") {
 
 
 
+#### Function to create histogram ####
+
+gg_histogram <- function(x, title="", xlab="", ylab="") {
+
+  t(x) %>%
+    as.data.frame() %>%
+    melt() %>%
+    ggplot(aes(x=value)) +
+    geom_histogram(aes(y=..density..), binwidth=1, colour="black", fill="white") +
+    geom_density(lwd = 1, colour = 2) +
+    theme_cowplot() +
+    xlab(xlab) +
+    ylab(ylab) +
+    ggtitle(title)
+
+}
+
+
+
+
+
+########################################################################
+
+#### Generic function ####
+
+generic_function <- function(x, pheno=NULL, title="", xlab="", ylab="") {
+
+  # Generic function structure with a few conditions I can edit as needed
+
+  if(!is.null(pheno)==TRUE){
+
+    if (identical(rownames(pheno), colnames(x))) {
+      return(print("Condition 1"))
+    } else {
+      stop("Error message.")
+    }
+
+  } else {
+
+    return(print("Condition 2"))
+
+  }
+
+}
 
 
 

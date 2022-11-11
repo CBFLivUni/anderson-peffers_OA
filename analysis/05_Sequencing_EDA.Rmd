@@ -1,6 +1,6 @@
 ---
 title: "Exploratory data analysis - sequencing data"
-author: "ejjohnson93"
+author: "Emily Johnson"
 date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
