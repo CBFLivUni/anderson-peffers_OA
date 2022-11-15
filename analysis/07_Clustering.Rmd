@@ -58,6 +58,30 @@ sf_snRNA_data[sf_snRNA_data == 0] <- NA
 
 ```
 
+Remove universal spike-ins:
+
+```{r}
+
+plasma_miRNA_data <- plasma_miRNA_data[-c(1:3),]
+sf_miRNA_data <- sf_miRNA_data[-c(1:3),]
+
+```
+
+
+## Variance filtering
+
+Before Z-score normalisation we filter the data to only include features with high variance. This is because protein/sequencing data is noisy. Noisy features can then be assigned to clusters even if their expression pattern isn’t representative of the cluster.
+
+
+```{r}
+
+vars <- apply(plasma_proteomics_data, 1, var, na.rm=TRUE)
+means <- apply(plasma_proteomics_data, 1, mean, na.rm=TRUE)
+
+plasma_proteomics_data <- plasma_proteomics_data[which(vars > 1 & means >2),]
+plasma_proteomics_data <- plasma_proteomics_data[which(rowMeans(is.na(plasma_proteomics_data)) < 0.2), ]
+
+```
 
 
 ## Z-score normalisation
@@ -152,15 +176,37 @@ plasma_time_df <- data.frame("Day_0" = rowMeans(plasma_data[,plasma_pheno$Day ==
 
 # Mfuzz
 
+```{r}
 
+expData <- ExpressionSet(as.matrix(na.omit(plasma_time_df)))
+
+```
+
+```{r}
+
+m1 <- mestimate(expData)
+
+```
+
+```{r}
+
+cl <- mfuzz(expData,c=6,m=m1)
+
+```
+
+```{r}
+
+mfuzz.plot(eset = expData, cl, mfrow = c(2,3))
+
+```
 
 
 # dtwclust
 
 ```{r, fig.show='hide', message=FALSE}
 
-pc <- tsclust(na.omit(plasma_time_df), type = "partitional", k = 4L, 
-              distance = "dtw_basic", centroid = "pam", 
+pc <- tsclust(na.omit(plasma_time_df), type = "partitional", k = 6L, 
+              distance = "dtw", centroid = "pam", 
               seed = 3247L, trace = TRUE,
               args = tsclust_args(dist = list(window.size = 20L)))
 
@@ -183,7 +229,7 @@ pc_plot
 
 ```{r, fig.show='hide', message=FALSE}
 
-fc <- tsclust(na.omit(plasma_time_df), type = "fuzzy", k = 4L,
+fc <- tsclust(na.omit(plasma_time_df), type = "fuzzy", k = 6L,
               distance = "L2",
               seed = 123L)
 
