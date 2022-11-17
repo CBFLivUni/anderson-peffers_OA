@@ -5,17 +5,21 @@ date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
+bibliography: references.bib
 ---
 
 # Load libraries
 
 ```{r, message=FALSE, warning=FALSE}
 
-source("./code/utility-functions.R") # load helper functions 
 library(tidyverse)
-library(Mfuzz)
-library(dtwclust)
+library(Mfuzz) # clustering package
+library(dtwclust) # clustering package
 library(cowplot) # ggplot2 theme
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(MetBrewer) # additional palettes
+library(WGCNA) # matchLabels and accuracyMeasures functions
+library(pheatmap) # for correlation plots
 
 ```
 
@@ -42,7 +46,7 @@ sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
 
 ```
 
-Convert 0s to NAs as previous analysis showed they were sampling zeroes rather than biological zeroes: 
+Before clustering can be carried out several additional data cleaning and normalisation steps needed to be carried out. The 0s were first converted to NAs, as the previous analysis showed they were sampling zeroes rather than biological zeroes:
 
 ```{r}
 
@@ -68,10 +72,9 @@ sf_miRNA_data <- sf_miRNA_data[-c(1:3),]
 
 ```
 
-
 ## Variance filtering
 
-Before Z-score normalisation we filter the data to only include features with high variance. This is because protein/sequencing data is noisy. Noisy features can then be assigned to clusters even if their expression pattern isn’t representative of the cluster.
+Before Z-score normalisation the data was filtered to only include features with high variance. This is because protein/sequencing data is extremely noisy. Noisy features can then be assigned to clusters even if their expression pattern isn't representative of the cluster.
 
 Plasma:
 
@@ -89,8 +92,7 @@ plasma_proteomics_data <- plasma_proteomics_data[which(rowMeans(is.na(plasma_pro
 
 ```
 
-
-Synovial fluid: 
+Synovial fluid:
 
 ```{r}
 
@@ -106,9 +108,9 @@ sf_proteomics_data <- sf_proteomics_data[which(rowMeans(is.na(sf_proteomics_data
 
 ```
 
-
-
 ## Z-score normalisation
+
+Z-score normalisation scales the data such that the mean of all of the values is 0 and the standard deviation is 1. It is useful for integrating multi-omics data. This was carried out for the proteomics and sequencing data, before concatenating the normalised -omics together for the plasma and synovial fluid samples.
 
 ### Plasma
 
@@ -134,7 +136,6 @@ colnames(plasma_snRNA_Znorm) <- colnames(plasma_snRNA_data)
 
 ```
 
-
 Concatenate plasma data together:
 
 ```{r}
@@ -142,7 +143,6 @@ Concatenate plasma data together:
 plasma_data <- rbind(plasma_proteomics_Znorm, plasma_miRNA_Znorm, plasma_lncRNA_Znorm, plasma_snRNA_Znorm)
 
 ```
-
 
 ### Synovial fluid
 
@@ -168,18 +168,17 @@ colnames(sf_snRNA_Znorm) <- colnames(sf_snRNA_data)
 
 ```
 
-
 Concatenate sf data together:
-  
+
 ```{r}
 
 sf_data <- rbind(sf_proteomics_Znorm, sf_miRNA_Znorm, sf_lncRNA_Znorm, sf_snRNA_Znorm)
 
 ```
 
-
-
 ## Collapse replicates and re-order by time
+
+The two clustering algorithms employed in this analysis do not recognise multiple replicates in the same dataframe. Before clustering the average z-score for each time point was calculated and the data was re-ordered by time.
 
 Plasma:
 
@@ -202,7 +201,7 @@ plasma_time_df <- na.omit(plasma_time_df)
 ```
 
 Synovial fluid:
-  
+
 ```{r}
 
 sf_time_df <- data.frame("Day_0" = rowMeans(sf_data[,sf_pheno$Day == "0"], na.rm=TRUE),
@@ -219,8 +218,9 @@ sf_time_df <- na.omit(sf_time_df)
 
 ```
 
-
 # Mfuzz
+
+## Plasma
 
 Create an `ExpressionSet` object containing the data:
 
@@ -230,8 +230,7 @@ expData <- ExpressionSet(as.matrix(plasma_time_df))
 
 ```
 
-
-Estimate the fuzzifier to designate how ‘fuzzy’ the clusters are. A fuzzifier of 1 is almost equivalent to hard clustering. 
+Estimate the fuzzifier to designate how 'fuzzy' the clusters are. A fuzzifier of 1 is almost equivalent to hard clustering.
 
 ```{r}
 
@@ -239,9 +238,7 @@ m1 <- mestimate(expData)
 
 ```
 
-
-The `Dmin()` function calculates the minimum centroid distance between clusters for a series of cluster numbers. We can use this to determine the optimum number of clusters to use. After a certain number of clusters the separation between clusters becomes minimal. Visual inspection of the plot shows an ‘elbow’ to pick the appropriate k number.
-
+The `Dmin()` function calculates the minimum centroid distance between clusters for a series of cluster numbers. We can use this to determine the optimum number of clusters to use. After a certain number of clusters the separation between clusters becomes minimal. Visual inspection of the plot shows an 'elbow' to pick the appropriate k number.
 
 ```{r}
 
@@ -249,7 +246,7 @@ Dmin(expData, m=m1, crange=seq(2,22,1), repeats=3, visu=TRUE)
 
 ```
 
-Visual inspection of the plot suggests <5 clusters are required. 
+Visual inspection of the plot suggests \<5 clusters are required.
 
 ```{r}
 
@@ -260,185 +257,301 @@ clust <- 4
 ```{r}
 
 # Carry out clustering using the calculated cluster number and fuzziness parameters
-mfuzz_cl <- mfuzz(expData,c=clust,m=m1)
+set.seed(5)
+plasma_mfuzz_cl <- mfuzz(expData,c=clust,m=m1)
 
 ```
 
 ```{r}
 
-mfuzz.plot(eset = expData, cl = mfuzz_cl, mfrow = c(2,2))
+cor(t(plasma_mfuzz_cl[[1]]))
 
 ```
 
+The per-cluster membership can be plotted with the in-built Mfuzz function `mfuzz.plot`.
+
+```{r, eval=FALSE}
+
+mfuzz.plot(eset = expData, cl = plasma_mfuzz_cl, mfrow = c(2,2))
+
+```
+
+However, this doesn't give the same level of control over the aesthetics, so ggplot2 was used instead.
+
+The centroids for each cluster were plotted on one graph along with the per-cluster membership scores in separate graphs. Each cluster was assigned a colour. For the per-cluster membership the opacity of each feature was weighted by its membership score. The code was adapted from the following tutorial:
+
+<https://2-bitbio.com/2017/10/clustering-rnaseq-data-using-k-means.html>
+
+To prepare the centroid data and plot:
 
 ```{r}
 
-time <- gsub("Day_", "", colnames(plasma_time_df))
+# Convert centroid data into long dataframe
+plasma_centroids <- plasma_mfuzz_cl$centers
+plasma_centroids_df <- data.frame(plasma_centroids)
+plasma_centroids_df$cluster <- row.names(plasma_centroids_df)
+
+# Convert dataframe into long format
+plasma_centroids_long <- tidyr::pivot_longer(plasma_centroids_df, names_to = "sample", values_to = "value", 1:length(colnames(plasma_centroids)))
+
+# Remove "Day_" prefix from sample names
+plasma_centroids_long$sample <- gsub("Day_", "", plasma_centroids_long$sample)
 
 ```
 
 ```{r}
 
-# Convert centroid data into long dataframe: 
+# Centroid plot
 
-fcm_centroids <- mfuzz_cl$centers
-fcm_centroids_df <- data.frame(fcm_centroids)
-fcm_centroids_df$cluster <- row.names(fcm_centroids_df)
-centroids_long <- tidyr::pivot_longer(fcm_centroids_df, names_to = "sample", values_to = "value", 1:length(colnames(fcm_centroids)))
-
-
-```
-
-```{r}
-
-ggplot(centroids_long, aes(x=sample,y=value, group=cluster, colour=as.factor(cluster))) + 
+plasma_mfuzz_centroids_plot <- ggplot(plasma_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
   geom_line(lwd=1) +
   theme_cowplot() +
   scale_colour_brewer(palette = "Set1") +
   xlab("Day") +
   ylab("Expression") +
-  labs(title= "Cluster Expression by Time",color = "Cluster")
+  labs(title= "Plasma EV fuzzy c-means expression",color = "Cluster") 
 
 ```
 
+To prepare the per-cluster feature membership data and plot:
 
-```{r}
+```{r, class.source = "fold-hide"}
 
-#start with the input data
-fcm_plotting_df <- data.frame(plasma_time_df)
+# Create copy of dataframe containing average z-score per time
+plasma_membership_df <- data.frame(plasma_time_df)
 
-#add genes
-fcm_plotting_df$Feature <- row.names(fcm_plotting_df)
+# Add row with feature names
+plasma_membership_df$Feature <- row.names(plasma_membership_df)
 
-#bind cluster assinment
-fcm_plotting_df$cluster <- mfuzz_cl$cluster
+# Bind the cluster assignment 
+plasma_membership_df$cluster <- plasma_mfuzz_cl$cluster
 
-#fetch the membership for each gene/top scoring cluster
-fcm_plotting_df$membership <- sapply(1:length(fcm_plotting_df$cluster),function(row){
-  clust <- fcm_plotting_df$cluster[row]
-  mfuzz_cl$membership[row,clust]
+# Fetch the membership for each feature in its top scoring cluster
+plasma_membership_df$membership <- sapply(1:length(plasma_membership_df$cluster),function(row){
+  clust <- plasma_membership_df$cluster[row]
+  plasma_mfuzz_cl$membership[row,clust]
 })
 
 
-#subset the dataframe by the cluster and get it into long form
-#using a little tidyr action
-cluster_plot_df <- fcm_plotting_df %>%
-  dplyr::select(.,1:length(colnames(fcm_centroids)), membership, Feature, cluster) %>%
-  tidyr::gather(.,"sample",'value',1:length(colnames(fcm_centroids)))
+# Convert membership dataframe into long format
+plasma_cluster_plot_df <- plasma_membership_df %>%
+  dplyr::select(.,1:length(colnames(plasma_centroids)), membership, Feature, cluster) %>%
+  tidyr::gather(.,"sample",'value',1:length(colnames(plasma_centroids)))
 
-#order the dataframe by score
-cluster_plot_df <- cluster_plot_df[order(cluster_plot_df$membership),]
-#set the order by setting the factors using forcats
-cluster_plot_df$Feature = forcats::fct_inorder(cluster_plot_df$Feature)
 
-#subset the cores by cluster
-ggplot(cluster_plot_df, aes(x=sample,y=value)) + 
-    facet_wrap(~cluster, scales="free_y") +
-    geom_line(aes(colour=as.factor(cluster), alpha=membership-0.1, group = membership), lwd=1) +
-    #scale_colour_gradientn(colours=c('blue1', 'red2')) +
-    #scale_colour_gradient(low = "white", high = "red") +
-    #scale_color_viridis(option = "mako", direction = -1) + 
-    #this adds the core 
-    geom_line(data=centroids_long, aes(sample,value, group=cluster), lwd=1.5, color="black",inherit.aes=FALSE) +
-    xlab("Time") +
-    ylab("Expression") +
-    labs(title= paste0("Per-cluster membership"),color = "Score") + 
-    theme_cowplot()
+# Remove "Day_" prefix from "sample" column
+plasma_cluster_plot_df$sample <- gsub("Day_", "", plasma_cluster_plot_df$sample)
+
+
+# Order the dataframe by membership score
+plasma_cluster_plot_df <- plasma_cluster_plot_df[order(plasma_cluster_plot_df$membership),]
+
+
+# Convert the features into an ordered factor using forcats
+plasma_cluster_plot_df$Feature = forcats::fct_inorder(plasma_cluster_plot_df$Feature)
+
 
 ```
 
+```{r, class.source = "fold-hide"}
 
-```{r}
+# Per-cluster membership plot
 
-#start with the input data
-fcm_plotting_df <- data.frame(plasma_time_df)
-
-#add genes
-fcm_plotting_df$Feature <- row.names(fcm_plotting_df)
-
-#bind cluster assinment
-fcm_plotting_df$cluster <- mfuzz_cl$cluster
-
-#fetch the membership for each gene/top scoring cluster
-fcm_plotting_df$membership <- sapply(1:length(fcm_plotting_df$cluster),function(row){
-  clust <- fcm_plotting_df$cluster[row]
-  mfuzz_cl$membership[row,clust]
-})
-
-
-#subset the dataframe by the cluster and get it into long form
-#using a little tidyr action
-cluster_plot_df <- fcm_plotting_df %>%
-  dplyr::select(.,1:length(colnames(fcm_centroids)), membership, Feature, cluster) %>%
-  tidyr::gather(.,"sample",'value',1:length(colnames(fcm_centroids)))
-
-#order the dataframe by score
-cluster_plot_df <- cluster_plot_df[order(cluster_plot_df$membership),]
-#set the order by setting the factors using forcats
-cluster_plot_df$Feature = forcats::fct_inorder(cluster_plot_df$Feature)
-
-#subset the cores by cluster
-ggplot(cluster_plot_df, aes(x=sample,y=value)) + 
-    facet_wrap(~cluster, scales="free_y") +
-    geom_line(aes(colour=membership, group=Feature), lwd=1, alpha=0.5) +
-    #scale_colour_gradientn(colours=c('blue1', 'red2')) +
-    scale_colour_gradient(low = "white", high = "red") +
-    #scale_color_viridis(option = "mako", direction = -1) + 
-    #this adds the core 
-    geom_line(data=centroids_long, aes(sample,value, group=cluster), lwd=1.5, color="black",inherit.aes=FALSE) +
-    xlab("Time") +
-    ylab("Expression") +
-    labs(title= paste0("Per-cluster membership"),color = "Score") + 
-    theme_cowplot()
+plasma_mfuzz_plot_membership <- ggplot(plasma_cluster_plot_df, aes(x=as.numeric(sample),y=value)) + 
+        # Facet-wrap by cluster
+        facet_wrap(~cluster, scales="free_y") +
+        # Colour each panel by cluster
+        # The oppacity of each feature is determined by membership
+        geom_line(aes(colour=as.factor(cluster), alpha=membership, group =Feature), lwd=1) +
+        scale_colour_brewer(palette = "Set1") +
+        # Add the centroids as a black line
+        geom_line(data=plasma_centroids_long, aes(x=as.numeric(sample), y=value, group=cluster), lwd=1.2, color="black",inherit.aes=FALSE) +
+        xlab("Day") +
+        ylab("Expression") +
+        labs(title="Per-cluster membership") + 
+        theme_cowplot() + 
+        theme(legend.position = "none")
 
 ```
 
+To visualise the results together:
 
+```{r, fig.height = 5, fig.width = 11, fig.align="center"}
+
+ggarrange(plasma_mfuzz_centroids_plot, plasma_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c("A", "B"))
+
+```
+
+Cluster 4 appears to display the most interesting pattern over time, with an initial dip after OA induction followed by increased expression over the time course. As cluster 2 & 3 have a high overlap they are likely redundant clusters. Cluster 1 has a distinct profile, though as it fluctuates from high to low its difficult to speculate how it translates to OA progression.
+
+For downstream analysis the membership scores for each gene by cluster were extracted:
 
 ```{r}
 
-#start with the input data
-fcm_plotting_df <- data.frame(plasma_time_df)
+# Extracts membership values 
+plasma_acore <- acore(expData, plasma_mfuzz_cl, min.acore=0)
 
-#add genes
-fcm_plotting_df$Feature <- row.names(fcm_plotting_df)
 
-#bind cluster assinment
-fcm_plotting_df$cluster <- mfuzz_cl$cluster
+# Create a combined dataframe of the combined clusters
+plasma_acore_list <- do.call(rbind, lapply(seq_along(plasma_acore), function(i){ data.frame(CLUSTER=i, plasma_acore[[i]])}))
 
-#fetch the membership for each gene/top scoring cluster
-fcm_plotting_df$membership <- sapply(1:length(fcm_plotting_df$cluster),function(row){
-  clust <- fcm_plotting_df$cluster[row]
-  mfuzz_cl$membership[row,clust]
+```
+
+It is interesting that eca-miR-186[@li2021], F7C1Y3[@chou2020] and eca-miR-126-5p were among the members of cluster 4.
+
+## Synovial fluid
+
+The same steps were repeated but for the synovial fluid data instead. Create an `ExpressionSet` object containing the data:
+
+```{r}
+
+expData <- ExpressionSet(as.matrix(sf_time_df))
+
+```
+
+Estimate the fuzzifier to designate how 'fuzzy' the clusters are. A fuzzifier of 1 is almost equivalent to hard clustering.
+
+```{r}
+
+m1 <- mestimate(expData)
+
+```
+
+Estimate number of clusters required:
+
+```{r}
+
+Dmin(expData, m=m1, crange=seq(2,22,1), repeats=3, visu=TRUE)
+
+```
+
+Visual inspection of the plot suggests \<7 clusters are required.
+
+```{r}
+
+clust <- 6
+
+```
+
+```{r}
+
+# Carry out clustering using the calculated cluster number and fuzziness parameters
+set.seed(5)
+sf_mfuzz_cl <- mfuzz(expData,c=clust,m=m1)
+
+```
+
+```{r}
+
+cor(t(sf_mfuzz_cl[[1]]))
+
+```
+
+Results suggest 5&6 may be redundant clusters due to correlation between their centroids.
+
+Plot centroid expression over time and per-cluster membership scores as before. First prepare the centroid data and plot:
+
+```{r}
+
+# Convert centroid data into long dataframe
+sf_centroids <- sf_mfuzz_cl$centers
+sf_centroids_df <- data.frame(sf_centroids)
+sf_centroids_df$cluster <- row.names(sf_centroids_df)
+
+# Convert dataframe into long format
+sf_centroids_long <- tidyr::pivot_longer(sf_centroids_df, names_to = "sample", values_to = "value", 1:length(colnames(sf_centroids)))
+
+# Remove "Day_" prefix from sample names
+sf_centroids_long$sample <- gsub("Day_", "", sf_centroids_long$sample)
+
+```
+
+```{r}
+
+# Centroid plot
+
+sf_mfuzz_centroids_plot <- ggplot(sf_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
+  geom_line(lwd=1) +
+  theme_cowplot() +
+  #scale_colour_brewer(palette = "Set1") +
+  scale_color_met_d("Hiroshige") +
+  xlab("Day") +
+  ylab("Expression") +
+  labs(title= "SF EV fuzzy c-means expression",color = "Cluster") 
+
+
+```
+
+Next prepare the per cluster feature membership data and plot:
+
+```{r}
+
+# Create copy of dataframe containing average z-score per time
+sf_membership_df <- data.frame(sf_time_df)
+
+# Add row with feature names
+sf_membership_df$Feature <- row.names(sf_membership_df)
+
+# Bind the cluster assignment 
+sf_membership_df$cluster <- sf_mfuzz_cl$cluster
+
+# Fetch the membership for each feature in its top scoring cluster
+sf_membership_df$membership <- sapply(1:length(sf_membership_df$cluster),function(row){
+  clust <- sf_membership_df$cluster[row]
+  sf_mfuzz_cl$membership[row,clust]
 })
 
-k_to_plot = 3
 
-#subset the dataframe by the cluster and get it into long form
-#using a little tidyr action
-cluster_plot_df <- dplyr::filter(fcm_plotting_df, cluster == k_to_plot) %>%
-  dplyr::select(.,1:length(colnames(fcm_centroids)),membership,Feature) %>%
-  tidyr::gather(.,"sample",'value',1:length(colnames(fcm_centroids)))
+# Convert membership dataframe into long format
+sf_cluster_plot_df <- sf_membership_df %>%
+  dplyr::select(.,1:length(colnames(sf_centroids)), membership, Feature, cluster) %>%
+  tidyr::gather(.,"sample",'value',1:length(colnames(sf_centroids)))
 
-#order the dataframe by score
-cluster_plot_df <- cluster_plot_df[order(cluster_plot_df$membership),]
-#set the order by setting the factors using forcats
-cluster_plot_df$Feature = forcats::fct_inorder(cluster_plot_df$Feature)
 
-#subset the cores by cluster
-core <- dplyr::filter(centroids_long, cluster == k_to_plot)
+# Remove "Day_" prefix from "sample" column
+sf_cluster_plot_df$sample <- gsub("Day_", "", sf_cluster_plot_df$sample)
 
-ggplot(cluster_plot_df, aes(x=sample,y=value)) + 
-    geom_line(aes(colour=membership, group=Feature), lwd=1, alpha=0.5) +
-    #scale_colour_gradientn(colours=c('blue1', 'red2')) +
-    scale_colour_gradient(low = "white", high = "red") +
-    #scale_color_viridis(option = "mako", direction = -1) + 
-    #this adds the core 
-    geom_line(data=core, aes(sample,value, group=cluster), lwd=1.5, color="black",inherit.aes=FALSE) +
-    xlab("Time") +
-    ylab("Expression") +
-    labs(title= paste0("Cluster ",k_to_plot," Expression by Time"),color = "Score") + 
-    theme_cowplot()
+
+# Order the dataframe by membership score
+sf_cluster_plot_df <- sf_cluster_plot_df[order(sf_cluster_plot_df$membership),]
+
+
+# Convert the features into an ordered factor using forcats
+sf_cluster_plot_df$Feature = forcats::fct_inorder(sf_cluster_plot_df$Feature)
+
+
+```
+
+```{r}
+
+# Per-cluster membership plot
+
+sf_mfuzz_plot_membership <- ggplot(sf_cluster_plot_df, aes(x=as.numeric(sample),y=value)) + 
+        # Facet-wrap by cluster
+        facet_wrap(~cluster, scales="free_y") +
+        # Colour each panel by cluster
+        # The oppacity of each feature is determined by membership
+        geom_line(aes(colour=as.factor(cluster), alpha=membership, group =Feature), lwd=1) +
+        scale_color_met_d("Hiroshige") +
+        # Add the centroids as a black line
+        geom_line(data=sf_centroids_long, aes(x=as.numeric(sample), y=value, group=cluster), lwd=1.2, color="black",inherit.aes=FALSE) +
+        xlab("Day") +
+        ylab("Expression") +
+        labs(title="Per-cluster membership") + 
+        theme_cowplot() + 
+        theme(legend.position = "none")
+
+```
+
+```{r, fig.height = 5, fig.width = 11, fig.align="center"}
+
+ggarrange(sf_mfuzz_centroids_plot, sf_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c("A", "B"))
 
 ```
 
@@ -447,66 +560,446 @@ Extract membership scores for each gene by cluster:
 ```{r}
 
 # Extracts membership values 
-acore <- acore(expData, cl, min.acore=0)
+sf_acore <- acore(expData, sf_mfuzz_cl, min.acore=0)
 
 
 # Create a combined dataframe of the combined clusters
-acore_list <- do.call(rbind, lapply(seq_along(acore), function(i){ data.frame(CLUSTER=i, acore[[i]])}))
+sf_acore_list <- do.call(rbind, lapply(seq_along(sf_acore), function(i){ data.frame(CLUSTER=i, sf_acore[[i]])}))
 
 ```
 
+## Summary
 
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7893783/ - eca-miR-186
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7331607/ - F7C1Y3
-	
-eca-miR-126-5p
+Combine plasma and synovial fluid soft clustering results together:
 
+```{r, fig.height = 9, fig.width = 10.5, fig.align="center"}
+
+ggarrange(ggarrange(plasma_mfuzz_centroids_plot, plasma_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c("A", "B")),
+ggarrange(sf_mfuzz_centroids_plot, sf_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c("C", "D")),
+          nrow = 2,
+          ncol = 1)
+
+```
+
+Overall both datasets have clusters that demonstrate interesting time-dependent behaviour. For the synovial fluid data clusters 4 & 5 have two inverse profiles at day 10. This may be part of the initial immune response to the injury/tissue insult. This was also seen with the differential expression analysis (limma).
 
 # dtwclust
 
+To make the analysis more robust multiple clustering methods were compared. Both `Mfuzz` and `dtwclust` are time-series clustering packages. For `dtwclust` k-medoid clustering (PAM) was employed. K-medoid is a form of partitional clustering. Unlike fuzzy c-means, it is more sensitive to noise in the data, which is why variance filtering was applied earlier.
+
+## Plasma
+
 ```{r, fig.show='hide', message=FALSE}
 
-pc <- tsclust(na.omit(plasma_time_df), type = "partitional", k = 6L, 
+plasma_dtwclust_cl <- tsclust(na.omit(plasma_time_df), type = "partitional", k = 4L, 
               distance = "dtw", centroid = "pam", 
               seed = 3247L, trace = TRUE,
               args = tsclust_args(dist = list(window.size = 20L)))
 
+```
+
+```{r}
+
+# Prepare data for centroid plot
+
+## Convert list object into matrix
+plasma_dtw_centroids <- do.call(rbind, plasma_dtwclust_cl@centroids)
+
+## Rename columns in matrix
+colnames(plasma_dtw_centroids) <- colnames(plasma_time_df)
+
+## Convert to dataframe
+plasma_dtw_centroids_df <- data.frame(plasma_dtw_centroids)
+
+## Add column for cluster
+plasma_dtw_centroids_df$cluster <- row.names(plasma_dtw_centroids_df)
+
+## Convert dataframe into long format
+plasma_dtw_centroids_long <- tidyr::pivot_longer(plasma_dtw_centroids_df, names_to = "sample", values_to = "value", 1:length(colnames(plasma_dtw_centroids)))
+
+## Remove "Day_" prefix from sample names
+plasma_dtw_centroids_long$sample <- gsub("Day_", "", plasma_centroids_long$sample)
 
 
-time <- gsub("Day_", "", colnames(plasma_time_df))
 
-pc_plot <- plot(pc, time=time) + 
-            theme_cowplot() +
-            xlab("Time (days") +
-            ylab("Z-score") 
+# Centroid plot
+
+plasma_dtw_centroids_plot <- ggplot(plasma_dtw_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
+  geom_line(lwd=1) +
+  theme_cowplot() +
+  scale_colour_brewer(palette = "Set1") +
+  xlab("Day") +
+  ylab("Expression") +
+  labs(title= "Plasma K-medoid expression", color = "Cluster")
+
 
 ```
 
-```{r, echo=FALSE}
-
-pc_plot 
-
-```
+## Synovial fluid
 
 ```{r, fig.show='hide', message=FALSE}
 
-fc <- tsclust(na.omit(plasma_time_df), type = "fuzzy", k = 6L,
-              distance = "L2",
-              seed = 123L)
+sf_dtwclust_cl <- tsclust(na.omit(sf_time_df), type = "partitional", k = 6L, 
+                              distance = "dtw", centroid = "pam", 
+                              seed = 3247L, trace = TRUE,
+                              args = tsclust_args(dist = list(window.size = 20L)))
+
+```
+
+```{r}
+
+# Prepare data for centroid plot
+
+## Convert list object into matrix
+sf_dtw_centroids <- do.call(rbind, sf_dtwclust_cl@centroids)
+
+## Rename columns in matrix
+colnames(sf_dtw_centroids) <- colnames(sf_time_df)
+
+## Convert to dataframe
+sf_dtw_centroids_df <- data.frame(sf_dtw_centroids)
+
+## Add column for cluster
+sf_dtw_centroids_df$cluster <- row.names(sf_dtw_centroids_df)
+
+## Convert dataframe into long format
+sf_dtw_centroids_long <- tidyr::pivot_longer(sf_dtw_centroids_df, names_to = "sample", values_to = "value", 1:length(colnames(sf_dtw_centroids)))
+
+## Remove "Day_" prefix from sample names
+sf_dtw_centroids_long$sample <- gsub("Day_", "", sf_centroids_long$sample)
 
 
-fc_plot <- plot(fc, time=time) + 
-            theme_cowplot() +
-            xlab("Time (days") +
-            ylab("Z-score") 
+
+# Centroid plot
+
+sf_dtw_centroids_plot <- ggplot(sf_dtw_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
+  geom_line(lwd=1) +
+  theme_cowplot() +
+  scale_color_met_d("Hiroshige") +
+  xlab("Day") +
+  ylab("Expression") +
+  labs(title= "SF K-medoid expression", color = "Cluster")
+
 
 
 ```
 
-```{r, echo=FALSE}
+## Summary
 
-fc_plot 
+```{r, fig.height = 5, fig.width = 11, fig.align="center"}
+
+ggarrange(plasma_dtw_centroids_plot, sf_dtw_centroids_plot,
+          nrow = 1,
+          labels = c("A", "B"))
 
 ```
 
-https://stackoverflow.com/questions/42197984/how-to-get-the-result-of-dtwclust
+# Compare clustering methods
+
+## Plasma
+
+Extract Mfuzz and dtwclust cluster assignments:
+
+```{r}
+
+# dtwclust
+plasma_dtw_cl <- plasma_dtwclust_cl@cluster 
+names(plasma_dtw_cl) <- row.names(plasma_time_df)
+
+
+# Mfuzz
+plasma_mfuzz_clusters <- plasma_mfuzz_cl$cluster
+
+
+# Check names are the same order
+names(plasma_dtw_cl) == names(plasma_mfuzz_clusters)
+
+```
+
+```{r}
+
+# Add to cluster labels:
+plasma_dtw_cl_matched <- paste0('K-',plasma_dtw_cl)
+plasma_mfuzz_clusters <- paste0('FCM-', plasma_mfuzz_clusters)
+
+# Calculate the overlap
+OL<- overlapTable(plasma_dtw_cl_matched, plasma_mfuzz_clusters)
+
+# Get rid of 0 values...
+OL$pTable[OL$pTable == 0] <- 2e-300
+
+```
+
+```{r, fig.show='hide'}
+
+# Extract overlap counts
+overlap_counts <- signif(OL$countTable, 2)
+
+# Create matrix of labels for pheatmap
+text_labels <- paste(signif(OL$countTable, 2), "\n(",
+                      signif(OL$pTable, 1), ")", sep= "")
+dim(text_labels) <-  dim(OL$countTable)
+
+# Create heatmap of overlap 
+plasma_cl_OL_plot <- pheatmap(overlap_counts,
+               display_numbers = text_labels,
+               cluster_rows=FALSE,
+               cluster_cols=FALSE,
+               border_color = NA,
+               #color = mako(50),
+               color = hcl.colors(50, "BluYl"),
+               fontsize_number = 14,
+               fontsize_row = 15,
+               fontsize_col = 15,
+               number_color = "black",
+               legend = FALSE)
+
+```
+
+```{r, echo=FALSE, fig.height = 4.5, fig.width = 4.5, fig.align="center"}
+
+plasma_cl_OL_plot
+
+```
+
+Note, to access the heatmap for functions such as ggarrange, extract the 4th element, e.g. `plasma_cl_OL_plot[[4]]`.
+
+| k-medoids | fuzzy c-means |
+|-----------|---------------|
+| 1         | 1             |
+| 2         | 2             |
+| 3         | 4             |
+| 4         | 4             |
+
+Fuzzy c-means cluster 3 doesn't appear to have a corresponding k-medoids cluster. This appears to stem from redundancy between cluster 2&3. It is probably worth reducing the number of clusters to 3 or not including cluster 3 in any downstream analysis.
+
+## Synovial fluid
+
+Extract Mfuzz and dtwclust cluster assignments:
+
+```{r}
+
+# dtwclust
+sf_dtw_cl <- sf_dtwclust_cl@cluster 
+names(sf_dtw_cl) <- row.names(sf_time_df)
+
+
+# Mfuzz
+sf_mfuzz_clusters <- sf_mfuzz_cl$cluster
+
+
+# Check names are the same order
+names(sf_dtw_cl) == names(sf_mfuzz_clusters)
+
+```
+
+```{r}
+
+# Add to cluster labels:
+sf_dtw_cl_matched <- paste0('K-',sf_dtw_cl)
+sf_mfuzz_clusters <- paste0('FCM-', sf_mfuzz_clusters)
+
+# Calculate the overlap
+OL<- overlapTable(sf_dtw_cl_matched, sf_mfuzz_clusters)
+
+# Get rid of 0 values...
+OL$pTable[OL$pTable == 0] <- 2e-300
+
+```
+
+```{r, fig.show ='hide'}
+
+# Extract overlap counts
+overlap_counts <- signif(OL$countTable, 2)
+
+# Create matrix of labels for pheatmap
+text_labels <- paste(signif(OL$countTable, 2), "\n(",
+                     signif(OL$pTable, 1), ")", sep= "")
+dim(text_labels) <-  dim(OL$countTable)
+
+# Create heatmap of overlap 
+sf_cl_OL_plot <- pheatmap(overlap_counts,
+                              display_numbers = text_labels,
+                              cluster_rows=FALSE,
+                              cluster_cols=FALSE,
+                              border_color = NA,
+                              #color = mako(50),
+                              color = hcl.colors(50, "BluYl"),
+                              fontsize_number = 14,
+                              fontsize_row = 15,
+                              fontsize_col = 15,
+                              number_color = "black",
+                              legend = FALSE)
+
+```
+
+```{r, echo=FALSE, fig.height = 5, fig.width = 5, fig.align="center"}
+
+sf_cl_OL_plot 
+
+
+```
+
+The results demonstrate some overlap between the clustering algorithms. Cluster 1 of the fuzzy c-means clustering is most similar to cluster 4 of the k-medoid clustering (though cluster 4 of the fuzzy c-means also has strong overlap). Cluster 1 of the k-medoid clustering is most similar to cluster 4 of the fuzzy c-means.
+
+Clusters 2&3 of the k-medoid clustering don't appear to have much overlap with any of the fuzzy c-means clusters.
+
+Clusters 5&6 for the fuzzy c-means overlap with clusters 6&5 for the k-medoids.
+
+| k-medoids | fuzzy c-means     |
+|-----------|-------------------|
+| 1         | 4                 |
+| 4         | 1 (followed by 4) |
+| 5         | 6                 |
+| 6         | 5                 |
+
+------------------------------------------------------------------------
+
+# Write outputs
+
+The mfuzz fuzzy c-means analysis was taken forward for functional enrichment as its was reasonable agreement with the dtwclust for the most relevant clusters. Additionally it includes a membership score which is useful for functional enrichment techniques that need a ranked list (though this would be possible to generate for the dtwclust results too by correlating the features with the centroids and applying a cut-off if this was of interest).
+
+```{r}
+
+saveRDS(plasma_acore_list, "./data/mfuzz_cluster_plasma_data.rds")
+saveRDS(sf_acore_list, "./data/mfuzz_cluster_sf_data.rds")
+
+```
+
+
+<!-- Below is some code that will be hidden in the outputs to save figures. -->
+
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+# Empty bar plot to create space
+blank <- ggplot() + theme_void()
+
+fig1 <- ggarrange(ggarrange(plasma_mfuzz_centroids_plot, plasma_mfuzz_plot_membership,                        
+                    nrow = 1, 
+                    ncol = 2,
+                    labels = c("A", "B")),
+          ggarrange(sf_mfuzz_centroids_plot, sf_mfuzz_plot_membership,                        
+                    nrow = 1, 
+                    ncol = 2,
+                    labels = c("C", "D")),
+          ggarrange(blank, blank, blank, blank,
+                    nrow = 1,
+                    labels = c("E", "F", "G", "h")),
+          nrow = 3,
+          ncol = 1)
+
+
+ggsave(
+  filename = "clustering_results.PDF",
+  plot = fig1,
+  width = 10,
+  height = 12,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+```
+
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+fig2 <- ggarrange(plasma_dtw_centroids_plot, sf_dtw_centroids_plot,
+          nrow = 1)
+
+
+ggsave(
+  filename = "dtw_clustering_results.PDF",
+  plot = fig2,
+  width = 9,
+  height = 5,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+ggsave(
+  filename = "dtw_clustering_results_wide.PDF",
+  plot = fig2,
+  width = 10,
+  height = 4,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+```
+
+
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+fig3 <- ggarrange(ggarrange(plasma_mfuzz_centroids_plot, plasma_mfuzz_plot_membership,                        
+                    nrow = 1, 
+                    ncol = 2,
+                    labels = c("A", "B")),
+          ggarrange(sf_mfuzz_centroids_plot, sf_mfuzz_plot_membership,                        
+                    nrow = 1, 
+                    ncol = 2,
+                    labels = c("C", "D")),
+          nrow = 2,
+          ncol = 1)
+
+
+ggsave(
+  filename = "mfuzz_clustering_results.PDF",
+  plot = fig3,
+  width = 10,
+  height = 8,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+```
+
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+ggsave(
+  filename = "plasma_cluster_corr.PDF",
+  plot = plasma_cl_OL_plot[[4]],
+  width = 4,
+  height = 4,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+
+ggsave(
+  filename = "sf_cluster_corr.PDF",
+  plot = sf_cl_OL_plot[[4]],
+  width = 5,
+  height = 5,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+```
+
+
+# References

@@ -13,7 +13,7 @@
 
 <meta name="date" content="2022-09-28" />
 
-<title>Multi-omics - clustering</title>
+<title>Exploratory data analysis - proteomics data</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -74,6 +74,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -413,7 +435,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Multi-omics - clustering</h1>
+<h1 class="title toc-ignore">Exploratory data analysis - proteomics
+data</h1>
 <h4 class="author">Emily Johnson</h4>
 <h4 class="date">2022-09-28</h4>
 
@@ -444,7 +467,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-11
+<strong>Last updated:</strong> 2022-11-17
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -578,15 +601,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree2238906ecb478a5d2a9b5529c69c506982c91920targetblank2238906a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/2238906ecb478a5d2a9b5529c69c506982c91920" target="_blank">2238906</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree2238906ecb478a5d2a9b5529c69c506982c91920targetblank2238906a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -596,7 +619,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/2238906ecb478a5d2a9b5529c69c506982c91920" target="_blank">2238906</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -614,20 +637,20 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
+    Ignored:    analysis/07_Clustering.nb.html
+
+Untracked files:
+    Untracked:  clustering_results.PDF
+    Untracked:  clustering_results_dtw.PDF
+    Untracked:  code/misc_mfuzz_ggplot_code.R
+    Untracked:  code/misc_throw_away_code.R
+    Untracked:  imgs/
 
 Unstaged changes:
-    Modified:   analysis/03_Differential_expression.Rmd
-    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
-    Modified:   analysis/06_jDR.Rmd
     Modified:   analysis/07_Clustering.Rmd
-    Modified:   analysis/08_Functional_enrichment.Rmd
-    Modified:   analysis/_site.yml
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/references.bib
     Modified:   code/utility-functions.R
-    Modified:   data/plasma_lncRNA_data.rds
-    Modified:   data/sf_lncRNA_data.rds
-    Modified:   plasma_model.hdf5
-    Modified:   sf_model.hdf5
+    Deleted:    external_imgs/sampling_types.png
 
 </code></pre>
 <p>
@@ -678,6 +701,74 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/2238906ecb478a5d2a9b5529c69c506982c91920/analysis/07_Clustering.Rmd" target="_blank">2238906</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-16
+</td>
+<td>
+Optimising cluster visualisation
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/854584495bb1ae924c0d7f7c02f3b2941f82db32/analysis/07_Clustering.Rmd" target="_blank">8545844</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-15
+</td>
+<td>
+Clustering
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/6ed591f12047bc35eb7635f1d01e14badef83ec8/analysis/07_Clustering.Rmd" target="_blank">6ed591f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-11
+</td>
+<td>
+jDR + clustering + knitting
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/6ed591f12047bc35eb7635f1d01e14badef83ec8/docs/07_Clustering.html" target="_blank">6ed591f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-11
+</td>
+<td>
+jDR + clustering + knitting
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/e34c9f9d885837b14673c528fea1cce3b9824a07/analysis/07_Clustering.Rmd" target="_blank">e34c9f9</a>
 </td>
 <td>
@@ -700,9 +791,13 @@ Updated theme + additional analysis docs
 <div id="load-libraries" class="section level1">
 <h1>Load libraries</h1>
 <pre class="r"><code>library(tidyverse)
-library(Mfuzz)
-library(dtwclust)
-library(cowplot) # ggplot2 theme</code></pre>
+library(Mfuzz) # clustering package
+library(dtwclust) # clustering package
+library(cowplot) # ggplot2 theme
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(MetBrewer) # additional palettes
+library(WGCNA) # matchLabels and accuracyMeasures functions
+library(pheatmap) # for correlation plots</code></pre>
 </div>
 <div id="load-and-process-data" class="section level1">
 <h1>Load and process data</h1>
@@ -721,7 +816,9 @@ sf_proteomics_data &lt;- readRDS(&quot;./data/sf_data_norm.rds&quot;)
 sf_miRNA_data &lt;- readRDS(&quot;./data/sf_miRNA_data.rds&quot;)
 sf_lncRNA_data &lt;- readRDS(&quot;./data/sf_lncRNA_data.rds&quot;)
 sf_snRNA_data &lt;- readRDS(&quot;./data/sf_snRNA_data.rds&quot;)</code></pre>
-<p>Convert 0s to NAs as previous analysis showed they were sampling
+<p>Before clustering can be carried out several additional data cleaning
+and normalisation steps needed to be carried out. The 0s were first
+converted to NAs, as the previous analysis showed they were sampling
 zeroes rather than biological zeroes:</p>
 <pre class="r"><code># Plasma 
 plasma_miRNA_data[plasma_miRNA_data == 0] &lt;- NA
@@ -732,8 +829,43 @@ plasma_snRNA_data[plasma_snRNA_data == 0] &lt;- NA
 sf_miRNA_data[sf_miRNA_data == 0] &lt;- NA
 sf_lncRNA_data[sf_lncRNA_data == 0] &lt;- NA
 sf_snRNA_data[sf_snRNA_data == 0] &lt;- NA</code></pre>
+<p>Remove universal spike-ins:</p>
+<pre class="r"><code>plasma_miRNA_data &lt;- plasma_miRNA_data[-c(1:3),]
+sf_miRNA_data &lt;- sf_miRNA_data[-c(1:3),]</code></pre>
+<div id="variance-filtering" class="section level2">
+<h2>Variance filtering</h2>
+<p>Before Z-score normalisation the data was filtered to only include
+features with high variance. This is because protein/sequencing data is
+extremely noisy. Noisy features can then be assigned to clusters even if
+their expression pattern isn’t representative of the cluster.</p>
+<p>Plasma:</p>
+<pre class="r"><code>## Create vectors of variance/mean value per protein
+vars &lt;- apply(plasma_proteomics_data, 1, var, na.rm=TRUE)
+means &lt;- apply(plasma_proteomics_data, 1, mean, na.rm=TRUE)
+
+## Subset the data to only include proteins with a variance &gt;1 and mean &gt;2
+plasma_proteomics_data &lt;- plasma_proteomics_data[which(vars &gt; 1 &amp; means &gt;2),]
+
+## Remove any rows that contain &gt;20% missing values
+plasma_proteomics_data &lt;- plasma_proteomics_data[which(rowMeans(is.na(plasma_proteomics_data)) &lt; 0.2), ]</code></pre>
+<p>Synovial fluid:</p>
+<pre class="r"><code>## Create vectors of variance/mean value per protein
+vars &lt;- apply(sf_proteomics_data, 1, var, na.rm=TRUE)
+means &lt;- apply(sf_proteomics_data, 1, mean, na.rm=TRUE)
+
+## Subset the data to only include proteins with a variance &gt;1 and mean &gt;2
+sf_proteomics_data &lt;- sf_proteomics_data[which(vars &gt; 1 &amp; means &gt;2),]
+
+## Remove any rows that contain &gt;20% missing values
+sf_proteomics_data &lt;- sf_proteomics_data[which(rowMeans(is.na(sf_proteomics_data)) &lt; 0.2), ]</code></pre>
+</div>
 <div id="z-score-normalisation" class="section level2">
 <h2>Z-score normalisation</h2>
+<p>Z-score normalisation scales the data such that the mean of all of
+the values is 0 and the standard deviation is 1. It is useful for
+integrating multi-omics data. This was carried out for the proteomics
+and sequencing data, before concatenating the normalised -omics together
+for the plasma and synovial fluid samples.</p>
 <div id="plasma" class="section level3">
 <h3>Plasma</h3>
 <pre class="r"><code># Proteomics
@@ -782,6 +914,10 @@ colnames(sf_snRNA_Znorm) &lt;- colnames(sf_snRNA_data)</code></pre>
 <div id="collapse-replicates-and-re-order-by-time"
 class="section level2">
 <h2>Collapse replicates and re-order by time</h2>
+<p>The two clustering algorithms employed in this analysis do not
+recognise multiple replicates in the same dataframe. Before clustering
+the average z-score for each time point was calculated and the data was
+re-ordered by time.</p>
 <p>Plasma:</p>
 <pre class="r"><code>plasma_time_df &lt;- data.frame(&quot;Day_0&quot; = rowMeans(plasma_data[,plasma_pheno$Day == &quot;0&quot;], na.rm=TRUE),
          &quot;Day_10&quot; = rowMeans(plasma_data[,plasma_pheno$Day == &quot;10&quot;], na.rm=TRUE),
@@ -789,46 +925,628 @@ class="section level2">
          &quot;Day_42&quot; = rowMeans(plasma_data[,plasma_pheno$Day == &quot;42&quot;], na.rm=TRUE),
          &quot;Day_49&quot; = rowMeans(plasma_data[,plasma_pheno$Day == &quot;49&quot;], na.rm=TRUE),
          &quot;Day_56&quot; = rowMeans(plasma_data[,plasma_pheno$Day == &quot;56&quot;], na.rm=TRUE),
-         &quot;Day_63&quot; = rowMeans(plasma_data[,plasma_pheno$Day == &quot;63&quot;], na.rm=TRUE))</code></pre>
+         &quot;Day_63&quot; = rowMeans(plasma_data[,plasma_pheno$Day == &quot;63&quot;], na.rm=TRUE))
+
+
+# Despite the filtering some time points will still end up with 0 samples for a particular feature
+# These need to be removed
+plasma_time_df &lt;- na.omit(plasma_time_df)</code></pre>
+<p>Synovial fluid:</p>
+<pre class="r"><code>sf_time_df &lt;- data.frame(&quot;Day_0&quot; = rowMeans(sf_data[,sf_pheno$Day == &quot;0&quot;], na.rm=TRUE),
+         &quot;Day_10&quot; = rowMeans(sf_data[,sf_pheno$Day == &quot;10&quot;], na.rm=TRUE),
+         &quot;Day_35&quot; = rowMeans(sf_data[,sf_pheno$Day == &quot;35&quot;], na.rm=TRUE),
+         &quot;Day_42&quot; = rowMeans(sf_data[,sf_pheno$Day == &quot;42&quot;], na.rm=TRUE),
+         &quot;Day_49&quot; = rowMeans(sf_data[,sf_pheno$Day == &quot;49&quot;], na.rm=TRUE),
+         &quot;Day_56&quot; = rowMeans(sf_data[,sf_pheno$Day == &quot;56&quot;], na.rm=TRUE),
+         &quot;Day_63&quot; = rowMeans(sf_data[,sf_pheno$Day == &quot;63&quot;], na.rm=TRUE))
+
+# Despite the filtering some time points will still end up with 0 samples for a particular feature
+# These need to be removed
+sf_time_df &lt;- na.omit(sf_time_df)</code></pre>
 </div>
 </div>
 <div id="mfuzz" class="section level1">
 <h1>Mfuzz</h1>
+<div id="plasma-1" class="section level2">
+<h2>Plasma</h2>
+<p>Create an <code>ExpressionSet</code> object containing the data:</p>
+<pre class="r"><code>expData &lt;- ExpressionSet(as.matrix(plasma_time_df))</code></pre>
+<p>Estimate the fuzzifier to designate how ‘fuzzy’ the clusters are. A
+fuzzifier of 1 is almost equivalent to hard clustering.</p>
+<pre class="r"><code>m1 &lt;- mestimate(expData)</code></pre>
+<p>The <code>Dmin()</code> function calculates the minimum centroid
+distance between clusters for a series of cluster numbers. We can use
+this to determine the optimum number of clusters to use. After a certain
+number of clusters the separation between clusters becomes minimal.
+Visual inspection of the plot shows an ‘elbow’ to pick the appropriate k
+number.</p>
+<pre class="r"><code>Dmin(expData, m=m1, crange=seq(2,22,1), repeats=3, visu=TRUE)</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code> [1] 8.520583e-01 6.240207e-01 2.112929e-02 6.720354e-03 3.002782e-03
+ [6] 2.024252e-03 5.406994e-04 3.146921e-04 1.518910e-04 7.297920e-05
+[11] 8.196159e-05 4.936843e-05 2.063865e-05 2.496681e-04 1.247442e-04
+[16] 6.570772e-05 5.193325e-05 1.207223e-04 1.046694e-04 1.729926e-04
+[21] 1.834232e-04</code></pre>
+<p>Visual inspection of the plot suggests &lt;5 clusters are
+required.</p>
+<pre class="r"><code>clust &lt;- 4</code></pre>
+<pre class="r"><code># Carry out clustering using the calculated cluster number and fuzziness parameters
+set.seed(5)
+plasma_mfuzz_cl &lt;- mfuzz(expData,c=clust,m=m1)</code></pre>
+<pre class="r"><code>cor(t(plasma_mfuzz_cl[[1]]))</code></pre>
+<pre><code>           1          2          3          4
+1  1.0000000 -0.3972422 -0.4712950 -0.4163115
+2 -0.3972422  1.0000000  0.9794942  0.7908078
+3 -0.4712950  0.9794942  1.0000000  0.8864916
+4 -0.4163115  0.7908078  0.8864916  1.0000000</code></pre>
+<p>The per-cluster membership can be plotted with the in-built Mfuzz
+function <code>mfuzz.plot</code>.</p>
+<pre class="r"><code>mfuzz.plot(eset = expData, cl = plasma_mfuzz_cl, mfrow = c(2,2))</code></pre>
+<p>However, this doesn’t give the same level of control over the
+aesthetics, so ggplot2 was used instead.</p>
+<p>The centroids for each cluster were plotted on one graph along with
+the per-cluster membership scores in separate graphs. Each cluster was
+assigned a colour. For the per-cluster membership the opacity of each
+feature was weighted by its membership score. The code was adapted from
+the following tutorial:</p>
+<p><a
+href="https://2-bitbio.com/2017/10/clustering-rnaseq-data-using-k-means.html"
+class="uri">https://2-bitbio.com/2017/10/clustering-rnaseq-data-using-k-means.html</a></p>
+<p>To prepare the centroid data and plot:</p>
+<pre class="r"><code># Convert centroid data into long dataframe
+plasma_centroids &lt;- plasma_mfuzz_cl$centers
+plasma_centroids_df &lt;- data.frame(plasma_centroids)
+plasma_centroids_df$cluster &lt;- row.names(plasma_centroids_df)
+
+# Convert dataframe into long format
+plasma_centroids_long &lt;- tidyr::pivot_longer(plasma_centroids_df, names_to = &quot;sample&quot;, values_to = &quot;value&quot;, 1:length(colnames(plasma_centroids)))
+
+# Remove &quot;Day_&quot; prefix from sample names
+plasma_centroids_long$sample &lt;- gsub(&quot;Day_&quot;, &quot;&quot;, plasma_centroids_long$sample)</code></pre>
+<pre class="r"><code># Centroid plot
+
+plasma_mfuzz_centroids_plot &lt;- ggplot(plasma_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
+  geom_line(lwd=1) +
+  theme_cowplot() +
+  scale_colour_brewer(palette = &quot;Set1&quot;) +
+  xlab(&quot;Day&quot;) +
+  ylab(&quot;Expression&quot;) +
+  labs(title= &quot;Plasma EV fuzzy c-means expression&quot;,color = &quot;Cluster&quot;) </code></pre>
+<p>To prepare the per-cluster feature membership data and plot:</p>
+<pre class="r fold-hide"><code># Create copy of dataframe containing average z-score per time
+plasma_membership_df &lt;- data.frame(plasma_time_df)
+
+# Add row with feature names
+plasma_membership_df$Feature &lt;- row.names(plasma_membership_df)
+
+# Bind the cluster assignment 
+plasma_membership_df$cluster &lt;- plasma_mfuzz_cl$cluster
+
+# Fetch the membership for each feature in its top scoring cluster
+plasma_membership_df$membership &lt;- sapply(1:length(plasma_membership_df$cluster),function(row){
+  clust &lt;- plasma_membership_df$cluster[row]
+  plasma_mfuzz_cl$membership[row,clust]
+})
+
+
+# Convert membership dataframe into long format
+plasma_cluster_plot_df &lt;- plasma_membership_df %&gt;%
+  dplyr::select(.,1:length(colnames(plasma_centroids)), membership, Feature, cluster) %&gt;%
+  tidyr::gather(.,&quot;sample&quot;,&#39;value&#39;,1:length(colnames(plasma_centroids)))
+
+
+# Remove &quot;Day_&quot; prefix from &quot;sample&quot; column
+plasma_cluster_plot_df$sample &lt;- gsub(&quot;Day_&quot;, &quot;&quot;, plasma_cluster_plot_df$sample)
+
+
+# Order the dataframe by membership score
+plasma_cluster_plot_df &lt;- plasma_cluster_plot_df[order(plasma_cluster_plot_df$membership),]
+
+
+# Convert the features into an ordered factor using forcats
+plasma_cluster_plot_df$Feature = forcats::fct_inorder(plasma_cluster_plot_df$Feature)</code></pre>
+<pre class="r fold-hide"><code># Per-cluster membership plot
+
+plasma_mfuzz_plot_membership &lt;- ggplot(plasma_cluster_plot_df, aes(x=as.numeric(sample),y=value)) + 
+        # Facet-wrap by cluster
+        facet_wrap(~cluster, scales=&quot;free_y&quot;) +
+        # Colour each panel by cluster
+        # The oppacity of each feature is determined by membership
+        geom_line(aes(colour=as.factor(cluster), alpha=membership, group =Feature), lwd=1) +
+        scale_colour_brewer(palette = &quot;Set1&quot;) +
+        # Add the centroids as a black line
+        geom_line(data=plasma_centroids_long, aes(x=as.numeric(sample), y=value, group=cluster), lwd=1.2, color=&quot;black&quot;,inherit.aes=FALSE) +
+        xlab(&quot;Day&quot;) +
+        ylab(&quot;Expression&quot;) +
+        labs(title=&quot;Per-cluster membership&quot;) + 
+        theme_cowplot() + 
+        theme(legend.position = &quot;none&quot;)</code></pre>
+<p>To visualise the results together:</p>
+<pre class="r"><code>ggarrange(plasma_mfuzz_centroids_plot, plasma_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c(&quot;A&quot;, &quot;B&quot;))</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-24-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>Cluster 4 appears to display the most interesting pattern over time,
+with an initial dip after OA induction followed by increased expression
+over the time course. As cluster 2 &amp; 3 have a high overlap they are
+likely redundant clusters. Cluster 1 has a distinct profile, though as
+it fluctuates from high to low its difficult to speculate how it
+translates to OA progression.</p>
+<p>For downstream analysis the membership scores for each gene by
+cluster were extracted:</p>
+<pre class="r"><code># Extracts membership values 
+plasma_acore &lt;- acore(expData, plasma_mfuzz_cl, min.acore=0)
+
+
+# Create a combined dataframe of the combined clusters
+plasma_acore_list &lt;- do.call(rbind, lapply(seq_along(plasma_acore), function(i){ data.frame(CLUSTER=i, plasma_acore[[i]])}))</code></pre>
+<p>It is interesting that eca-miR-186<span class="citation">(Li et al.
+2021)</span>, F7C1Y3<span class="citation">(Chou et al. 2020)</span> and
+eca-miR-126-5p were among the members of cluster 4.</p>
+</div>
+<div id="synovial-fluid-1" class="section level2">
+<h2>Synovial fluid</h2>
+<p>The same steps were repeated but for the synovial fluid data instead.
+Create an <code>ExpressionSet</code> object containing the data:</p>
+<pre class="r"><code>expData &lt;- ExpressionSet(as.matrix(sf_time_df))</code></pre>
+<p>Estimate the fuzzifier to designate how ‘fuzzy’ the clusters are. A
+fuzzifier of 1 is almost equivalent to hard clustering.</p>
+<pre class="r"><code>m1 &lt;- mestimate(expData)</code></pre>
+<p>Estimate number of clusters required:</p>
+<pre class="r"><code>Dmin(expData, m=m1, crange=seq(2,22,1), repeats=3, visu=TRUE)</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code> [1] 0.6568184597 0.4686694845 0.3749916913 0.4157338914 0.2158608491
+ [6] 0.1363346582 0.0496245961 0.0605802704 0.0689934958 0.0739492162
+[11] 0.0291856447 0.0236303575 0.0139423389 0.0111390605 0.0147436677
+[16] 0.0024432633 0.0115198266 0.0034593997 0.0021017847 0.0013845696
+[21] 0.0008943346</code></pre>
+<p>Visual inspection of the plot suggests &lt;7 clusters are
+required.</p>
+<pre class="r"><code>clust &lt;- 6</code></pre>
+<pre class="r"><code># Carry out clustering using the calculated cluster number and fuzziness parameters
+set.seed(5)
+sf_mfuzz_cl &lt;- mfuzz(expData,c=clust,m=m1)</code></pre>
+<pre class="r"><code>cor(t(sf_mfuzz_cl[[1]]))</code></pre>
+<pre><code>            1           2          3           4           5           6
+1  1.00000000 -0.07898887 -0.3442960  0.03743311  0.47852003 -0.03371707
+2 -0.07898887  1.00000000  0.4469229  0.05937273 -0.01134136  0.50205991
+3 -0.34429596  0.44692294  1.0000000  0.65359459 -0.83947738 -0.36551400
+4  0.03743311  0.05937273  0.6535946  1.00000000 -0.76599654 -0.65280578
+5  0.47852003 -0.01134136 -0.8394774 -0.76599654  1.00000000  0.54796681
+6 -0.03371707  0.50205991 -0.3655140 -0.65280578  0.54796681  1.00000000</code></pre>
+<p>Results suggest 5&amp;6 may be redundant clusters due to correlation
+between their centroids.</p>
+<p>Plot centroid expression over time and per-cluster membership scores
+as before. First prepare the centroid data and plot:</p>
+<pre class="r"><code># Convert centroid data into long dataframe
+sf_centroids &lt;- sf_mfuzz_cl$centers
+sf_centroids_df &lt;- data.frame(sf_centroids)
+sf_centroids_df$cluster &lt;- row.names(sf_centroids_df)
+
+# Convert dataframe into long format
+sf_centroids_long &lt;- tidyr::pivot_longer(sf_centroids_df, names_to = &quot;sample&quot;, values_to = &quot;value&quot;, 1:length(colnames(sf_centroids)))
+
+# Remove &quot;Day_&quot; prefix from sample names
+sf_centroids_long$sample &lt;- gsub(&quot;Day_&quot;, &quot;&quot;, sf_centroids_long$sample)</code></pre>
+<pre class="r"><code># Centroid plot
+
+sf_mfuzz_centroids_plot &lt;- ggplot(sf_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
+  geom_line(lwd=1) +
+  theme_cowplot() +
+  #scale_colour_brewer(palette = &quot;Set1&quot;) +
+  scale_color_met_d(&quot;Hiroshige&quot;) +
+  xlab(&quot;Day&quot;) +
+  ylab(&quot;Expression&quot;) +
+  labs(title= &quot;SF EV fuzzy c-means expression&quot;,color = &quot;Cluster&quot;) </code></pre>
+<p>Next prepare the per cluster feature membership data and plot:</p>
+<pre class="r"><code># Create copy of dataframe containing average z-score per time
+sf_membership_df &lt;- data.frame(sf_time_df)
+
+# Add row with feature names
+sf_membership_df$Feature &lt;- row.names(sf_membership_df)
+
+# Bind the cluster assignment 
+sf_membership_df$cluster &lt;- sf_mfuzz_cl$cluster
+
+# Fetch the membership for each feature in its top scoring cluster
+sf_membership_df$membership &lt;- sapply(1:length(sf_membership_df$cluster),function(row){
+  clust &lt;- sf_membership_df$cluster[row]
+  sf_mfuzz_cl$membership[row,clust]
+})
+
+
+# Convert membership dataframe into long format
+sf_cluster_plot_df &lt;- sf_membership_df %&gt;%
+  dplyr::select(.,1:length(colnames(sf_centroids)), membership, Feature, cluster) %&gt;%
+  tidyr::gather(.,&quot;sample&quot;,&#39;value&#39;,1:length(colnames(sf_centroids)))
+
+
+# Remove &quot;Day_&quot; prefix from &quot;sample&quot; column
+sf_cluster_plot_df$sample &lt;- gsub(&quot;Day_&quot;, &quot;&quot;, sf_cluster_plot_df$sample)
+
+
+# Order the dataframe by membership score
+sf_cluster_plot_df &lt;- sf_cluster_plot_df[order(sf_cluster_plot_df$membership),]
+
+
+# Convert the features into an ordered factor using forcats
+sf_cluster_plot_df$Feature = forcats::fct_inorder(sf_cluster_plot_df$Feature)</code></pre>
+<pre class="r"><code># Per-cluster membership plot
+
+sf_mfuzz_plot_membership &lt;- ggplot(sf_cluster_plot_df, aes(x=as.numeric(sample),y=value)) + 
+        # Facet-wrap by cluster
+        facet_wrap(~cluster, scales=&quot;free_y&quot;) +
+        # Colour each panel by cluster
+        # The oppacity of each feature is determined by membership
+        geom_line(aes(colour=as.factor(cluster), alpha=membership, group =Feature), lwd=1) +
+        scale_color_met_d(&quot;Hiroshige&quot;) +
+        # Add the centroids as a black line
+        geom_line(data=sf_centroids_long, aes(x=as.numeric(sample), y=value, group=cluster), lwd=1.2, color=&quot;black&quot;,inherit.aes=FALSE) +
+        xlab(&quot;Day&quot;) +
+        ylab(&quot;Expression&quot;) +
+        labs(title=&quot;Per-cluster membership&quot;) + 
+        theme_cowplot() + 
+        theme(legend.position = &quot;none&quot;)</code></pre>
+<pre class="r"><code>ggarrange(sf_mfuzz_centroids_plot, sf_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c(&quot;A&quot;, &quot;B&quot;))</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-36-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>Extract membership scores for each gene by cluster:</p>
+<pre class="r"><code># Extracts membership values 
+sf_acore &lt;- acore(expData, sf_mfuzz_cl, min.acore=0)
+
+
+# Create a combined dataframe of the combined clusters
+sf_acore_list &lt;- do.call(rbind, lapply(seq_along(sf_acore), function(i){ data.frame(CLUSTER=i, sf_acore[[i]])}))</code></pre>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>Combine plasma and synovial fluid soft clustering results
+together:</p>
+<pre class="r"><code>ggarrange(ggarrange(plasma_mfuzz_centroids_plot, plasma_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c(&quot;A&quot;, &quot;B&quot;)),
+ggarrange(sf_mfuzz_centroids_plot, sf_mfuzz_plot_membership,                        
+          nrow = 1, 
+          ncol = 2,
+          labels = c(&quot;C&quot;, &quot;D&quot;)),
+          nrow = 2,
+          ncol = 1)</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-38-1.png" width="1008" style="display: block; margin: auto;" /></p>
+<p>Overall both datasets have clusters that demonstrate interesting
+time-dependent behaviour. For the synovial fluid data clusters 4 &amp; 5
+have two inverse profiles at day 10. This may be part of the initial
+immune response to the injury/tissue insult. This was also seen with the
+differential expression analysis (limma).</p>
+</div>
 </div>
 <div id="dtwclust" class="section level1">
 <h1>dtwclust</h1>
-<pre class="r"><code>pc &lt;- tsclust(na.omit(plasma_time_df), type = &quot;partitional&quot;, k = 4L, 
-              distance = &quot;dtw_basic&quot;, centroid = &quot;pam&quot;, 
+<p>To make the analysis more robust multiple clustering methods were
+compared. Both <code>Mfuzz</code> and <code>dtwclust</code> are
+time-series clustering packages. For <code>dtwclust</code> k-medoid
+clustering (PAM) was employed. K-medoid is a form of partitional
+clustering. Unlike fuzzy c-means, it is more sensitive to noise in the
+data, which is why variance filtering was applied earlier.</p>
+<div id="plasma-2" class="section level2">
+<h2>Plasma</h2>
+<pre class="r"><code>plasma_dtwclust_cl &lt;- tsclust(na.omit(plasma_time_df), type = &quot;partitional&quot;, k = 4L, 
+              distance = &quot;dtw&quot;, centroid = &quot;pam&quot;, 
               seed = 3247L, trace = TRUE,
               args = tsclust_args(dist = list(window.size = 20L)))</code></pre>
 <pre><code>
     Precomputing distance matrix...
 
-Iteration 1: Changes / Distsum = 314 / 952.2268
-Iteration 2: Changes / Distsum = 86 / 857.282
-Iteration 3: Changes / Distsum =  0 / 857.282
+Iteration 1: Changes / Distsum = 173 / 557.6487
+Iteration 2: Changes / Distsum = 75 / 472.9479
+Iteration 3: Changes / Distsum = 0 / 472.9479
 
-    Elapsed time is 0.09 seconds.</code></pre>
-<pre class="r"><code>time=gsub(&quot;Day_&quot;, &quot;&quot;, colnames(plasma_time_df))
+    Elapsed time is 10.11 seconds.</code></pre>
+<pre class="r"><code># Prepare data for centroid plot
 
-pc_plot &lt;- plot(pc, time=time) + 
-            theme_cowplot() +
-            xlab(&quot;Time (days&quot;) +
-            ylab(&quot;Z-score&quot;) </code></pre>
-<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>fc &lt;- tsclust(na.omit(plasma_time_df), type = &quot;fuzzy&quot;, k = 4L,
-              distance = &quot;L2&quot;,
-              seed = 123L)
+## Convert list object into matrix
+plasma_dtw_centroids &lt;- do.call(rbind, plasma_dtwclust_cl@centroids)
+
+## Rename columns in matrix
+colnames(plasma_dtw_centroids) &lt;- colnames(plasma_time_df)
+
+## Convert to dataframe
+plasma_dtw_centroids_df &lt;- data.frame(plasma_dtw_centroids)
+
+## Add column for cluster
+plasma_dtw_centroids_df$cluster &lt;- row.names(plasma_dtw_centroids_df)
+
+## Convert dataframe into long format
+plasma_dtw_centroids_long &lt;- tidyr::pivot_longer(plasma_dtw_centroids_df, names_to = &quot;sample&quot;, values_to = &quot;value&quot;, 1:length(colnames(plasma_dtw_centroids)))
+
+## Remove &quot;Day_&quot; prefix from sample names
+plasma_dtw_centroids_long$sample &lt;- gsub(&quot;Day_&quot;, &quot;&quot;, plasma_centroids_long$sample)
 
 
-fc_plot &lt;- plot(fc, time=time) + 
-            theme_cowplot() +
-            xlab(&quot;Time (days&quot;) +
-            ylab(&quot;Z-score&quot;) </code></pre>
-<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p><a
-href="https://stackoverflow.com/questions/42197984/how-to-get-the-result-of-dtwclust"
-class="uri">https://stackoverflow.com/questions/42197984/how-to-get-the-result-of-dtwclust</a></p>
+
+# Centroid plot
+
+plasma_dtw_centroids_plot &lt;- ggplot(plasma_dtw_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
+  geom_line(lwd=1) +
+  theme_cowplot() +
+  scale_colour_brewer(palette = &quot;Set1&quot;) +
+  xlab(&quot;Day&quot;) +
+  ylab(&quot;Expression&quot;) +
+  labs(title= &quot;Plasma K-medoid expression&quot;, color = &quot;Cluster&quot;)</code></pre>
+</div>
+<div id="synovial-fluid-2" class="section level2">
+<h2>Synovial fluid</h2>
+<pre class="r"><code>sf_dtwclust_cl &lt;- tsclust(na.omit(sf_time_df), type = &quot;partitional&quot;, k = 6L, 
+                              distance = &quot;dtw&quot;, centroid = &quot;pam&quot;, 
+                              seed = 3247L, trace = TRUE,
+                              args = tsclust_args(dist = list(window.size = 20L)))</code></pre>
+<pre><code>
+    Precomputing distance matrix...
+
+Iteration 1: Changes / Distsum = 310 / 642.343
+Iteration 2: Changes / Distsum = 30 / 631.5018
+Iteration 3: Changes / Distsum = 0 / 631.5018
+
+    Elapsed time is 31.9 seconds.</code></pre>
+<pre class="r"><code># Prepare data for centroid plot
+
+## Convert list object into matrix
+sf_dtw_centroids &lt;- do.call(rbind, sf_dtwclust_cl@centroids)
+
+## Rename columns in matrix
+colnames(sf_dtw_centroids) &lt;- colnames(sf_time_df)
+
+## Convert to dataframe
+sf_dtw_centroids_df &lt;- data.frame(sf_dtw_centroids)
+
+## Add column for cluster
+sf_dtw_centroids_df$cluster &lt;- row.names(sf_dtw_centroids_df)
+
+## Convert dataframe into long format
+sf_dtw_centroids_long &lt;- tidyr::pivot_longer(sf_dtw_centroids_df, names_to = &quot;sample&quot;, values_to = &quot;value&quot;, 1:length(colnames(sf_dtw_centroids)))
+
+## Remove &quot;Day_&quot; prefix from sample names
+sf_dtw_centroids_long$sample &lt;- gsub(&quot;Day_&quot;, &quot;&quot;, sf_centroids_long$sample)
+
+
+
+# Centroid plot
+
+sf_dtw_centroids_plot &lt;- ggplot(sf_dtw_centroids_long, aes(x=as.numeric(sample),y=value, group=cluster, colour=as.factor(cluster))) + 
+  geom_line(lwd=1) +
+  theme_cowplot() +
+  scale_color_met_d(&quot;Hiroshige&quot;) +
+  xlab(&quot;Day&quot;) +
+  ylab(&quot;Expression&quot;) +
+  labs(title= &quot;SF K-medoid expression&quot;, color = &quot;Cluster&quot;)</code></pre>
+</div>
+<div id="summary-1" class="section level2">
+<h2>Summary</h2>
+<pre class="r"><code>ggarrange(plasma_dtw_centroids_plot, sf_dtw_centroids_plot,
+          nrow = 1,
+          labels = c(&quot;A&quot;, &quot;B&quot;))</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-43-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="compare-clustering-methods" class="section level1">
+<h1>Compare clustering methods</h1>
+<div id="plasma-3" class="section level2">
+<h2>Plasma</h2>
+<p>Extract Mfuzz and dtwclust cluster assignments:</p>
+<pre class="r"><code># dtwclust
+plasma_dtw_cl &lt;- plasma_dtwclust_cl@cluster 
+names(plasma_dtw_cl) &lt;- row.names(plasma_time_df)
+
+
+# Mfuzz
+plasma_mfuzz_clusters &lt;- plasma_mfuzz_cl$cluster
+
+
+# Check names are the same order
+names(plasma_dtw_cl) == names(plasma_mfuzz_clusters)</code></pre>
+<pre><code>  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [31] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [46] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [61] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [76] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [91] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[106] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[121] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[136] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[151] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[166] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
+<pre class="r"><code># Add to cluster labels:
+plasma_dtw_cl_matched &lt;- paste0(&#39;K-&#39;,plasma_dtw_cl)
+plasma_mfuzz_clusters &lt;- paste0(&#39;FCM-&#39;, plasma_mfuzz_clusters)
+
+# Calculate the overlap
+OL&lt;- overlapTable(plasma_dtw_cl_matched, plasma_mfuzz_clusters)
+
+# Get rid of 0 values...
+OL$pTable[OL$pTable == 0] &lt;- 2e-300</code></pre>
+<pre class="r"><code># Extract overlap counts
+overlap_counts &lt;- signif(OL$countTable, 2)
+
+# Create matrix of labels for pheatmap
+text_labels &lt;- paste(signif(OL$countTable, 2), &quot;\n(&quot;,
+                      signif(OL$pTable, 1), &quot;)&quot;, sep= &quot;&quot;)
+dim(text_labels) &lt;-  dim(OL$countTable)
+
+# Create heatmap of overlap 
+plasma_cl_OL_plot &lt;- pheatmap(overlap_counts,
+               display_numbers = text_labels,
+               cluster_rows=FALSE,
+               cluster_cols=FALSE,
+               border_color = NA,
+               #color = mako(50),
+               color = hcl.colors(50, &quot;BluYl&quot;),
+               fontsize_number = 14,
+               fontsize_row = 14,
+               fontsize_col = 14,
+               number_color = &quot;black&quot;,
+               legend = FALSE)</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-47-1.png" width="432" style="display: block; margin: auto;" /></p>
+<p>Note, to access the heatmap for functions such as ggarrange, extract
+the 4th element, e.g. <code>plasma_cl_OL_plot[[4]]</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>k-medoids</th>
+<th>fuzzy c-means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>Fuzzy c-means cluster 3 doesn’t appear to have a corresponding
+k-medoids cluster. This appears to stem from redundancy between cluster
+2&amp;3. It is probably worth reducing the number of clusters to 3 or
+not including cluster 3 in any downstream analysis.</p>
+</div>
+<div id="synovial-fluid-3" class="section level2">
+<h2>Synovial fluid</h2>
+<p>Extract Mfuzz and dtwclust cluster assignments:</p>
+<pre class="r"><code># dtwclust
+sf_dtw_cl &lt;- sf_dtwclust_cl@cluster 
+names(sf_dtw_cl) &lt;- row.names(sf_time_df)
+
+
+# Mfuzz
+sf_mfuzz_clusters &lt;- sf_mfuzz_cl$cluster
+
+
+# Check names are the same order
+names(sf_dtw_cl) == names(sf_mfuzz_clusters)</code></pre>
+<pre><code>  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [31] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [46] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [61] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [76] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+ [91] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[106] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[121] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[136] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[151] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[166] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[181] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[196] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[211] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[226] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[241] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[256] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[271] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[286] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[301] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
+<pre class="r"><code># Add to cluster labels:
+sf_dtw_cl_matched &lt;- paste0(&#39;K-&#39;,sf_dtw_cl)
+sf_mfuzz_clusters &lt;- paste0(&#39;FCM-&#39;, sf_mfuzz_clusters)
+
+# Calculate the overlap
+OL&lt;- overlapTable(sf_dtw_cl_matched, sf_mfuzz_clusters)
+
+# Get rid of 0 values...
+OL$pTable[OL$pTable == 0] &lt;- 2e-300</code></pre>
+<pre class="r"><code># Extract overlap counts
+overlap_counts &lt;- signif(OL$countTable, 2)
+
+# Create matrix of labels for pheatmap
+text_labels &lt;- paste(signif(OL$countTable, 2), &quot;\n(&quot;,
+                     signif(OL$pTable, 1), &quot;)&quot;, sep= &quot;&quot;)
+dim(text_labels) &lt;-  dim(OL$countTable)
+
+# Create heatmap of overlap 
+sf_cl_OL_plot &lt;- pheatmap(overlap_counts,
+                              display_numbers = text_labels,
+                              cluster_rows=FALSE,
+                              cluster_cols=FALSE,
+                              border_color = NA,
+                              #color = mako(50),
+                              color = hcl.colors(50, &quot;BluYl&quot;),
+                              fontsize_number = 14,
+                              fontsize_row = 14,
+                              fontsize_col = 14,
+                              number_color = &quot;black&quot;,
+                              legend = FALSE)</code></pre>
+<p><img src="figure/07_Clustering.Rmd/unnamed-chunk-51-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>The results demonstrate some overlap between the clustering
+algorithms. Cluster 1 of the fuzzy c-means clustering is most similar to
+cluster 4 of the k-medoid clustering (though cluster 4 of the fuzzy
+c-means also has strong overlap). Cluster 1 of the k-medoid clustering
+is most similar to cluster 4 of the fuzzy c-means.</p>
+<p>Clusters 2&amp;3 of the k-medoid clustering don’t appear to have much
+overlap with any of the fuzzy c-means clusters.</p>
+<p>Clusters 5&amp;6 for the fuzzy c-means overlap with clusters 6&amp;5
+for the k-medoids.</p>
+<table>
+<thead>
+<tr class="header">
+<th>k-medoids</th>
+<th>fuzzy c-means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1 (followed by 4)</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<!-- Below is some code that will be hidden in the outputs to save figures. -->
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-chou2020" class="csl-entry">
+Chou, Ching-Heng, Vaibhav Jain, Jason Gibson, David E. Attarian, Collin
+A. Haraden, Christopher B. Yohn, Remi-Martin Laberge, Simon Gregory, and
+Virginia B. Kraus. 2020. <span>“Synovial Cell Cross-Talk with Cartilage
+Plays a Major Role in the Pathogenesis of Osteoarthritis.”</span>
+<em>Scientific Reports</em> 10 (July): 10868. <a
+href="https://doi.org/10.1038/s41598-020-67730-y">https://doi.org/10.1038/s41598-020-67730-y</a>.
+</div>
+<div id="ref-li2021" class="csl-entry">
+Li, Qing, Mingjie Wu, Guofang Fang, Kuangwen Li, Wengang Cui, Liang Li,
+Xia Li, Junsheng Wang, and Yanhong Cang. 2021. <span>“MicroRNA-186-5p
+Downregulation Inhibits Osteoarthritis Development by Targeting
+Mapk1.”</span> <em>Molecular Medicine Reports</em> 23 (4): 253. <a
+href="https://doi.org/10.3892/mmr.2021.11892">https://doi.org/10.3892/mmr.2021.11892</a>.
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -861,37 +1579,61 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] cowplot_1.1.1       dtwclust_5.5.11     dtw_1.23-1         
- [4] proxy_0.4-27        Mfuzz_2.56.0        DynDoc_1.74.0      
- [7] widgetTools_1.74.0  e1071_1.7-11        Biobase_2.56.0     
-[10] BiocGenerics_0.42.0 forcats_0.5.1       stringr_1.4.0      
-[13] dplyr_1.0.9         purrr_0.3.4         readr_2.1.2        
-[16] tidyr_1.2.0         tibble_3.1.7        ggplot2_3.3.6      
-[19] tidyverse_1.3.1    
+ [1] pheatmap_1.0.12       WGCNA_1.71            fastcluster_1.2.3    
+ [4] dynamicTreeCut_1.63-1 MetBrewer_0.2.0       ggpubr_0.4.0         
+ [7] cowplot_1.1.1         dtwclust_5.5.11       dtw_1.23-1           
+[10] proxy_0.4-27          Mfuzz_2.56.0          DynDoc_1.74.0        
+[13] widgetTools_1.74.0    e1071_1.7-11          Biobase_2.56.0       
+[16] BiocGenerics_0.42.0   forcats_0.5.1         stringr_1.4.0        
+[19] dplyr_1.0.9           purrr_0.3.4           readr_2.1.2          
+[22] tidyr_1.2.0           tibble_3.1.7          ggplot2_3.3.6        
+[25] tidyverse_1.3.1      
 
 loaded via a namespace (and not attached):
- [1] fs_1.5.2           lubridate_1.8.0    httr_1.4.3         rprojroot_2.0.3   
- [5] tools_4.2.0        backports_1.4.1    bslib_0.3.1        utf8_1.2.2        
- [9] R6_2.5.1           DBI_1.1.2          colorspace_2.0-3   withr_2.5.0       
-[13] tidyselect_1.1.2   compiler_4.2.0     git2r_0.30.1       flexclust_1.4-1   
-[17] cli_3.3.0          rvest_1.0.2        shinyjs_2.1.0      xml2_1.3.3        
-[21] labeling_0.4.2     sass_0.4.1         scales_1.2.0       digest_0.6.29     
-[25] rmarkdown_2.14     pkgconfig_2.0.3    htmltools_0.5.2    highr_0.9         
-[29] dbplyr_2.2.0       fastmap_1.1.0      rlang_1.0.2        readxl_1.4.0      
-[33] rstudioapi_0.13    shiny_1.7.1        farver_2.1.0       jquerylib_0.1.4   
-[37] generics_0.1.2     jsonlite_1.8.0     magrittr_2.0.3     modeltools_0.2-23 
-[41] Matrix_1.5-1       Rcpp_1.0.8.3       munsell_0.5.0      fansi_1.0.3       
-[45] lifecycle_1.0.1    stringi_1.7.6      whisker_0.4        yaml_2.3.5        
-[49] plyr_1.8.7         grid_4.2.0         ggrepel_0.9.1      parallel_4.2.0    
-[53] promises_1.2.0.1   crayon_1.5.1       lattice_0.20-45    haven_2.5.0       
-[57] hms_1.1.1          knitr_1.39         pillar_1.7.0       tkWidgets_1.74.0  
-[61] reshape2_1.4.4     stats4_4.2.0       codetools_0.2-18   reprex_2.0.1      
-[65] glue_1.6.2         evaluate_0.15      RcppParallel_5.1.5 modelr_0.1.8      
-[69] vctrs_0.4.1        tzdb_0.3.0         httpuv_1.6.5       foreach_1.5.2     
-[73] cellranger_1.1.0   gtable_0.3.0       clue_0.3-61        assertthat_0.2.1  
-[77] xfun_0.31          mime_0.12          xtable_1.8-4       broom_0.8.0       
-[81] RSpectra_0.16-1    later_1.3.0        class_7.3-20       iterators_1.0.14  
-[85] workflowr_1.7.0    cluster_2.1.3      ellipsis_0.3.2    </code></pre>
+  [1] readxl_1.4.0           backports_1.4.1        Hmisc_4.7-0           
+  [4] workflowr_1.7.0        plyr_1.8.7             splines_4.2.0         
+  [7] GenomeInfoDb_1.32.2    digest_0.6.29          foreach_1.5.2         
+ [10] htmltools_0.5.2        GO.db_3.15.0           fansi_1.0.3           
+ [13] checkmate_2.1.0        magrittr_2.0.3         memoise_2.0.1         
+ [16] cluster_2.1.3          doParallel_1.0.17      tzdb_0.3.0            
+ [19] Biostrings_2.64.0      modelr_0.1.8           RcppParallel_5.1.5    
+ [22] matrixStats_0.62.0     jpeg_0.1-9             colorspace_2.0-3      
+ [25] blob_1.2.3             rvest_1.0.2            ggrepel_0.9.1         
+ [28] haven_2.5.0            xfun_0.31              crayon_1.5.1          
+ [31] RCurl_1.98-1.7         jsonlite_1.8.0         impute_1.70.0         
+ [34] survival_3.3-1         iterators_1.0.14       glue_1.6.2            
+ [37] gtable_0.3.0           zlibbioc_1.42.0        XVector_0.36.0        
+ [40] car_3.1-0              abind_1.4-5            scales_1.2.0          
+ [43] DBI_1.1.2              rstatix_0.7.0          Rcpp_1.0.8.3          
+ [46] htmlTable_2.4.0        xtable_1.8-4           clue_0.3-61           
+ [49] foreign_0.8-82         bit_4.0.4              preprocessCore_1.58.0 
+ [52] Formula_1.2-4          stats4_4.2.0           htmlwidgets_1.5.4     
+ [55] httr_1.4.3             RColorBrewer_1.1-3     modeltools_0.2-23     
+ [58] ellipsis_0.3.2         farver_2.1.0           pkgconfig_2.0.3       
+ [61] nnet_7.3-17            sass_0.4.1             dbplyr_2.2.0          
+ [64] utf8_1.2.2             labeling_0.4.2         tidyselect_1.1.2      
+ [67] rlang_1.0.2            tkWidgets_1.74.0       reshape2_1.4.4        
+ [70] later_1.3.0            AnnotationDbi_1.58.0   munsell_0.5.0         
+ [73] cellranger_1.1.0       tools_4.2.0            cachem_1.0.6          
+ [76] cli_3.3.0              generics_0.1.2         RSQLite_2.2.14        
+ [79] broom_0.8.0            evaluate_0.15          fastmap_1.1.0         
+ [82] yaml_2.3.5             knitr_1.39             bit64_4.0.5           
+ [85] fs_1.5.2               KEGGREST_1.36.2        whisker_0.4           
+ [88] mime_0.12              xml2_1.3.3             flexclust_1.4-1       
+ [91] compiler_4.2.0         rstudioapi_0.13        png_0.1-7             
+ [94] ggsignif_0.6.3         reprex_2.0.1           bslib_0.3.1           
+ [97] stringi_1.7.6          highr_0.9              RSpectra_0.16-1       
+[100] lattice_0.20-45        Matrix_1.5-1           shinyjs_2.1.0         
+[103] vctrs_0.4.1            pillar_1.7.0           lifecycle_1.0.1       
+[106] jquerylib_0.1.4        data.table_1.14.2      bitops_1.0-7          
+[109] httpuv_1.6.5           R6_2.5.1               latticeExtra_0.6-29   
+[112] promises_1.2.0.1       gridExtra_2.3          IRanges_2.30.0        
+[115] codetools_0.2-18       assertthat_0.2.1       rprojroot_2.0.3       
+[118] withr_2.5.0            S4Vectors_0.34.0       GenomeInfoDbData_1.2.8
+[121] parallel_4.2.0         hms_1.1.1              rpart_4.1.16          
+[124] grid_4.2.0             class_7.3-20           rmarkdown_2.14        
+[127] carData_3.0-5          git2r_0.30.1           shiny_1.7.1           
+[130] lubridate_1.8.0        base64enc_0.1-3       </code></pre>
 </div>
 </div>
 

@@ -7,11 +7,58 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Load libraries
+# Load libraries
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 library(tidyverse)
+library(cowplot) # ggplot2 theme
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(MetBrewer) # additional palettes
+library(clusterProfiler)
+library(UniprotR)
+library(UniProt.ws)
 
 ```
 
+# Read data
+
+```{r}
+
+# Plasma 
+plasma_annotation <- readRDS("./data/plasma_proteomics_annotation.rds")
+plasma_pheno <- readRDS("./data/plasma_pheno.rds") 
+plasma_proteomics_data <- readRDS("./data/plasma_data_norm.rds")
+plasma_miRNA_data <- readRDS("./data/plasma_miRNA_data.rds") 
+plasma_lncRNA_data <- readRDS("./data/plasma_lncRNA_data.rds")
+plasma_snRNA_data <- readRDS("./data/plasma_snRNA_data.rds")
+
+# SF
+sf_annotation <- readRDS("./data/sf_proteomics_annotation.rds")
+sf_pheno <- readRDS("./data/sf_pheno.rds")
+sf_proteomics_data <- readRDS("./data/sf_data_norm.rds")
+sf_miRNA_data <- readRDS("./data/sf_miRNA_data.rds")
+sf_lncRNA_data <- readRDS("./data/sf_lncRNA_data.rds")
+sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
+
+
+```
+
+
+# Annotate data
+
+```{r}
+
+
+
+```
+
+
+# Clustering functional enrichment 
+
+```{r}
+
+plasma_clusters <- readRDS("./data/mfuzz_cluster_plasma_data.rds")
+plasma_clusters <- readRDS("./data/mfuzz_cluster_sf_data.rds")
+
+```
