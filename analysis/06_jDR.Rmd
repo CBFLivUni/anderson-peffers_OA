@@ -20,7 +20,6 @@ library(viridis) # colour schemes
 
 ```
 
-
 # Load and process data
 
 ```{r}
@@ -44,8 +43,7 @@ sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
 
 ```
 
-
-Convert 0s to NAs as previous analysis showed they were sampling zeroes rather than biological zeroes: 
+Convert 0s to NAs as previous analysis showed they were sampling zeroes rather than biological zeroes:
 
 ```{r}
 
@@ -61,17 +59,6 @@ sf_snRNA_data[sf_snRNA_data == 0] <- NA
 
 
 ```
-
-
-Remove universal spike-ins:
-
-```{r}
-
-plasma_miRNA_data <- plasma_miRNA_data[-c(1:3),]
-sf_miRNA_data <- sf_miRNA_data[-c(1:3),]
-
-```
-
 
 # MOFA
 
@@ -91,8 +78,7 @@ ggarrange(proteomics_hist, miRNA_hist, lncRNA_hist, snRNA_hist)
 
 ```
 
-
-MOFA2 needs a column in the phenotype data called 'sample'. Rename the 'Sample_ID' column to 'sample'. 
+MOFA2 needs a column in the phenotype data called 'sample'. Rename the 'Sample_ID' column to 'sample'.
 
 ```{r}
 
@@ -100,8 +86,7 @@ colnames(plasma_pheno)[5] <- "sample"
 
 ```
 
-
-As an input MOFA2 will take a list containing all the different data. Create this list: 
+As an input MOFA2 will take a list containing all the different data. Create this list:
 
 ```{r}
 
@@ -112,7 +97,6 @@ plasma_mofa_dat <- list(proteomics = as.matrix(plasma_proteomics_data),
 
 ```
 
-
 Create MOFAobject:
 
 ```{r}
@@ -122,7 +106,6 @@ print(MOFAobject)
 
 ```
 
-
 The number of features per view can be visualised with `plot_data_overview`. Missing samples would be represented as gaps in the block colours.
 
 ```{r}
@@ -130,7 +113,6 @@ The number of features per view can be visualised with `plot_data_overview`. Mis
 plot_data_overview(MOFAobject)
 
 ```
-
 
 Set model parameters. Here three objects are created containing the data options, model options and training options. If the raw counts were used a poisson distribution would be more appropriate.
 
@@ -158,7 +140,6 @@ head(train_opts)
 
 ```
 
-
 Prepare MOFA object with modified parameters:
 
 ```{r}
@@ -172,7 +153,6 @@ MOFAobject <- prepare_mofa(
 
 ```
 
-
 Train model:
 
 ```{r, message=FALSE, warning=FALSE}
@@ -182,7 +162,6 @@ MOFAobject.trained <- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)
 
 ```
 
-
 Add phenotype data to the model:
 
 ```{r}
@@ -190,7 +169,6 @@ Add phenotype data to the model:
 samples_metadata(MOFAobject.trained) <- plasma_pheno
 
 ```
-
 
 Visualise variance explained:
 
@@ -205,8 +183,7 @@ plot_variance_explained(
 
 ```
 
-Majority is from proteomics data - likely due to the higher number of features. 
-
+Majority is from proteomics data - likely due to the higher number of features.
 
 Plot correlation between factors:
 
@@ -215,8 +192,6 @@ Plot correlation between factors:
 plot_factor_cor(MOFAobject.trained)
 
 ```
-
-
 
 Correlation between factors and metadata:
 
@@ -237,12 +212,9 @@ correlate_factors_with_covariates(MOFAobject.trained,
 
 ```
 
-Factor 2 is significantly correlated with "day". Factors 5 and 6 are correlated with horse.
-Most of the variance in factor 2 is explained by the proteomics data. The variance in factor 1 mostly comes from the miRNA and lncRNA data, however that doesn't appear to correspond to a biological effect. 
-Factor 3 shows slight correlation with "day". As the variance is explained by the proteomics and snRNA data this might also be interesting to explore.
+Factor 2 is significantly correlated with "day". Factors 5 and 6 are correlated with horse. Most of the variance in factor 2 is explained by the proteomics data. The variance in factor 1 mostly comes from the miRNA and lncRNA data, however that doesn't appear to correspond to a biological effect. Factor 3 shows slight correlation with "day". As the variance is explained by the proteomics and snRNA data this might also be interesting to explore.
 
-
-We can inspect the weights of the different features contributing to each factor. 
+We can inspect the weights of the different features contributing to each factor.
 
 ```{r}
 
@@ -288,11 +260,9 @@ plot_weights(MOFAobject.trained,
 
 ```
 
-
 The distribution of weights for the top ranked proteins contributing towards factor 2 are heavily negatively skewed. Only Q28377, F7DZE7, A0A5F5PEG5, and A0A5F5PWX5 are positively associated in the top 50. If the weights for miRNA are plotted it can be seen their contribution to factor 2 is low overall, as the weights range from -0.001 to 0.001.
 
 If we plot factor 1 instead, the weight of the miRNAs is much higher.
-
 
 ```{r}
 
@@ -314,16 +284,13 @@ miRNA_f1 <- plot_top_weights(MOFAobject.trained,
 
 ```
 
-
 ```{r, echo=FALSE}
 
 ggarrange(miRNA_f2, miRNA_f1)
 
 ```
 
-It is interesting that miR-126-5P and miR-126-3P are among the miRNAs contributing to factor 2.
-https://pubmed.ncbi.nlm.nih.gov/33627637/
-
+It is interesting that miR-126-5P and miR-126-3P are among the miRNAs contributing to factor 2. <https://pubmed.ncbi.nlm.nih.gov/33627637/>
 
 Visualise the weights for the proteomics and snRNA data contributing to factor 3:
 
@@ -376,15 +343,9 @@ proteomics_f3
 
 ```
 
-
-Create heatmap for proteomics data:
+Create heatmaps for proteomics and miRNA data (factor 2):
 
 ```{r}
-
-# Create annotation for heatmap
-my_sample_col <- data.frame(Day = plasma_pheno$Day)
-rownames(my_sample_col) <- colnames(plasma_proteomics_data)
-
 
 plot_data_heatmap(MOFAobject.trained, 
   view = "proteomics",
@@ -400,6 +361,21 @@ plot_data_heatmap(MOFAobject.trained,
 
 ```
 
+```{r}
+
+plot_data_heatmap(MOFAobject.trained, 
+  view = "miRNA",
+  factor = 2,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = TRUE,
+  scale = "row",
+  denoise = TRUE,
+  color = viridis(10),
+  border_color = NA
+)
+
+```
 
 Plot factors 2 and 3 together (equivalent to PCA):
 
@@ -417,8 +393,7 @@ p + theme_cowplot()
 
 ```
 
-
-Project the samples onto factor 2 for each time point.
+Project the samples onto factor 2 and 3 for each time point.
 
 ```{r}
 
@@ -443,6 +418,39 @@ plot_factor(MOFAobject.trained,
 ```
 
 
+Save results:
+
+```{r}
+
+plasma_res <- get_weights(
+    MOFAobject.trained,
+    views = "all",
+    factors = "all",
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = FALSE
+)
+
+
+
+plasma_res_df <- get_weights(
+    MOFAobject.trained,
+    views = "all",
+    factors = "all",
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = TRUE
+)
+
+
+```
+
+```{r}
+
+saveRDS(plasma_res, "./data/mofa2_plasma.rds")
+saveRDS(plasma_res_df, "./data/mofa2_plasma_df.rds")
+
+```
 
 ## Synovial fluid
 
@@ -473,9 +481,8 @@ sf_mofa_dat <- list(proteomics = as.matrix(sf_proteomics_data),
 
 ```
 
-
 Create MOFAojbect:
-  
+
 ```{r}
 
 MOFAobject <- create_mofa(sf_mofa_dat)
@@ -483,16 +490,14 @@ print(MOFAobject)
 
 ```
 
-
 ```{r}
 
 plot_data_overview(MOFAobject)
 
 ```
 
+Modify model parameters:
 
-Modify model parameters: 
-  
 ```{r}
 
 # Scale views
@@ -516,9 +521,8 @@ head(train_opts)
 
 ```
 
-
 Prepare MOFA object with modified parameters:
-  
+
 ```{r}
 
 MOFAobject <- prepare_mofa(
@@ -530,9 +534,8 @@ MOFAobject <- prepare_mofa(
 
 ```
 
-
 Train model:
-  
+
 ```{r, message=FALSE, warning=FALSE}
 
 outfile <- file.path(getwd(),"sf_model.hdf5")
@@ -540,9 +543,8 @@ MOFAobject.trained <- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)
 
 ```
 
-
 Add phenotype data to the model:
-  
+
 ```{r}
 
 samples_metadata(MOFAobject.trained) <- sf_pheno
@@ -552,9 +554,8 @@ MOFAobject.trained@samples_metadata$Group_day <- as.factor(paste0(sf_pheno$Group
 
 ```
 
-
 Visualise variance explained:
-  
+
 ```{r}
 
 plot_variance_explained(
@@ -569,19 +570,16 @@ plot_variance_explained(
 
 Majority is from proteomics data - likely due to the higher number of features.
 
-
 Plot correlation between factors:
-  
+
 ```{r}
 
 plot_factor_cor(MOFAobject.trained)
 
 ```
 
-
-
 Correlation between factors and metadata:
-  
+
 ```{r, message=FALSE, warning=FALSE}
 
 correlate_factors_with_covariates(MOFAobject.trained, 
@@ -598,11 +596,9 @@ correlate_factors_with_covariates(MOFAobject.trained,
 
 ```
 
-Factor 4 is significantly correlated with day, though factors 2-5 seem to have some correlation with day. Factor 4 is mostly explained by variance in the miRNA.
-Factor 2 is correlated with the 'group_day' variable, though its worth noting this factor had to be coerced into a numeric variable. For factor 2 miRNA and lncRNA explain more of the variance. 
+Factor 4 is significantly correlated with day, though factors 2-5 seem to have some correlation with day. Factor 4 is mostly explained by variance in the miRNA. Factor 2 is correlated with the 'group_day' variable, though its worth noting this factor had to be coerced into a numeric variable. For factor 2 miRNA and lncRNA explain more of the variance.
 
 It may be worth looking at the proteomics weight for factor 1 and 5. In factor 1's case the variance is most strongly correlated with the proteomics but this may be because there is a much higher number of features. Factor 5 seems to have a slight correlation with the biological factors of interest.
-
 
 ```{r}
 
@@ -642,7 +638,7 @@ miRNA_f4 <- plot_top_weights(MOFAobject.trained,
 
 ```{r}
 
-proteomics_f5 <- plot_top_weights(MOFAobject.trained, 
+proteomics_f3 <- plot_top_weights(MOFAobject.trained, 
                   view = "proteomics", 
                   factor = 3, 
                   nfeatures = 10,
@@ -653,9 +649,11 @@ proteomics_f5 <- plot_top_weights(MOFAobject.trained,
 
 # Annotate so Uniprot accessions are replaced by protein names
 # The accessions are stored as factors so need to be converted back into character vectors
-proteomics_f5$data$feature_id <- sf_annotation[as.character(proteomics_f5$data$feature_id),]
+proteomics_f3$data$feature_id <- sf_annotation[as.character(proteomics_f3$data$feature_id),]
 
 ```
+
+Plot miRNA factor 2, lncRNA factor 2, miRNA factor 4 and proteomics factor 3:
 
 ```{r, echo=FALSE}
 
@@ -665,7 +663,6 @@ ggarrange(miRNA_f2, lncRNA_f2, miRNA_f4)
 proteomics_f3
 
 ```
-
 
 Plot weights for factor 2:
 
@@ -690,8 +687,6 @@ plot_weights(MOFAobject.trained,
 
 ```
 
-
-
 ```{r}
 
 plot_data_heatmap(MOFAobject.trained, 
@@ -707,7 +702,6 @@ plot_data_heatmap(MOFAobject.trained,
 )
 
 ```
-
 
 Project the samples onto factor 2 & 4 for each time point.
 
@@ -741,9 +735,38 @@ plot_factor(MOFAobject.trained,
 ```
 
 
+Save results:
 
-# JIVE
+```{r}
+
+sf_res <- get_weights(
+    MOFAobject.trained,
+    views = "all",
+    factors = "all",
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = FALSE
+)
 
 
-# iCluster
-  
+
+sf_res_df <- get_weights(
+    MOFAobject.trained,
+    views = "all",
+    factors = "all",
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = TRUE
+)
+
+
+```
+
+```{r}
+
+saveRDS(sf_res, "./data/mofa2_sf.rds")
+saveRDS(sf_res_df, "./data/mofa2_sf_df.rds")
+
+```
+
+If more time was available would also compare/contrast JIVE and iCluster.

@@ -213,7 +213,6 @@ The rest of the sequencing data didn't have raw counts.The CPM data provided wil
 # CPM normalised plasma lncRNA data
 plasma_lncRNA_data <- read.csv("./data/lncRNA_plasma.csv", row.names = 1)
 colnames(plasma_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(plasma_lncRNA_data))
-row.names(plasma_lncRNA_data) <- gsub(pattern = "_9796", replacement = "", x = row.names(plasma_lncRNA_data))
 
 ```
 
@@ -252,7 +251,6 @@ bp_plasma_lncRNA_data
 # CPM normalised SF lncRNA data
 sf_lncRNA_data <- read.csv("./data/lncRNA_sf.csv", row.names = 1)
 colnames(sf_lncRNA_data) <- gsub(pattern = "X", replacement = "Sample_", x = colnames(sf_lncRNA_data))
-row.names(sf_lncRNA_data) <- gsub(pattern = "_9796", replacement = "", x = row.names(sf_lncRNA_data))
 
 ```
 
@@ -682,7 +680,7 @@ ggarrange(sf_miRNA_scatter, sf_lncRNA_scatter, sf_snoRNA_scatter, sf_snRNA_scatt
 
 
 
-## Filter data by missingness 
+## Filter data
 
 ```{r}
 
@@ -698,6 +696,16 @@ sf_miRNA_data <- sf_miRNA_data[rowSums(sf_miRNA_data>0)>=round(ncol(sf_miRNA_dat
 sf_lncRNA_data <- sf_lncRNA_data[rowSums(sf_lncRNA_data>0)>=round(ncol(sf_lncRNA_data)*0.6),]
 sf_snoRNA_data <- sf_snoRNA_data[rowSums(sf_snoRNA_data>0)>=round(ncol(sf_snoRNA_data)*0.6),]
 sf_snRNA_data <- sf_snRNA_data[rowSums(sf_snRNA_data>0)>=round(ncol(sf_snRNA_data)*0.6),]
+
+```
+
+
+Remove universal spike-ins from miRNA:
+
+```{r}
+
+plasma_miRNA_data <- plasma_miRNA_data[-c(1:3),]
+sf_miRNA_data <- sf_miRNA_data[-c(1:3),]
 
 ```
 
