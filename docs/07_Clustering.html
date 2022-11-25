@@ -13,7 +13,7 @@
 
 <meta name="date" content="2022-09-28" />
 
-<title>Exploratory data analysis - proteomics data</title>
+<title>Multi-omics - clustering</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -435,8 +435,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exploratory data analysis - proteomics
-data</h1>
+<h1 class="title toc-ignore">Multi-omics - clustering</h1>
 <h4 class="author">Emily Johnson</h4>
 <h4 class="date">2022-09-28</h4>
 
@@ -467,7 +466,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-17
+<strong>Last updated:</strong> 2022-11-25
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -601,15 +600,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree2238906ecb478a5d2a9b5529c69c506982c91920targetblank2238906a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/2238906ecb478a5d2a9b5529c69c506982c91920" target="_blank">2238906</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtree2238906ecb478a5d2a9b5529c69c506982c91920targetblank2238906a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -619,7 +618,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/2238906ecb478a5d2a9b5529c69c506982c91920" target="_blank">2238906</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -637,20 +636,36 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
-    Ignored:    analysis/07_Clustering.nb.html
 
 Untracked files:
-    Untracked:  clustering_results.PDF
-    Untracked:  clustering_results_dtw.PDF
-    Untracked:  code/misc_mfuzz_ggplot_code.R
-    Untracked:  code/misc_throw_away_code.R
-    Untracked:  imgs/
+    Untracked:  code/ArchRpalettes.R
+    Untracked:  imgs/clustering_results/plasma_c4_ora.PDF
+    Untracked:  imgs/clustering_results/synovial_fluid_c1_ora.PDF
+    Untracked:  imgs/jDR/plasma/
+    Untracked:  imgs/jDR/plasma_f2_gsea.PDF
+    Untracked:  imgs/jDR/plasma_factors_gsea_non-sig.PDF
+    Untracked:  imgs/jDR/synovial_fluid_f5_gsea.PDF
+    Untracked:  imgs/jDR/synovial_fluid_factors_gsea_non-sig.PDF
+    Untracked:  sf_time_model.hdf5
 
 Unstaged changes:
+    Modified:   analysis/06_jDR.Rmd
     Modified:   analysis/07_Clustering.Rmd
+    Modified:   analysis/08_Functional_enrichment.Rmd
     Modified:   analysis/references.bib
     Modified:   code/utility-functions.R
-    Deleted:    external_imgs/sampling_types.png
+    Modified:   data/mfuzz_cluster_sf_data.rds
+    Modified:   data/mofa2_sf.rds
+    Modified:   data/mofa2_sf_df.rds
+    Modified:   imgs/clustering_results/clustering_results.PDF
+    Modified:   imgs/clustering_results/dtw_clustering_results.PDF
+    Modified:   imgs/clustering_results/dtw_clustering_results_wide.PDF
+    Modified:   imgs/clustering_results/mfuzz_clustering_results.PDF
+    Modified:   imgs/clustering_results/plasma_cluster_corr.PDF
+    Modified:   imgs/clustering_results/sf_cluster_corr.PDF
+    Deleted:    imgs/jDR/non_sig_plasma_factor_GSEA
+    Modified:   plasma_model.hdf5
+    Modified:   sf_model.hdf5
 
 </code></pre>
 <p>
@@ -696,6 +711,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/fc9ca8a4449562942f7261173f6140fb19879267/analysis/07_Clustering.Rmd" target="_blank">fc9ca8a</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-23
+</td>
+<td>
+functional enrichment
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/218071a73bd878d999f9460324e0b8314c5cc717/analysis/07_Clustering.Rmd" target="_blank">218071a</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-17
+</td>
+<td>
+Clustering + figures
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/218071a73bd878d999f9460324e0b8314c5cc717/docs/07_Clustering.html" target="_blank">218071a</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-17
+</td>
+<td>
+Clustering + figures
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -829,9 +895,14 @@ plasma_snRNA_data[plasma_snRNA_data == 0] &lt;- NA
 sf_miRNA_data[sf_miRNA_data == 0] &lt;- NA
 sf_lncRNA_data[sf_lncRNA_data == 0] &lt;- NA
 sf_snRNA_data[sf_snRNA_data == 0] &lt;- NA</code></pre>
-<p>Remove universal spike-ins:</p>
-<pre class="r"><code>plasma_miRNA_data &lt;- plasma_miRNA_data[-c(1:3),]
-sf_miRNA_data &lt;- sf_miRNA_data[-c(1:3),]</code></pre>
+<p>Additionally, for the synovial fluid the control samples need to be
+removed as these will interfere will the time series clustering.</p>
+<pre class="r"><code>sf_pheno &lt;- sf_pheno[!sf_pheno$Group == &quot;Control&quot;,]
+
+sf_proteomics_data &lt;- sf_proteomics_data[,sf_pheno$Sample.Number]
+sf_miRNA_data &lt;- sf_miRNA_data[,sf_pheno$Sample.Number]
+sf_lncRNA_data &lt;- sf_lncRNA_data[,sf_pheno$Sample.Number]
+sf_snRNA_data &lt;- sf_snRNA_data[,sf_pheno$Sample.Number]</code></pre>
 <div id="variance-filtering" class="section level2">
 <h2>Variance filtering</h2>
 <p>Before Z-score normalisation the data was filtered to only include
@@ -1096,11 +1167,10 @@ fuzzifier of 1 is almost equivalent to hard clustering.</p>
 <p>Estimate number of clusters required:</p>
 <pre class="r"><code>Dmin(expData, m=m1, crange=seq(2,22,1), repeats=3, visu=TRUE)</code></pre>
 <p><img src="figure/07_Clustering.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code> [1] 0.6568184597 0.4686694845 0.3749916913 0.4157338914 0.2158608491
- [6] 0.1363346582 0.0496245961 0.0605802704 0.0689934958 0.0739492162
-[11] 0.0291856447 0.0236303575 0.0139423389 0.0111390605 0.0147436677
-[16] 0.0024432633 0.0115198266 0.0034593997 0.0021017847 0.0013845696
-[21] 0.0008943346</code></pre>
+<pre><code> [1] 1.115852599 0.535072006 0.301359314 0.217062356 0.024929588 0.021075170
+ [7] 0.029505365 0.011466759 0.013917440 0.012368646 0.016592531 0.007800507
+[13] 0.010526264 0.001905725 0.009248844 0.005652783 0.009083171 0.004543876
+[19] 0.006119594 0.003049429 0.004465958</code></pre>
 <p>Visual inspection of the plot suggests &lt;7 clusters are
 required.</p>
 <pre class="r"><code>clust &lt;- 6</code></pre>
@@ -1108,13 +1178,13 @@ required.</p>
 set.seed(5)
 sf_mfuzz_cl &lt;- mfuzz(expData,c=clust,m=m1)</code></pre>
 <pre class="r"><code>cor(t(sf_mfuzz_cl[[1]]))</code></pre>
-<pre><code>            1           2          3           4           5           6
-1  1.00000000 -0.07898887 -0.3442960  0.03743311  0.47852003 -0.03371707
-2 -0.07898887  1.00000000  0.4469229  0.05937273 -0.01134136  0.50205991
-3 -0.34429596  0.44692294  1.0000000  0.65359459 -0.83947738 -0.36551400
-4  0.03743311  0.05937273  0.6535946  1.00000000 -0.76599654 -0.65280578
-5  0.47852003 -0.01134136 -0.8394774 -0.76599654  1.00000000  0.54796681
-6 -0.03371707  0.50205991 -0.3655140 -0.65280578  0.54796681  1.00000000</code></pre>
+<pre><code>           1          2          3          4          5          6
+1  1.0000000 -0.7555527 -0.9726895  0.5737932 -0.2234023 -0.7644797
+2 -0.7555527  1.0000000  0.6504193 -0.3692796 -0.2389322  0.9994863
+3 -0.9726895  0.6504193  1.0000000 -0.5409932  0.3312384  0.6653548
+4  0.5737932 -0.3692796 -0.5409932  1.0000000 -0.7196810 -0.3685807
+5 -0.2234023 -0.2389322  0.3312384 -0.7196810  1.0000000 -0.2307242
+6 -0.7644797  0.9994863  0.6653548 -0.3685807 -0.2307242  1.0000000</code></pre>
 <p>Results suggest 5&amp;6 may be redundant clusters due to correlation
 between their centroids.</p>
 <p>Plot centroid expression over time and per-cluster membership scores
@@ -1244,7 +1314,7 @@ Iteration 1: Changes / Distsum = 173 / 557.6487
 Iteration 2: Changes / Distsum = 75 / 472.9479
 Iteration 3: Changes / Distsum = 0 / 472.9479
 
-    Elapsed time is 10.11 seconds.</code></pre>
+    Elapsed time is 10 seconds.</code></pre>
 <pre class="r"><code># Prepare data for centroid plot
 
 ## Convert list object into matrix
@@ -1286,11 +1356,12 @@ plasma_dtw_centroids_plot &lt;- ggplot(plasma_dtw_centroids_long, aes(x=as.numer
 <pre><code>
     Precomputing distance matrix...
 
-Iteration 1: Changes / Distsum = 310 / 642.343
-Iteration 2: Changes / Distsum = 30 / 631.5018
-Iteration 3: Changes / Distsum = 0 / 631.5018
+Iteration 1: Changes / Distsum = 337 / 1104.139
+Iteration 2: Changes / Distsum = 142 / 914.9503
+Iteration 3: Changes / Distsum = 11 / 908.5555
+Iteration 4: Changes / Distsum = 0 / 908.5555
 
-    Elapsed time is 31.9 seconds.</code></pre>
+    Elapsed time is 37.57 seconds.</code></pre>
 <pre class="r"><code># Prepare data for centroid plot
 
 ## Convert list object into matrix
@@ -1385,39 +1456,13 @@ plasma_cl_OL_plot &lt;- pheatmap(overlap_counts,
                #color = mako(50),
                color = hcl.colors(50, &quot;BluYl&quot;),
                fontsize_number = 14,
-               fontsize_row = 14,
-               fontsize_col = 14,
+               fontsize_row = 15,
+               fontsize_col = 15,
                number_color = &quot;black&quot;,
                legend = FALSE)</code></pre>
 <p><img src="figure/07_Clustering.Rmd/unnamed-chunk-47-1.png" width="432" style="display: block; margin: auto;" /></p>
 <p>Note, to access the heatmap for functions such as ggarrange, extract
 the 4th element, e.g. <code>plasma_cl_OL_plot[[4]]</code>.</p>
-<table>
-<thead>
-<tr class="header">
-<th>k-medoids</th>
-<th>fuzzy c-means</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>4</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
 <p>Fuzzy c-means cluster 3 doesn’t appear to have a corresponding
 k-medoids cluster. This appears to stem from redundancy between cluster
 2&amp;3. It is probably worth reducing the number of clusters to 3 or
@@ -1457,7 +1502,9 @@ names(sf_dtw_cl) == names(sf_mfuzz_clusters)</code></pre>
 [256] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 [271] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
 [286] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
-[301] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
+[301] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[316] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[331] TRUE TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
 <pre class="r"><code># Add to cluster labels:
 sf_dtw_cl_matched &lt;- paste0(&#39;K-&#39;,sf_dtw_cl)
 sf_mfuzz_clusters &lt;- paste0(&#39;FCM-&#39;, sf_mfuzz_clusters)
@@ -1484,49 +1531,29 @@ sf_cl_OL_plot &lt;- pheatmap(overlap_counts,
                               #color = mako(50),
                               color = hcl.colors(50, &quot;BluYl&quot;),
                               fontsize_number = 14,
-                              fontsize_row = 14,
-                              fontsize_col = 14,
+                              fontsize_row = 15,
+                              fontsize_col = 15,
                               number_color = &quot;black&quot;,
                               legend = FALSE)</code></pre>
 <p><img src="figure/07_Clustering.Rmd/unnamed-chunk-51-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>The results demonstrate some overlap between the clustering
-algorithms. Cluster 1 of the fuzzy c-means clustering is most similar to
-cluster 4 of the k-medoid clustering (though cluster 4 of the fuzzy
-c-means also has strong overlap). Cluster 1 of the k-medoid clustering
-is most similar to cluster 4 of the fuzzy c-means.</p>
-<p>Clusters 2&amp;3 of the k-medoid clustering don’t appear to have much
-overlap with any of the fuzzy c-means clusters.</p>
-<p>Clusters 5&amp;6 for the fuzzy c-means overlap with clusters 6&amp;5
-for the k-medoids.</p>
-<table>
-<thead>
-<tr class="header">
-<th>k-medoids</th>
-<th>fuzzy c-means</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>4</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>1 (followed by 4)</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>6</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>5</td>
-</tr>
-</tbody>
-</table>
+algorithms, especially for cluster 5. Fuzzy c-means 3 and k-medoids 2
+also demonstrate strong overlap.</p>
 <hr />
-<!-- Below is some code that will be hidden in the outputs to save figures. -->
 </div>
+</div>
+<div id="write-outputs" class="section level1">
+<h1>Write outputs</h1>
+<p>The mfuzz fuzzy c-means analysis was taken forward for functional
+enrichment as its was reasonable agreement with the dtwclust for the
+most relevant clusters. Additionally it includes a membership score
+which is useful for functional enrichment techniques that need a ranked
+list (though this would be possible to generate for the dtwclust results
+too by correlating the features with the centroids and applying a
+cut-off if this was of interest).</p>
+<pre class="r"><code>saveRDS(plasma_acore_list, &quot;./data/mfuzz_cluster_plasma_data.rds&quot;)
+saveRDS(sf_acore_list, &quot;./data/mfuzz_cluster_sf_data.rds&quot;)</code></pre>
+<!-- Below is some code that will be hidden in the outputs to save figures. -->
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

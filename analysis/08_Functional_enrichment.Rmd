@@ -1,6 +1,6 @@
 ---
 title: "Multi-omics - functional enrichment"
-author: "ejjohnson93"
+author: "Emily Johnson"
 date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
@@ -53,7 +53,7 @@ For GO term analysis we needed to manually annotate the proteomics and sequencin
 
 The tools previously developed by Simon Perkins were employed: <https://github.com/CBFLivUni/mapping_and_enrichment>. For the proteomics a combined GO annotation dataframe was created for the plasma and synovial fluid:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 source('./code/uniprot_dat_reading.R')
 source('./code/mapping_with_db_ortho.R')
@@ -62,6 +62,9 @@ source('./code/uniprot_selected_term_types.R')
 source('./code/utils.R')
 
 ```
+
+
+Create a combined protein list for synovial fluid and plasma proteins: 
 
 ```{r}
 
@@ -73,11 +76,17 @@ proteins_list <- unique(proteins_list)
 
 ```
 
-```{r}
+
+Map this combined list to the protein GO terms using the 'map_using_uniprot_files' function:
+
+```{r, message=FALSE, warning=FALSE}
 
 GO_anot_protein <- map_using_uniprot_files(input_id = 'UniProtKB-AC', input_values = proteins_list, output_id = 'GO')
 
 ```
+
+
+Convert the GO annotation to a dataframe, then build the full parent-child term map using the buildGOmap function:
 
 ```{r}
 
@@ -85,6 +94,9 @@ GO_anot_protein <- as.data.frame(GO_anot_protein)
 GO_anot_full <- buildGOmap(GO_anot_protein[,c(2,1)])
 
 ```
+
+
+Add the GO term names and ontology information:
 
 ```{r}
 
@@ -108,7 +120,7 @@ More information can be found on miRNA functional annotation here: <https://www.
 
 For the purpose of this analysis the human miRNAs were converted into their equine counterparts.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 miRNA_GO <- read.table(file = "./data/QuickGO-annotations-1669061355988-20221121.tsv", sep = "\t", header = TRUE)
 
@@ -150,9 +162,7 @@ sf_clusters <- readRDS("./data/mfuzz_cluster_sf_data.rds")
 ```
 
 
-## ORA
-
-### Plasma
+## Plasma
 
 Order by membership:
 
@@ -229,7 +239,11 @@ plasma_c4_enrichment <- enricher(
   TERM2NAME = GO_anot_full[,c(1,3)])
 
 
-plasma_c4_dp <- clusterProfiler::dotplot(plasma_c4_enrichment) + ggtitle("Plasma - cluster 4")
+plasma_c4_dp <- clusterProfiler::dotplot(plasma_c4_enrichment) +
+  #scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() +
+  ggtitle("Plasma - cluster 4")
+
 
 plasma_c4_dp
 
@@ -245,7 +259,7 @@ Interesting lipid metabolism seems to be enriched for cluster 4:
 
 
 
-### Synovial fluid
+## Synovial fluid
 
 Order by membership:
   
@@ -277,7 +291,7 @@ Carry out cluster functional enrichment:
 
 sf_cluster_enrichment <- compareCluster(geneCluster = sf_clusters_list,
                                      fun = enricher,
-                                     pvalueCutoff = 0.05,
+                                     pvalueCutoff = 0.5,
                                      pAdjustMethod = "BH",
                                      sf_background,
                                      minGSSize = 3,
@@ -291,7 +305,7 @@ sf_cluster_enrichment_df <- sf_cluster_enrichment@compareClusterResult
 ```
 
 
-When joint functional enrichment analysis is carried out only cluster 5 has significantly enriched GO terms. 
+When joint functional enrichment analysis is carried out only cluster 3 has significantly enriched GO terms. 
   
 ```{r}
 
@@ -301,14 +315,14 @@ head(cluster_enrichment_df)
 
 
 
-Cluster analysis for clusters 4 & 5:
+Cluster analysis for clusters 1 & 3:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
-c4 <- row.names(sf_clusters[sf_clusters$CLUSTER == 4, ])
+c1 <- row.names(sf_clusters[sf_clusters$CLUSTER == 1, ])
 
-sf_c4_enrichment <- enricher(
-  c4,
+sf_c1_enrichment <- enricher(
+  c1,
   pvalueCutoff = 0.05,
   pAdjustMethod = "BH",
   sf_background,
@@ -318,19 +332,23 @@ sf_c4_enrichment <- enricher(
   TERM2NAME = GO_anot_full[c(1,3)])
 
 
-sf_c4_dp <- clusterProfiler::dotplot(sf_c4_enrichment) + ggtitle("Synovial fluid - cluster 4")
+sf_c1_dp <- clusterProfiler::dotplot(sf_c1_enrichment) +
+  scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() +
+  ggtitle("Synovial fluid - cluster 1")
 
-sf_c4_dp
+
+sf_c1_dp
 
 ```
 
   
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
-c5 <- row.names(sf_clusters[sf_clusters$CLUSTER == 5, ])
+c3 <- row.names(sf_clusters[sf_clusters$CLUSTER == 3, ])
 
-sf_c5_enrichment <- enricher(
-  c5,
+sf_c3_enrichment <- enricher(
+  c3,
   pvalueCutoff = 0.05,
   pAdjustMethod = "BH",
   sf_background,
@@ -340,38 +358,20 @@ sf_c5_enrichment <- enricher(
   TERM2NAME = GO_anot_full[c(1,3)])
 
 
-sf_c5_dp <- clusterProfiler::dotplot(sf_c5_enrichment) + ggtitle("Synovial fluid - cluster 5")
+sf_c3_dp <- clusterProfiler::dotplot(sf_c3_enrichment) +
+  scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() +
+  ggtitle("Synovial fluid - cluster 3")
 
-sf_c5_dp
-
-```
-
-
-## GSEA
-
-```{r}
-
-c4 <- plasma_clusters[plasma_clusters$CLUSTER == 4,] %>% pull(MEM.SHIP, NAME)
+sf_c3_dp
 
 ```
 
-```{r}
-
-gsea_results_pos <- GSEA(geneList =c4,
-               exponent = 1,
-               minGSSize = 5,
-               maxGSSize = 500,
-               pvalueCutoff = 0.05,
-               pAdjustMethod = "BH",
-               TERM2GENE = GO_anot_full[c(1,2)],
-               TERM2NAME = GO_anot_full[c(1,3)],
-               by = "fgsea",
-               scoreType = "pos")
-
-```
 
 
 # Factor functional enrichment
+
+Read data in:
 
 ```{r}
 
@@ -380,6 +380,8 @@ sf_mofa <- readRDS("./data/mofa2_sf_df.rds")
 
 ```
 
+
+## Plasma 
 
 ```{r}
 
@@ -393,7 +395,7 @@ plasma_mofa_list <- list(Factor1 = plasma_mofa[plasma_mofa$view == "proteomics" 
 ```
 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 plasma_factor_enrichment <- compareCluster(geneCluster = plasma_mofa_list,
                fun = GSEA,
@@ -407,17 +409,21 @@ plasma_factor_enrichment <- compareCluster(geneCluster = plasma_mofa_list,
                by = "fgsea")
 
 
-# GO_anot_full[GO_anot_full$ontology == "BP",c(1,2)]
-
 
 plasma_factor_enrichment_df <- plasma_factor_enrichment@compareClusterResult
 
+plasma_factors_dp <- clusterProfiler::dotplot(plasma_factor_enrichment) +
+  #scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() + 
+  ggtitle("Plasma - factors GSEA")
 
-clusterProfiler::dotplot(plasma_factor_enrichment)
+
+plasma_factors_dp
 
 ```
 
 
+### Factor 2
 
 ```{r}
 
@@ -425,7 +431,7 @@ factor2 <- plasma_mofa[plasma_mofa$view == "proteomics" & plasma_mofa$factor == 
 
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 gsea_plasma_f2 <- GSEA(geneList = factor2,
                exponent = 1,
@@ -437,10 +443,220 @@ gsea_plasma_f2 <- GSEA(geneList = factor2,
                TERM2NAME = GO_anot_full[c(1,3)],
                by = "fgsea")
 
+
+plasma_f2_dp <- clusterProfiler::dotplot(gsea_plasma_f2) +
+  #scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() + 
+  ggtitle("Plasma - factor 2 GSEA")
+
+plasma_f2_dp
+
 ```
 
 
+## Synovial fluid 
 
+```{r}
+
+# Create a list object containing the proteomic factor data in descending order
+sf_mofa_list <- list(Factor1 = sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor1",] %>% arrange(desc(value)) %>% pull(value, feature),
+                         Factor2 = sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor2",] %>% arrange(desc(value)) %>% pull(value, feature),
+                         Factor3 = sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor3",] %>% arrange(desc(value)) %>% pull(value, feature),
+                         Factor4 = sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor4",] %>% arrange(desc(value)) %>% pull(value, feature),
+                         Factor5 = sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor5",] %>% arrange(desc(value)) %>% pull(value, feature),
+                         Factor6 = sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor6",] %>% arrange(desc(value)) %>% pull(value, feature))
+
+```
+
+
+Calculate factor enrichment using GSEA. Note: the p-value threshold is set higher just for the initial exploration. 
+
+```{r, message=FALSE, warning=FALSE}
+
+# Joint factor GSEA analysis using compareCluster function
+sf_factor_enrichment <- compareCluster(geneCluster = sf_mofa_list,
+                                           fun = GSEA,
+                                           exponent = 1,
+                                           minGSSize = 5,
+                                           maxGSSize = 500,
+                                           pvalueCutoff = 0.5,
+                                           pAdjustMethod = "BH",
+                                           TERM2GENE = GO_anot_full[c(1,2)],
+                                           TERM2NAME = GO_anot_full[c(1,3)],
+                                           by = "fgsea")
+
+
+
+# Data frame for comparison purposes
+sf_factor_enrichment_df <- sf_factor_enrichment@compareClusterResult
+
+
+# Dotplot 
+sf_factors_dp <- clusterProfiler::dotplot(sf_factor_enrichment) +
+  scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() + 
+  ggtitle("Synovial fluid - factors GSEA")
+
+sf_factors_dp
+
+```
+
+
+Only factor 5 and factor 3 appear to have any significant GO terms associated with them. This is expected considering their association with the phenotype in the factor analysis. 
+
+
+### Factor 5
+
+```{r}
+
+factor5 <- sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor5",] %>% arrange(desc(value)) %>% pull(value, feature)
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+gsea_sf_f5 <- GSEA(geneList = factor5,
+               exponent = 1,
+               minGSSize = 5,
+               maxGSSize = 500,
+               pvalueCutoff = 0.05,
+               pAdjustMethod = "BH",
+               TERM2GENE = GO_anot_full[c(1,2)],
+               TERM2NAME = GO_anot_full[c(1,3)],
+               by = "fgsea")
+
+
+sf_f5_dp <- clusterProfiler::dotplot(gsea_sf_f5) +
+  scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() + 
+  ggtitle("Synovial fluid - factor 5 GSEA")
+
+sf_f5_dp
+
+```
+
+Factor 5 appears to correspond to extracellular matrix and cytoskeletal fiber production. This is probably a wound healing response in response to the initial tissue damage. 
+
+
+### Factor 3
+
+
+```{r}
+
+factor3 <- sf_mofa[sf_mofa$view == "proteomics" & sf_mofa$factor == "Factor3",] %>% arrange(desc(value)) %>% pull(value, feature)
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+gsea_sf_f3 <- GSEA(geneList = factor3,
+               exponent = 1,
+               minGSSize = 5,
+               maxGSSize = 500,
+               pvalueCutoff = 0.05,
+               pAdjustMethod = "BH",
+               TERM2GENE = GO_anot_full[c(1,2)],
+               TERM2NAME = GO_anot_full[c(1,3)],
+               by = "fgsea")
+
+
+sf_f3_dp <- clusterProfiler::dotplot(gsea_sf_f3) +
+  scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  theme_minimal() + 
+  ggtitle("Synovial fluid - factor 3 GSEA")
+
+sf_f3_dp
+
+```
+
+Factor 3 seems to be associated with an immune response. 
+
+
+
+<!-- Below is some code that will be hidden in the outputs to save figures. -->
+
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+## Cluster GSEA
+ggsave(
+  filename = "synovial_fluid_f5_gsea.PDF",
+  plot = sf_f5_dp,
+  width = 5.5,
+  height = 4,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+ggsave(
+  filename = "plasma_f2_gsea.PDF",
+  plot = plasma_f2_dp,
+  width = 5.5,
+  height = 4,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+
+ggsave(
+  filename = "plasma_factors_gsea_non-sig.PDF",
+  plot = plasma_factors_dp,
+  width = 6.5,
+  height = 7,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+ggsave(
+  filename = "synovial_fluid_factors_gsea_non-sig.PDF",
+  plot = sf_factors_dp,
+  width = 6.5,
+  height = 7,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+## Factor ORA
+# Plasma
+ggsave(
+  filename = "plasma_c4_ora.PDF",
+  plot = plasma_c4_dp,
+  width = 6,
+  height = 4,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+# Synovial fluid
+ggsave(
+  filename = "synovial_fluid_c1_ora.PDF",
+  plot = sf_c1_dp,
+  width = 5.5,
+  height = 4,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+
+
+```
 
 
 

@@ -5,6 +5,7 @@ date: "2022-09-28"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
+bibliography: references.bib
 ---
 
 # Load libraries
@@ -12,6 +13,7 @@ editor_options:
 ```{r, message=FALSE, warning=FALSE}
 
 source("./code/utility-functions.R") # load helper functions 
+source("./code/ArchRpalettes.R") # additional colour palettes
 library(tidyverse)
 library(MOFA2) # factor analysis
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
@@ -61,6 +63,8 @@ sf_snRNA_data[sf_snRNA_data == 0] <- NA
 ```
 
 # MOFA
+
+In this analysis MOFA2 was used to carry out joint dimensionality reduction. MOFA2 is a widely used package for integrating multi-omics data. It has previously been employed to study arthritis in mice in a similar study (in terms of sample size) [@li2022].
 
 ## Plasma
 
@@ -347,49 +351,52 @@ Create heatmaps for proteomics and miRNA data (factor 2):
 
 ```{r}
 
-plot_data_heatmap(MOFAobject.trained, 
+# Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$Days <- as.factor(plasma_pheno$Day)
+
+# Palette for heatmap
+heatmap_cols <- colorRampPalette(ArchRPalettes$coolwarm)(50)
+
+# Plot heatmap
+f2_plasma_protein_heatmap <- plot_data_heatmap(MOFAobject.trained, 
   view = "proteomics",
   factor = 2,  
   features = 25,
   cluster_rows = TRUE, cluster_cols = TRUE,
-  show_rownames = TRUE, show_colnames = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
   scale = "row",
   denoise = TRUE,
-  color = viridis(10),
-  border_color = NA
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse"),
+  fontsize = 12
 )
+
+
+f2_plasma_protein_heatmap 
 
 ```
 
 ```{r}
 
-plot_data_heatmap(MOFAobject.trained, 
+# color = met.brewer(name="Hiroshige", n=123),
+# color = hcl.colors(50, "RdYlBu"),
+
+f2_plasma_miRNA_heatmap <- plot_data_heatmap(MOFAobject.trained, 
   view = "miRNA",
   factor = 2,  
   features = 25,
   cluster_rows = TRUE, cluster_cols = TRUE,
-  show_rownames = TRUE, show_colnames = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
   scale = "row",
   denoise = TRUE,
-  color = viridis(10),
-  border_color = NA
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse"),
+  fontsize = 12
 )
 
-```
-
-Plot factors 2 and 3 together (equivalent to PCA):
-
-```{r}
-
-p <- plot_factors(MOFAobject.trained, 
-  factors = c(2,3), 
-  color_by = "Day",
-  shape_by = "Horse",
-  dot_size = 4,
-  show_missing = T
-)
-
-p + theme_cowplot()
+f2_plasma_miRNA_heatmap
 
 ```
 
@@ -397,12 +404,9 @@ Project the samples onto factor 2 and 3 for each time point.
 
 ```{r}
 
-# Add day as a factor to metadata for visualisation purposes
-MOFAobject.trained@samples_metadata$day_group <- as.factor(plasma_pheno$Day)
-
 plot_factor(MOFAobject.trained, 
   factors = 2, 
-  color_by = "day_group",
+  color_by = "Days",
   add_violin = TRUE,
   dodge = TRUE
 )
@@ -410,13 +414,25 @@ plot_factor(MOFAobject.trained,
 
 plot_factor(MOFAobject.trained, 
   factors = 3, 
-  color_by = "day_group",
+  color_by = "Days",
   add_violin = TRUE,
   dodge = TRUE
 )
 
 ```
 
+```{r}
+
+# To extract per sample factor weights manually:
+plasma_factors <- get_factors(
+    MOFAobject.trained,
+    groups = "group1",
+    factors = "all",
+    scale = FALSE,
+    as.data.frame = FALSE
+)
+
+```
 
 Save results:
 
@@ -443,6 +459,8 @@ plasma_res_df <- get_weights(
 )
 
 
+
+
 ```
 
 ```{r}
@@ -452,7 +470,7 @@ saveRDS(plasma_res_df, "./data/mofa2_plasma_df.rds")
 
 ```
 
-## Synovial fluid
+## Synovial fluid - version 1 (MOFA2)
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -670,15 +688,15 @@ Plot weights for factor 2:
 
 plot_weights(MOFAobject.trained,
  view = "miRNA",
- factor = 2,
+ factor = 3,
  nfeatures = 20,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )
 
 
 plot_weights(MOFAobject.trained,
- view = "lncRNA",
- factor = 2,
+ view = "snRNA",
+ factor = 3,
  nfeatures = 20,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )
@@ -689,17 +707,29 @@ plot_weights(MOFAobject.trained,
 
 ```{r}
 
-plot_data_heatmap(MOFAobject.trained, 
-                  view = "miRNA",
-                  factor = 4,  
-                  features = 10,
-                  cluster_rows = TRUE, cluster_cols = TRUE,
-                  show_rownames = TRUE, show_colnames = TRUE,
-                  scale = "row",
-                  denoise = TRUE,
-                  color = viridis(10),
-                  border_color = NA
-)
+# Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$Days <- as.factor(sf_pheno$Day)
+
+# Palette for heatmap
+heatmap_cols <- colorRampPalette(ArchRPalettes$coolwarm)(50)
+
+# Plot heatmap
+f5_sf_protein_heatmap <- plot_data_heatmap(MOFAobject.trained, 
+        view = "proteomics",
+        factor = 2,  
+        features = 25,
+        cluster_rows = TRUE, cluster_cols = TRUE,
+        show_rownames = TRUE, show_colnames = FALSE,
+        scale = "row",
+        denoise = TRUE,
+        color = heatmap_cols,
+        border_color = NA,
+        annotation_samples = c("Day", "Horse", "group"),
+        fontsize = 12
+      )
+
+
+f5_sf_protein_heatmap
 
 ```
 
@@ -708,15 +738,15 @@ Project the samples onto factor 2 & 4 for each time point.
 ```{r}
 
 # Add day as a factor to metadata for visualisation purposes
-MOFAobject.trained@samples_metadata$group <- as.factor(paste0(sf_pheno$Group, "_", sf_pheno$Day))
+MOFAobject.trained@samples_metadata$group_day <- as.factor(paste0(sf_pheno$group, "_", sf_pheno$Day))
 
 ```
 
 ```{r}
 
 plot_factor(MOFAobject.trained, 
-  factors = 2, 
-  color_by = "group",
+  factors = 3, 
+  color_by = "group_day",
   add_violin = TRUE,
   dodge = TRUE
 )
@@ -726,14 +756,393 @@ plot_factor(MOFAobject.trained,
 ```{r}
 
 plot_factor(MOFAobject.trained, 
-  factors = 4, 
-  color_by = "group",
+  factors = 5, 
+  color_by = "group_day",
   add_violin = TRUE,
   dodge = TRUE
 )
 
 ```
 
+The results were not saved for this model as a better performing version is explored below.
+
+## Synovial fluid - version 2 (MEFISTO)
+
+As the synovial fluid experimental design is more complex we will expand on the time and group variables in the MOFA2 model by making use of MEFISTO:
+
+-   <https://raw.githack.com/bioFAM/MEFISTO_tutorials/master/MEFISTO_temporal.html>
+
+-   <https://www.nature.com/articles/s41592-021-01343-9>
+
+```{r}
+
+colnames(sf_pheno)[c(5,6)] <- c("group", "sample")
+
+# Create a variable for time
+time <- t(sf_pheno$Day)
+colnames(time) <- sf_pheno$sample
+row.names(time) <- "time"
+
+```
+
+```{r}
+
+sf_mofa_dat <- list(proteomics = as.matrix(sf_proteomics_data),
+                        miRNA = as.matrix(sf_miRNA_data),
+                        lncRNA = as.matrix(sf_lncRNA_data),
+                        snRNA = as.matrix(sf_snRNA_data))
+
+```
+
+Create MOFAojbect:
+
+```{r}
+
+# Include group in the model 
+MOFAobject <- create_mofa(sf_mofa_dat, groups = sf_pheno$group)
+
+# Set time as a covariate in the model
+MOFAobject <- set_covariates(MOFAobject, covariates = time)
+
+print(MOFAobject)
+
+```
+
+Modify model parameters (including Mefisto options):
+
+```{r}
+
+# Scale views
+data_opts <- get_default_data_options(MOFAobject)
+data_opts$scale_views <- TRUE
+head(data_opts)
+
+
+# Set number of factors
+model_opts <- get_default_model_options(MOFAobject)
+model_opts$num_factors <- 6
+head(model_opts)
+
+
+# Set training options
+train_opts <- get_default_training_options(MOFAobject)
+train_opts$convergence_mode <- "slow"
+train_opts$seed <- 123
+train_opts$maxiter <- 3000
+head(train_opts)
+
+
+# Mefisto options
+mefisto_opts <- get_default_mefisto_options(MOFAobject)
+head(mefisto_opts)
+
+```
+
+Prepare MOFA object with modified parameters:
+
+```{r}
+
+MOFAobject <- prepare_mofa(
+  object = MOFAobject,
+  data_options = data_opts,
+  model_options = model_opts,
+  training_options = train_opts,
+  mefisto_options = mefisto_opts
+)
+
+```
+
+Train model:
+
+```{r, message=FALSE, warning=FALSE}
+
+outfile <- file.path(getwd(),"sf_time_model.hdf5")
+MOFAobject.trained <- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)
+
+```
+
+Add phenotype data to the model:
+
+```{r}
+
+samples_metadata(MOFAobject.trained) <- sf_pheno
+
+```
+
+Visualise variance explained:
+
+```{r}
+
+plot_variance_explained(
+  MOFAobject.trained, 
+  x = "view", 
+  y = "factor", 
+  plot_total = T
+)
+
+
+```
+
+Interestingly the miRNA contributes more strongly to the variance in the control samples. The MOFA model has learnt scale parameters for each factor, which gives an indication of the smoothness per factor along the covariate (time) and are between 0 and 1. A scale of 0 means that the factor captures variation independent of time, a value close to 1 tells us that this factor varys very smoothly along time.
+
+```{r}
+
+get_scales(MOFAobject.trained)
+
+```
+
+Here it can be seen factor 3 varies smoothly along time.
+
+Plot correlation between factors:
+
+```{r}
+
+plot_factor_cor(MOFAobject.trained)
+
+```
+
+Correlation between factors and metadata:
+
+```{r, message=FALSE, warning=FALSE}
+
+correlate_factors_with_covariates(MOFAobject.trained, 
+                                  covariates = c("Day", "Horse"), 
+                                  plot="log_pval",
+                                  alpha="0.15" # p-value threshold
+)
+
+
+correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c("Day", "Horse"), 
+  plot="r"
+)
+
+```
+
+Factor 3 is most strongly correlated with day, followed by 5. For factor 3 most of the variation comes from the miRNA, followed by the snRNA. For factor 5 most of the variation comes from the proteomics data.
+
+```{r}
+
+miRNA_f3 <- plot_top_weights(MOFAobject.trained, 
+                  view = "miRNA", 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+```{r}
+
+snRNA_f3 <- plot_top_weights(MOFAobject.trained, 
+                  view = "snRNA", 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+```
+
+```{r}
+
+proteomics_f5 <- plot_top_weights(MOFAobject.trained, 
+                  view = "proteomics", 
+                  factor = 5, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f5$data$feature_id <- sf_annotation[as.character(proteomics_f5$data$feature_id),]
+
+```
+
+Plot miRNA factor 2, lncRNA factor 2, miRNA factor 4 and proteomics factor 3:
+
+```{r, echo=FALSE}
+
+ggarrange(miRNA_f3, snRNA_f3)
+
+
+proteomics_f5
+
+```
+
+Plot weights for factor 3:
+
+```{r}
+
+plot_weights(MOFAobject.trained,
+ view = "miRNA",
+ factor = 3,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)
+
+
+plot_weights(MOFAobject.trained,
+ view = "lncRNA",
+ factor = 3,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)
+
+
+
+```
+
+Heatmaps for factors...
+
+Factor 5, protein:
+
+```{r}
+
+# Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$Days <- as.factor(plasma_pheno$Day)
+
+# Palette for heatmap
+heatmap_cols <- colorRampPalette(ArchRPalettes$coolwarm)(50)
+
+# Plot heatmap
+f5_sf_protein_heatmap <- plot_data_heatmap(MOFAobject.trained, 
+  view = "proteomics",
+  factor = 5,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = "row",
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse", "group"),
+  fontsize = 12
+)
+
+
+f5_sf_protein_heatmap 
+
+```
+
+Factor 2, miRNA:
+
+```{r}
+
+# Plot heatmap
+f2_sf_miRNA_heatmap <- plot_data_heatmap(MOFAobject.trained, 
+  view = "miRNA",
+  factor = 2,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = "row",
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse", "group"),
+  fontsize = 12
+)
+
+
+f2_sf_miRNA_heatmap 
+
+```
+
+Factor 2, protein:
+
+```{r}
+
+# Plot heatmap
+f2_sf_protein_heatmap <- plot_data_heatmap(MOFAobject.trained, 
+  view = "proteomics",
+  factor = 2,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = "row",
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse", "group"),
+  fontsize = 12
+)
+
+
+f2_sf_protein_heatmap 
+
+```
+
+Factor 3, miRNA:
+
+```{r}
+
+# Plot heatmap
+f3_sf_miRNA_heatmap <- plot_data_heatmap(MOFAobject.trained, 
+  view = "miRNA",
+  factor = 3,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = "row",
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse", "group"),
+  fontsize = 12
+)
+
+
+f3_sf_miRNA_heatmap 
+
+```
+
+Factor 3, protein:
+
+```{r}
+
+# Plot heatmap
+f3_sf_protein_heatmap <- plot_data_heatmap(MOFAobject.trained, 
+  view = "proteomics",
+  factor = 3,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = "row",
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse", "group"),
+  fontsize = 12
+)
+
+
+f3_sf_protein_heatmap 
+
+```
+
+Project the samples onto factor 5 for each time point.
+
+```{r}
+
+# Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$group_day <- as.factor(paste0(sf_pheno$group, "_", sf_pheno$Day))
+
+```
+
+```{r}
+
+plot_factor(MOFAobject.trained, 
+  factors = 5, 
+  color_by = "group_day",
+  add_violin = TRUE,
+  dodge = TRUE
+)
+
+```
 
 Save results:
 
@@ -769,4 +1178,161 @@ saveRDS(sf_res_df, "./data/mofa2_sf_df.rds")
 
 ```
 
-If more time was available would also compare/contrast JIVE and iCluster.
+# Summary/conclusions
+
+Joint dimensionality reduction identified factors associated with time after OA induction in synovial fluid and plasma. If more time was available I would have also compared/contrasted other multi-omics methods such as JIVE and iCluster.
+
+<!-- Below is some code that will be hidden in the outputs to save figures. -->
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+
+variance <- plot_variance_explained(
+  MOFAobject.trained, 
+  x = "view", 
+  y = "factor", 
+  plot_total = T
+)
+
+
+correlation <- correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c("Day", "Horse"), 
+  plot="log_pval", 
+  alpha="0.15",
+  color = heatmap_cols,
+  border_color = NA,
+  fontsize = 12
+)
+
+
+
+# Plot heatmap
+f2_plasma_protein_heatmap <- plot_data_heatmap(MOFAobject.trained, 
+  view = "proteomics",
+  factor = 2,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = "row",
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c("Day", "Horse"),
+  fontsize = 12,
+  legend = FALSE
+)
+
+
+
+fig1 <- ggarrange(f2_plasma_protein_heatmap[[4]], ggarrange(variance[[1]], correlation[[4]],                        
+                    nrow = 2, 
+                    ncol = 1,
+                    labels = c("B", "C")),
+                  
+          nrow = 1,
+          ncol = 2,
+          labels = c("A"))
+
+
+
+# Group figure
+ggsave(
+  filename = "plasma_mofa.PDF",
+  plot = fig1,
+  width = 8,
+  height = 7,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+# Correlation
+ggsave(
+  filename = "plasma_factor_group_correlation_mofa.PDF",
+  plot = correlation[[4]],
+  width = 4,
+  height = 3.5,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+
+# Variance 
+ggsave(
+  filename = "plasma_factor_variation_mofa.PDF",
+  plot = variance[[1]],
+  width = 4.5,
+  height = 3.5,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+```
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+ggsave(
+  filename = "protein_plasma_factor2.PDF",
+  plot = f2_plasma_protein_heatmap[[4]],
+  width = 6,
+  height = 6,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+
+ggsave(
+  filename = "miRNA_plasma_factor2.PDF",
+  plot = f2_plasma_miRNA_heatmap[[4]],
+  width = 6,
+  height = 6,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+```
+
+```{r, echo=FALSE, eval=FALSE, fig.show='hide', message=FALSE}
+
+ggsave(
+  filename = "protein_plasma_factor2.PDF",
+  plot = f2_plasma_protein_heatmap[[4]],
+  width = 6,
+  height = 6,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+
+ggsave(
+  filename = "miRNA_plasma_factor2.PDF",
+  plot = f2_plasma_miRNA_heatmap[[4]],
+  width = 6,
+  height = 6,
+  units = c("in"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = "white"
+)
+
+
+```
+
+# References

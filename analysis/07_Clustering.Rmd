@@ -64,6 +64,20 @@ sf_snRNA_data[sf_snRNA_data == 0] <- NA
 ```
 
 
+Additionally, for the synovial fluid the control samples need to be removed as these will interfere will the time series clustering. 
+
+```{r}
+
+sf_pheno <- sf_pheno[!sf_pheno$Group == "Control",]
+
+sf_proteomics_data <- sf_proteomics_data[,sf_pheno$Sample.Number]
+sf_miRNA_data <- sf_miRNA_data[,sf_pheno$Sample.Number]
+sf_lncRNA_data <- sf_lncRNA_data[,sf_pheno$Sample.Number]
+sf_snRNA_data <- sf_snRNA_data[,sf_pheno$Sample.Number]
+
+
+```
+
 
 ## Variance filtering
 
@@ -763,14 +777,8 @@ plasma_cl_OL_plot
 
 Note, to access the heatmap for functions such as ggarrange, extract the 4th element, e.g. `plasma_cl_OL_plot[[4]]`.
 
-| k-medoids | fuzzy c-means |
-|-----------|---------------|
-| 1         | 1             |
-| 2         | 2             |
-| 3         | 4             |
-| 4         | 4             |
-
 Fuzzy c-means cluster 3 doesn't appear to have a corresponding k-medoids cluster. This appears to stem from redundancy between cluster 2&3. It is probably worth reducing the number of clusters to 3 or not including cluster 3 in any downstream analysis.
+
 
 ## Synovial fluid
 
@@ -839,18 +847,7 @@ sf_cl_OL_plot
 
 ```
 
-The results demonstrate some overlap between the clustering algorithms. Cluster 1 of the fuzzy c-means clustering is most similar to cluster 4 of the k-medoid clustering (though cluster 4 of the fuzzy c-means also has strong overlap). Cluster 1 of the k-medoid clustering is most similar to cluster 4 of the fuzzy c-means.
-
-Clusters 2&3 of the k-medoid clustering don't appear to have much overlap with any of the fuzzy c-means clusters.
-
-Clusters 5&6 for the fuzzy c-means overlap with clusters 6&5 for the k-medoids.
-
-| k-medoids | fuzzy c-means     |
-|-----------|-------------------|
-| 1         | 4                 |
-| 4         | 1 (followed by 4) |
-| 5         | 6                 |
-| 6         | 5                 |
+The results demonstrate some overlap between the clustering algorithms, especially for cluster 5. Fuzzy c-means 3 and k-medoids 2 also demonstrate strong overlap. 
 
 ------------------------------------------------------------------------
 

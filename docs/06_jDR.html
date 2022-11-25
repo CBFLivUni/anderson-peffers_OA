@@ -74,6 +74,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -445,7 +467,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-11
+<strong>Last updated:</strong> 2022-11-25
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -579,15 +601,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -597,7 +619,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -616,17 +638,33 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
 
+Untracked files:
+    Untracked:  code/ArchRpalettes.R
+    Untracked:  imgs/clustering_results/plasma_c4_ora.PDF
+    Untracked:  imgs/clustering_results/synovial_fluid_c1_ora.PDF
+    Untracked:  imgs/jDR/plasma/
+    Untracked:  imgs/jDR/plasma_f2_gsea.PDF
+    Untracked:  imgs/jDR/plasma_factors_gsea_non-sig.PDF
+    Untracked:  imgs/jDR/synovial_fluid_f5_gsea.PDF
+    Untracked:  imgs/jDR/synovial_fluid_factors_gsea_non-sig.PDF
+    Untracked:  sf_time_model.hdf5
+
 Unstaged changes:
-    Modified:   analysis/03_Differential_expression.Rmd
-    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
     Modified:   analysis/06_jDR.Rmd
     Modified:   analysis/07_Clustering.Rmd
     Modified:   analysis/08_Functional_enrichment.Rmd
-    Modified:   analysis/_site.yml
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/references.bib
     Modified:   code/utility-functions.R
-    Modified:   data/plasma_lncRNA_data.rds
-    Modified:   data/sf_lncRNA_data.rds
+    Modified:   data/mfuzz_cluster_sf_data.rds
+    Modified:   data/mofa2_sf.rds
+    Modified:   data/mofa2_sf_df.rds
+    Modified:   imgs/clustering_results/clustering_results.PDF
+    Modified:   imgs/clustering_results/dtw_clustering_results.PDF
+    Modified:   imgs/clustering_results/dtw_clustering_results_wide.PDF
+    Modified:   imgs/clustering_results/mfuzz_clustering_results.PDF
+    Modified:   imgs/clustering_results/plasma_cluster_corr.PDF
+    Modified:   imgs/clustering_results/sf_cluster_corr.PDF
+    Deleted:    imgs/jDR/non_sig_plasma_factor_GSEA
     Modified:   plasma_model.hdf5
     Modified:   sf_model.hdf5
 
@@ -673,6 +711,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/fc9ca8a4449562942f7261173f6140fb19879267/analysis/06_jDR.Rmd" target="_blank">fc9ca8a</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-23
+</td>
+<td>
+functional enrichment
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/6ed591f12047bc35eb7635f1d01e14badef83ec8/analysis/06_jDR.Rmd" target="_blank">6ed591f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-11
+</td>
+<td>
+jDR + clustering + knitting
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/6ed591f12047bc35eb7635f1d01e14badef83ec8/docs/06_jDR.html" target="_blank">6ed591f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-11
+</td>
+<td>
+jDR + clustering + knitting
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -802,6 +891,7 @@ Sequencing files created
 <div id="load-libraries" class="section level1">
 <h1>Load libraries</h1>
 <pre class="r"><code>source(&quot;./code/utility-functions.R&quot;) # load helper functions 
+source(&quot;./code/ArchRpalettes.R&quot;) # additional colour palettes
 library(tidyverse)
 library(MOFA2) # factor analysis
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
@@ -836,16 +926,18 @@ plasma_snRNA_data[plasma_snRNA_data == 0] &lt;- NA
 sf_miRNA_data[sf_miRNA_data == 0] &lt;- NA
 sf_lncRNA_data[sf_lncRNA_data == 0] &lt;- NA
 sf_snRNA_data[sf_snRNA_data == 0] &lt;- NA</code></pre>
-<p>Remove universal spike-ins:</p>
-<pre class="r"><code>plasma_miRNA_data &lt;- plasma_miRNA_data[-c(1:3),]
-sf_miRNA_data &lt;- sf_miRNA_data[-c(1:3),]</code></pre>
 </div>
 <div id="mofa" class="section level1">
 <h1>MOFA</h1>
+<p>In this analysis MOFA2 was used to carry out joint dimensionality
+reduction. MOFA2 is a widely used package for integrating multi-omics
+data. It has previously been employed to study arthritis in mice in a
+similar study (in terms of sample size) <span class="citation">(Li et
+al. 2022)</span>.</p>
 <div id="plasma" class="section level2">
 <h2>Plasma</h2>
 <p>Visualuse the distributions of the data:</p>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>MOFA2 needs a column in the phenotype data called ‘sample’. Rename
 the ‘Sample_ID’ column to ‘sample’.</p>
 <pre class="r"><code>colnames(plasma_pheno)[5] &lt;- &quot;sample&quot;</code></pre>
@@ -871,7 +963,7 @@ Create this list:</p>
 <code>plot_data_overview</code>. Missing samples would be represented as
 gaps in the block colours.</p>
 <pre class="r"><code>plot_data_overview(MOFAobject)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Set model parameters. Here three objects are created containing the
 data options, model options and training options. If the raw counts were
 used a poisson distribution would be more appropriate.</p>
@@ -968,27 +1060,27 @@ MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)</code>
   plot_total = T
 )</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Majority is from proteomics data - likely due to the higher number of
 features.</p>
 <p>Plot correlation between factors:</p>
 <pre class="r"><code>plot_factor_cor(MOFAobject.trained)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Correlation between factors and metadata:</p>
 <pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
   covariates = c(&quot;Day&quot;, &quot;Horse&quot;), 
   plot=&quot;log_pval&quot;, 
   alpha=&quot;0.15&quot; # p-value threshold
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
   covariates = c(&quot;Day&quot;, &quot;Horse&quot;), 
   plot=&quot;r&quot;
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Factor 2 is significantly correlated with “day”. Factors 5 and 6 are
 correlated with horse. Most of the variance in factor 2 is explained by
 the proteomics data. The variance in factor 1 mostly comes from the
@@ -1009,7 +1101,7 @@ each factor.</p>
 # Annotate so Uniprot accessions are replaced by protein names
 # The accessions are stored as factors so need to be converted back into character vectors
 proteomics_f2$data$feature_id &lt;- plasma_annotation[as.character(proteomics_f2$data$feature_id),]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Plot weights for factor 2:</p>
 <pre class="r"><code>plot_weights(MOFAobject.trained,
  view = &quot;proteomics&quot;,
@@ -1017,14 +1109,14 @@ proteomics_f2$data$feature_id &lt;- plasma_annotation[as.character(proteomics_f2
  nfeatures = 50,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_weights(MOFAobject.trained,
  view = &quot;miRNA&quot;,
  factor = 2,
  nfeatures = 25,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-19-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-18-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The distribution of weights for the top ranked proteins contributing
 towards factor 2 are heavily negatively skewed. Only Q28377, F7DZE7,
 A0A5F5PEG5, and A0A5F5PWX5 are positively associated in the top 50. If
@@ -1047,7 +1139,7 @@ miRNA_f1 &lt;- plot_top_weights(MOFAobject.trained,
                   scale = F, 
                   abs = T
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>It is interesting that miR-126-5P and miR-126-3P are among the miRNAs
 contributing to factor 2. <a
 href="https://pubmed.ncbi.nlm.nih.gov/33627637/"
@@ -1070,7 +1162,7 @@ snRNA_f4 &lt;- plot_top_weights(MOFAobject.trained,
                   scale = F, 
                   abs = T
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>proteomics_f3 &lt;- plot_top_weights(MOFAobject.trained, 
                   view = &quot;proteomics&quot;, 
                   factor = 3, 
@@ -1082,58 +1174,100 @@ snRNA_f4 &lt;- plot_top_weights(MOFAobject.trained,
 # Annotate so Uniprot accessions are replaced by protein names
 # The accessions are stored as factors so need to be converted back into character vectors
 proteomics_f3$data$feature_id &lt;- plasma_annotation[as.character(proteomics_f3$data$feature_id),]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Create heatmap for proteomics data:</p>
-<pre class="r"><code># Create annotation for heatmap
-my_sample_col &lt;- data.frame(Day = plasma_pheno$Day)
-rownames(my_sample_col) &lt;- colnames(plasma_proteomics_data)
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Create heatmaps for proteomics and miRNA data (factor 2):</p>
+<pre class="r"><code># Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$Days &lt;- as.factor(plasma_pheno$Day)
 
+# Palette for heatmap
+heatmap_cols &lt;- colorRampPalette(ArchRPalettes$coolwarm)(50)
 
-plot_data_heatmap(MOFAobject.trained, 
+# Plot heatmap
+f2_plasma_protein_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
   view = &quot;proteomics&quot;,
   factor = 2,  
   features = 25,
   cluster_rows = TRUE, cluster_cols = TRUE,
-  show_rownames = TRUE, show_colnames = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
   scale = &quot;row&quot;,
   denoise = TRUE,
-  color = viridis(10),
-  border_color = NA
-)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Plot factors 2 and 3 together (equivalent to PCA):</p>
-<pre class="r"><code>p &lt;- plot_factors(MOFAobject.trained, 
-  factors = c(2,3), 
-  color_by = &quot;Day&quot;,
-  shape_by = &quot;Horse&quot;,
-  dot_size = 4,
-  show_missing = T
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;),
+  fontsize = 12
 )
 
-p + theme_cowplot()</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Project the samples onto factor 2 for each time point.</p>
-<pre class="r"><code># Add day as a factor to metadata for visualisation purposes
-MOFAobject.trained@samples_metadata$day_group &lt;- as.factor(plasma_pheno$Day)
 
-plot_factor(MOFAobject.trained, 
+f2_plasma_protein_heatmap </code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># color = met.brewer(name=&quot;Hiroshige&quot;, n=123),
+# color = hcl.colors(50, &quot;RdYlBu&quot;),
+
+f2_plasma_miRNA_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
+  view = &quot;miRNA&quot;,
+  factor = 2,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = &quot;row&quot;,
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;),
+  fontsize = 12
+)
+
+f2_plasma_miRNA_heatmap</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Project the samples onto factor 2 and 3 for each time point.</p>
+<pre class="r"><code>plot_factor(MOFAobject.trained, 
   factors = 2, 
-  color_by = &quot;day_group&quot;,
+  color_by = &quot;Days&quot;,
   add_violin = TRUE,
   dodge = TRUE
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_factor(MOFAobject.trained, 
   factors = 3, 
-  color_by = &quot;day_group&quot;,
+  color_by = &quot;Days&quot;,
   add_violin = TRUE,
   dodge = TRUE
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-28-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-27-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># To extract per sample factor weights manually:
+plasma_factors &lt;- get_factors(
+    MOFAobject.trained,
+    groups = &quot;group1&quot;,
+    factors = &quot;all&quot;,
+    scale = FALSE,
+    as.data.frame = FALSE
+)</code></pre>
+<p>Save results:</p>
+<pre class="r"><code>plasma_res &lt;- get_weights(
+    MOFAobject.trained,
+    views = &quot;all&quot;,
+    factors = &quot;all&quot;,
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = FALSE
+)
+
+
+
+plasma_res_df &lt;- get_weights(
+    MOFAobject.trained,
+    views = &quot;all&quot;,
+    factors = &quot;all&quot;,
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = TRUE
+)</code></pre>
+<pre class="r"><code>saveRDS(plasma_res, &quot;./data/mofa2_plasma.rds&quot;)
+saveRDS(plasma_res_df, &quot;./data/mofa2_plasma_df.rds&quot;)</code></pre>
 </div>
-<div id="synovial-fluid" class="section level2">
-<h2>Synovial fluid</h2>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="synovial-fluid---version-1-mofa2" class="section level2">
+<h2>Synovial fluid - version 1 (MOFA2)</h2>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>colnames(sf_pheno)[6] &lt;- &quot;sample&quot;</code></pre>
 <pre class="r"><code>sf_mofa_dat &lt;- list(proteomics = as.matrix(sf_proteomics_data),
                         miRNA = as.matrix(sf_miRNA_data),
@@ -1152,7 +1286,7 @@ plot_factor(MOFAobject.trained,
  Number of samples (per group): 52 
  </code></pre>
 <pre class="r"><code>plot_data_overview(MOFAobject)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Modify model parameters:</p>
 <pre class="r"><code># Scale views
 data_opts &lt;- get_default_data_options(MOFAobject)
@@ -1246,27 +1380,27 @@ MOFAobject.trained@samples_metadata$Group_day &lt;- as.factor(paste0(sf_pheno$Gr
   plot_total = T
 )</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-38-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-40-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Majority is from proteomics data - likely due to the higher number of
 features.</p>
 <p>Plot correlation between factors:</p>
 <pre class="r"><code>plot_factor_cor(MOFAobject.trained)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Correlation between factors and metadata:</p>
 <pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
                                   covariates = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Group&quot;, &quot;Group_day&quot;), 
                                   plot=&quot;log_pval&quot;,
                                   alpha=&quot;0.05&quot; # p-value threshold
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
   covariates = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Group&quot;, &quot;Group_day&quot;), 
   plot=&quot;r&quot;
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-40-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-42-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Factor 4 is significantly correlated with day, though factors 2-5
 seem to have some correlation with day. Factor 4 is mostly explained by
 variance in the miRNA. Factor 2 is correlated with the ‘group_day’
@@ -1299,7 +1433,7 @@ biological factors of interest.</p>
                   scale = F, 
                   abs = T
 )</code></pre>
-<pre class="r"><code>proteomics_f5 &lt;- plot_top_weights(MOFAobject.trained, 
+<pre class="r"><code>proteomics_f3 &lt;- plot_top_weights(MOFAobject.trained, 
                   view = &quot;proteomics&quot;, 
                   factor = 3, 
                   nfeatures = 10,
@@ -1310,59 +1444,469 @@ biological factors of interest.</p>
 
 # Annotate so Uniprot accessions are replaced by protein names
 # The accessions are stored as factors so need to be converted back into character vectors
-proteomics_f5$data$feature_id &lt;- sf_annotation[as.character(proteomics_f5$data$feature_id),]</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/06_jDR.Rmd/unnamed-chunk-45-2.png" width="672" style="display: block; margin: auto;" /></p>
+proteomics_f3$data$feature_id &lt;- sf_annotation[as.character(proteomics_f3$data$feature_id),]</code></pre>
+<p>Plot miRNA factor 2, lncRNA factor 2, miRNA factor 4 and proteomics
+factor 3:</p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/06_jDR.Rmd/unnamed-chunk-47-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Plot weights for factor 2:</p>
 <pre class="r"><code>plot_weights(MOFAobject.trained,
  view = &quot;miRNA&quot;,
- factor = 2,
+ factor = 3,
  nfeatures = 20,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_weights(MOFAobject.trained,
- view = &quot;lncRNA&quot;,
- factor = 2,
+ view = &quot;snRNA&quot;,
+ factor = 3,
  nfeatures = 20,     # Top number of features to highlight
  scale = F           # Scale weights from -1 to 1
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-46-2.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_data_heatmap(MOFAobject.trained, 
-                  view = &quot;miRNA&quot;,
-                  factor = 4,  
-                  features = 10,
-                  cluster_rows = TRUE, cluster_cols = TRUE,
-                  show_rownames = TRUE, show_colnames = TRUE,
-                  scale = &quot;row&quot;,
-                  denoise = TRUE,
-                  color = viridis(10),
-                  border_color = NA
-)</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-48-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$Days &lt;- as.factor(sf_pheno$Day)
+
+# Palette for heatmap
+heatmap_cols &lt;- colorRampPalette(ArchRPalettes$coolwarm)(50)
+
+# Plot heatmap
+f5_sf_protein_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
+        view = &quot;proteomics&quot;,
+        factor = 2,  
+        features = 25,
+        cluster_rows = TRUE, cluster_cols = TRUE,
+        show_rownames = TRUE, show_colnames = FALSE,
+        scale = &quot;row&quot;,
+        denoise = TRUE,
+        color = heatmap_cols,
+        border_color = NA,
+        annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;group&quot;),
+        fontsize = 12
+      )
+
+
+f5_sf_protein_heatmap</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Project the samples onto factor 2 &amp; 4 for each time point.</p>
 <pre class="r"><code># Add day as a factor to metadata for visualisation purposes
-MOFAobject.trained@samples_metadata$group &lt;- as.factor(paste0(sf_pheno$Group, &quot;_&quot;, sf_pheno$Day))</code></pre>
+MOFAobject.trained@samples_metadata$group_day &lt;- as.factor(paste0(sf_pheno$group, &quot;_&quot;, sf_pheno$Day))</code></pre>
 <pre class="r"><code>plot_factor(MOFAobject.trained, 
-  factors = 2, 
-  color_by = &quot;group&quot;,
+  factors = 3, 
+  color_by = &quot;group_day&quot;,
   add_violin = TRUE,
   dodge = TRUE
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_factor(MOFAobject.trained, 
-  factors = 4, 
-  color_by = &quot;group&quot;,
+  factors = 5, 
+  color_by = &quot;group_day&quot;,
   add_violin = TRUE,
   dodge = TRUE
 )</code></pre>
-<p><img src="figure/06_jDR.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The results were not saved for this model as a better performing
+version is explored below.</p>
+</div>
+<div id="synovial-fluid---version-2-mefisto" class="section level2">
+<h2>Synovial fluid - version 2 (MEFISTO)</h2>
+<p>As the synovial fluid experimental design is more complex we will
+expand on the time and group variables in the MOFA2 model by making use
+of MEFISTO:</p>
+<ul>
+<li><p><a
+href="https://raw.githack.com/bioFAM/MEFISTO_tutorials/master/MEFISTO_temporal.html"
+class="uri">https://raw.githack.com/bioFAM/MEFISTO_tutorials/master/MEFISTO_temporal.html</a></p></li>
+<li><p><a href="https://www.nature.com/articles/s41592-021-01343-9"
+class="uri">https://www.nature.com/articles/s41592-021-01343-9</a></p></li>
+</ul>
+<pre class="r"><code>colnames(sf_pheno)[c(5,6)] &lt;- c(&quot;group&quot;, &quot;sample&quot;)
+
+# Create a variable for time
+time &lt;- t(sf_pheno$Day)
+colnames(time) &lt;- sf_pheno$sample
+row.names(time) &lt;- &quot;time&quot;</code></pre>
+<pre class="r"><code>sf_mofa_dat &lt;- list(proteomics = as.matrix(sf_proteomics_data),
+                        miRNA = as.matrix(sf_miRNA_data),
+                        lncRNA = as.matrix(sf_lncRNA_data),
+                        snRNA = as.matrix(sf_snRNA_data))</code></pre>
+<p>Create MOFAojbect:</p>
+<pre class="r"><code># Include group in the model 
+MOFAobject &lt;- create_mofa(sf_mofa_dat, groups = sf_pheno$group)</code></pre>
+<pre><code>Creating MOFA object from a list of matrices (features as rows, sample as columns)...</code></pre>
+<pre class="r"><code># Set time as a covariate in the model
+MOFAobject &lt;- set_covariates(MOFAobject, covariates = time)
+
+print(MOFAobject)</code></pre>
+<pre><code>Untrained MEFISTO model with the following characteristics: 
+ Number of views: 4 
+ Views names: proteomics miRNA lncRNA snRNA 
+ Number of features (per view): 622 61 38 15 
+ Number of groups: 2 
+ Groups names: Control OA 
+ Number of samples (per group): 26 26 
+ Number of covariates per sample: 1 
+ </code></pre>
+<p>Modify model parameters (including Mefisto options):</p>
+<pre class="r"><code># Scale views
+data_opts &lt;- get_default_data_options(MOFAobject)
+data_opts$scale_views &lt;- TRUE
+head(data_opts)</code></pre>
+<pre><code>$scale_views
+[1] TRUE
+
+$scale_groups
+[1] FALSE
+
+$center_groups
+[1] TRUE
+
+$use_float32
+[1] FALSE
+
+$views
+[1] &quot;proteomics&quot; &quot;miRNA&quot;      &quot;lncRNA&quot;     &quot;snRNA&quot;     
+
+$groups
+[1] &quot;Control&quot; &quot;OA&quot;     </code></pre>
+<pre class="r"><code># Set number of factors
+model_opts &lt;- get_default_model_options(MOFAobject)
+model_opts$num_factors &lt;- 6
+head(model_opts)</code></pre>
+<pre><code>$likelihoods
+proteomics      miRNA     lncRNA      snRNA 
+&quot;gaussian&quot; &quot;gaussian&quot; &quot;gaussian&quot; &quot;gaussian&quot; 
+
+$num_factors
+[1] 6
+
+$spikeslab_factors
+[1] FALSE
+
+$spikeslab_weights
+[1] TRUE
+
+$ard_factors
+[1] TRUE
+
+$ard_weights
+[1] TRUE</code></pre>
+<pre class="r"><code># Set training options
+train_opts &lt;- get_default_training_options(MOFAobject)
+train_opts$convergence_mode &lt;- &quot;slow&quot;
+train_opts$seed &lt;- 123
+train_opts$maxiter &lt;- 3000
+head(train_opts)</code></pre>
+<pre><code>$maxiter
+[1] 3000
+
+$convergence_mode
+[1] &quot;slow&quot;
+
+$drop_factor_threshold
+[1] -1
+
+$verbose
+[1] FALSE
+
+$startELBO
+[1] 1
+
+$freqELBO
+[1] 5</code></pre>
+<pre class="r"><code># Mefisto options
+mefisto_opts &lt;- get_default_mefisto_options(MOFAobject)
+head(mefisto_opts)</code></pre>
+<pre><code>$scale_cov
+[1] FALSE
+
+$start_opt
+[1] 20
+
+$n_grid
+[1] 20
+
+$opt_freq
+[1] 10
+
+$model_groups
+[1] TRUE
+
+$sparseGP
+[1] FALSE</code></pre>
+<p>Prepare MOFA object with modified parameters:</p>
+<pre class="r"><code>MOFAobject &lt;- prepare_mofa(
+  object = MOFAobject,
+  data_options = data_opts,
+  model_options = model_opts,
+  training_options = train_opts,
+  mefisto_options = mefisto_opts
+)</code></pre>
+<pre><code>
+# Multi-group mode requested.</code></pre>
+<pre><code>
+This is an advanced option, if this is the first time that you are running MOFA, we suggest that you try do some exploration first without specifying groups. Two important remarks:</code></pre>
+<pre><code>
+ - The aim of the multi-group framework is to identify the sources of variability *within* the groups. If your aim is to find a factor that &#39;separates&#39; the groups, you DO NOT want to use the multi-group framework. Please see the FAQ on the MOFA2 webpage.</code></pre>
+<pre><code>
+ - It is important to account for the group effect before selecting highly variable features (HVFs). We suggest that either you calculate HVFs per group and then take the union, or regress out the group effect before HVF selection</code></pre>
+<pre><code>Checking data options...</code></pre>
+<pre><code>Checking training options...</code></pre>
+<pre><code>Checking model options...</code></pre>
+<pre><code>Checking inference options for mefisto covariates...</code></pre>
+<p>Train model:</p>
+<pre class="r"><code>outfile &lt;- file.path(getwd(),&quot;sf_time_model.hdf5&quot;)
+MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)</code></pre>
+<p>Add phenotype data to the model:</p>
+<pre class="r"><code>samples_metadata(MOFAobject.trained) &lt;- sf_pheno</code></pre>
+<p>Visualise variance explained:</p>
+<pre class="r"><code>plot_variance_explained(
+  MOFAobject.trained, 
+  x = &quot;view&quot;, 
+  y = &quot;factor&quot;, 
+  plot_total = T
+)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-60-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Interestingly the miRNA contributes more strongly to the variance in
+the control samples. The MOFA model has learnt scale parameters for each
+factor, which gives an indication of the smoothness per factor along the
+covariate (time) and are between 0 and 1. A scale of 0 means that the
+factor captures variation independent of time, a value close to 1 tells
+us that this factor varys very smoothly along time.</p>
+<pre class="r"><code>get_scales(MOFAobject.trained)</code></pre>
+<pre><code>     Factor1      Factor2      Factor3      Factor4      Factor5      Factor6 
+0.0000000001 0.0000000000 0.8697734928 0.0000000000 0.0000000001 0.0000000000 </code></pre>
+<p>Here it can be seen factor 3 varies smoothly along time.</p>
+<p>Plot correlation between factors:</p>
+<pre class="r"><code>plot_factor_cor(MOFAobject.trained)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Correlation between factors and metadata:</p>
+<pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
+                                  covariates = c(&quot;Day&quot;, &quot;Horse&quot;), 
+                                  plot=&quot;log_pval&quot;,
+                                  alpha=&quot;0.15&quot; # p-value threshold
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-63-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>correlate_factors_with_covariates(MOFAobject.trained, 
+  covariates = c(&quot;Day&quot;, &quot;Horse&quot;), 
+  plot=&quot;r&quot;
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-63-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 3 is most strongly correlated with day, followed by 5. For
+factor 3 most of the variation comes from the miRNA, followed by the
+snRNA. For factor 5 most of the variation comes from the proteomics
+data.</p>
+<pre class="r"><code>miRNA_f3 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;miRNA&quot;, 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)</code></pre>
+<pre class="r"><code>snRNA_f3 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;snRNA&quot;, 
+                  factor = 3, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)</code></pre>
+<pre class="r"><code>proteomics_f5 &lt;- plot_top_weights(MOFAobject.trained, 
+                  view = &quot;proteomics&quot;, 
+                  factor = 5, 
+                  nfeatures = 10,
+                  scale = F, 
+                  abs = T
+)
+
+
+# Annotate so Uniprot accessions are replaced by protein names
+# The accessions are stored as factors so need to be converted back into character vectors
+proteomics_f5$data$feature_id &lt;- sf_annotation[as.character(proteomics_f5$data$feature_id),]</code></pre>
+<p>Plot miRNA factor 2, lncRNA factor 2, miRNA factor 4 and proteomics
+factor 3:</p>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-67-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/06_jDR.Rmd/unnamed-chunk-67-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot weights for factor 3:</p>
+<pre class="r"><code>plot_weights(MOFAobject.trained,
+ view = &quot;miRNA&quot;,
+ factor = 3,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-68-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_weights(MOFAobject.trained,
+ view = &quot;lncRNA&quot;,
+ factor = 3,
+ nfeatures = 20,     # Top number of features to highlight
+ scale = F           # Scale weights from -1 to 1
+)</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-68-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Heatmaps for factors…</p>
+<p>Factor 5, protein:</p>
+<pre class="r"><code># Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$Days &lt;- as.factor(plasma_pheno$Day)
+
+# Palette for heatmap
+heatmap_cols &lt;- colorRampPalette(ArchRPalettes$coolwarm)(50)
+
+# Plot heatmap
+f5_sf_protein_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
+  view = &quot;proteomics&quot;,
+  factor = 5,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = &quot;row&quot;,
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;group&quot;),
+  fontsize = 12
+)
+
+
+f5_sf_protein_heatmap </code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-69-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 2, miRNA:</p>
+<pre class="r"><code># Plot heatmap
+f2_sf_miRNA_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
+  view = &quot;miRNA&quot;,
+  factor = 2,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = &quot;row&quot;,
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;group&quot;),
+  fontsize = 12
+)
+
+
+f2_sf_miRNA_heatmap </code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-70-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 2, protein:</p>
+<pre class="r"><code># Plot heatmap
+f2_sf_protein_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
+  view = &quot;proteomics&quot;,
+  factor = 2,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = &quot;row&quot;,
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;group&quot;),
+  fontsize = 12
+)
+
+
+f2_sf_protein_heatmap </code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-71-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 3, miRNA:</p>
+<pre class="r"><code># Plot heatmap
+f3_sf_miRNA_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
+  view = &quot;miRNA&quot;,
+  factor = 3,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = &quot;row&quot;,
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;group&quot;),
+  fontsize = 12
+)
+
+
+f3_sf_miRNA_heatmap </code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 3, protein:</p>
+<pre class="r"><code># Plot heatmap
+f3_sf_protein_heatmap &lt;- plot_data_heatmap(MOFAobject.trained, 
+  view = &quot;proteomics&quot;,
+  factor = 3,  
+  features = 25,
+  cluster_rows = TRUE, cluster_cols = TRUE,
+  show_rownames = TRUE, show_colnames = FALSE,
+  scale = &quot;row&quot;,
+  denoise = TRUE,
+  color = heatmap_cols,
+  border_color = NA,
+  annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;group&quot;),
+  fontsize = 12
+)
+
+
+f3_sf_protein_heatmap </code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Project the samples onto factor 5 for each time point.</p>
+<pre class="r"><code># Add day as a factor to metadata for visualisation purposes
+MOFAobject.trained@samples_metadata$group_day &lt;- as.factor(paste0(sf_pheno$group, &quot;_&quot;, sf_pheno$Day))</code></pre>
+<pre class="r"><code>plot_factor(MOFAobject.trained, 
+  factors = 5, 
+  color_by = &quot;group_day&quot;,
+  add_violin = TRUE,
+  dodge = TRUE
+)</code></pre>
+<pre><code>Warning: Groups with fewer than two data points have been dropped.
+Groups with fewer than two data points have been dropped.
+Groups with fewer than two data points have been dropped.
+Groups with fewer than two data points have been dropped.
+Groups with fewer than two data points have been dropped.
+Groups with fewer than two data points have been dropped.
+Groups with fewer than two data points have been dropped.
+Groups with fewer than two data points have been dropped.</code></pre>
+<p><img src="figure/06_jDR.Rmd/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Save results:</p>
+<pre class="r"><code>sf_res &lt;- get_weights(
+    MOFAobject.trained,
+    views = &quot;all&quot;,
+    factors = &quot;all&quot;,
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = FALSE
+)
+
+
+
+sf_res_df &lt;- get_weights(
+    MOFAobject.trained,
+    views = &quot;all&quot;,
+    factors = &quot;all&quot;,
+    abs = FALSE,
+    scale = FALSE,
+    as.data.frame = TRUE
+)</code></pre>
+<pre class="r"><code>saveRDS(sf_res, &quot;./data/mofa2_sf.rds&quot;)
+saveRDS(sf_res_df, &quot;./data/mofa2_sf_df.rds&quot;)</code></pre>
 </div>
 </div>
-<div id="jive" class="section level1">
-<h1>JIVE</h1>
+<div id="summaryconclusions" class="section level1">
+<h1>Summary/conclusions</h1>
+<p>Joint dimensionality reduction identified factors associated with
+time after OA induction in synovial fluid and plasma. If more time was
+available I would have also compared/contrasted other multi-omics
+methods such as JIVE and iCluster.</p>
+<!-- Below is some code that will be hidden in the outputs to save figures. -->
 </div>
-<div id="icluster" class="section level1">
-<h1>iCluster</h1>
+<div id="references" class="section level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-li2022" class="csl-entry">
+Li, Lingzi, Janina Freitag, Christian Asbrand, Bogdan Munteanu, Bei-Tzu
+Wang, Ekaterina Zezina, Michel Didier, et al. 2022. <span>“Multi-Omics
+Profiling of Collagen-Induced Arthritis Mouse Model Reveals Early
+Metabolic Dysregulation via Sirt1 Axis.”</span> <em>Scientific
+Reports</em> 12 (July): 11830. <a
+href="https://doi.org/10.1038/s41598-022-16005-9">https://doi.org/10.1038/s41598-022-16005-9</a>.
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1437,7 +1981,7 @@ loaded via a namespace (and not attached):
  [75] ggsignif_0.6.3            reprex_2.0.1             
  [77] bslib_0.3.1               stringi_1.7.6            
  [79] highr_0.9                 basilisk.utils_1.8.0     
- [81] RSpectra_0.16-1           Matrix_1.4-1             
+ [81] RSpectra_0.16-1           Matrix_1.5-1             
  [83] psych_2.2.5               vctrs_0.4.1              
  [85] pillar_1.7.0              lifecycle_1.0.1          
  [87] rhdf5filters_1.8.0        jquerylib_0.1.4          
