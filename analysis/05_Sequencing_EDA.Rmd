@@ -70,9 +70,15 @@ miRNA_plasma_pca_res <- pca(na.omit(plasma_miRNA_data), metadata = plasma_pheno_
 
 ```{r, message=FALSE, warning=FALSE}
 
+
+# Colour scheme for plasma
+redblue <- colorRampPalette(c("#db092c", "#984ea3", "#097ddb"))(50)
+
+
 # PCA plot
 plasma_miRNA_PCA <- plotPCA(miRNA_plasma_pca_res,
         PCs=c(1,2),
+        colours = redblue,
         colour.data=plasma_pheno_seq$Day,
         shape.data=plasma_pheno_seq$Horse,
         colour.lab="Day",
@@ -112,15 +118,21 @@ miRNA_sf_pca_res <- pca(na.omit(sf_miRNA_data), metadata = sf_pheno_seq, scale =
 
 ```{r, message=FALSE, warning=FALSE}
 
+# Colour scheme for synovial fluid
+yellowblue <- hcl.colors(50, "BluYl")
+
+
 # PCA plot
 sf_miRNA_PCA <- plotPCA(miRNA_sf_pca_res,
                             PCs=c(1,2),
+                            colours=yellowblue,
                             colour.data=sf_pheno_seq$Day,
                             shape.data=sf_pheno_seq$Horse,
                             colour.lab="Day",
                             shape.lab="Horse")
 
 sf_miRNA_PCA
+
 
 
 # Correlation plot
@@ -192,6 +204,7 @@ lncRNA_plasma_pca_res <- pca(na.omit(plasma_lncRNA_data), metadata = plasma_phen
 # PCA plot
 plasma_lncRNA_PCA <- plotPCA(lncRNA_plasma_pca_res,
                             PCs=c(1,2),
+                            colours=redblue,
                             colour.data=plasma_pheno_seq$Day,
                             shape.data=plasma_pheno_seq$Horse,
                             colour.lab="Day",
@@ -226,6 +239,7 @@ lncRNA_sf_pca_res <- pca(na.omit(sf_lncRNA_data), metadata = sf_pheno_seq, scale
 # PCA plot
 sf_lncRNA_PCA <- plotPCA(lncRNA_sf_pca_res,
                         PCs=c(1,2),
+                        colours=yellowblue,
                         colour.data=sf_pheno_seq$Day,
                         shape.data=sf_pheno_seq$Horse,
                         colour.lab="Day",
@@ -301,6 +315,7 @@ snRNA_plasma_pca_res <- pca(na.omit(plasma_snRNA_data), metadata = plasma_pheno_
 # PCA plot
 plasma_snRNA_PCA <- plotPCA(snRNA_plasma_pca_res,
                              PCs=c(1,2),
+                             colours=redblue,
                              colour.data=plasma_pheno_seq$Day,
                              shape.data=plasma_pheno_seq$Horse,
                              colour.lab="Day",
@@ -335,6 +350,7 @@ snRNA_sf_pca_res <- pca(na.omit(sf_snRNA_data), metadata = sf_pheno_seq, scale =
 # PCA plot
 sf_snRNA_PCA <- plotPCA(snRNA_sf_pca_res,
                          PCs=c(1,2),
+                         colours=yellowblue,
                          colour.data=sf_pheno_seq$Day,
                          shape.data=sf_pheno_seq$Horse,
                          colour.lab="Day",

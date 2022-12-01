@@ -171,23 +171,44 @@ return(corplot)
 
 library(PCAtools)
 
-plotPCA <- function(x, PCs="", colour.data=NULL, shape.data=NULL, colour.lab="", shape.lab="") {
+plotPCA <- function(x, PCs="", colours=NULL, colour.data=NULL, shape.data=NULL, colour.lab="", shape.lab="") {
 
 
   if(!is.null(colour.data) & !is.null(shape.data)){
 
+    if(!is.null(colours)){
+
       df_out <- data.frame(PC1=x$rotated[,PCs[1]], PC2=x$rotated[,PCs[2]])
 
-      pca_plot <- ggplot(df_out, aes(x=PC1, y=PC2, colour = colour.data, shape=shape.data)) +
-        geom_point(size = 4) +
-        xlab(paste0('PC', PCs[1], ': ', round(as.numeric(x$variance[PCs[1]])), '% expl.var')) +
-        ylab(paste0('PC', PCs[2], ': ', round(as.numeric(x$variance[PCs[2]])), '% expl.var')) +
-        scale_color_viridis(option = "plasma") +
-        theme_cowplot() +
-        scale_shape_manual(values=c(19,15,17,18)) +
-        labs(colour = colour.lab, shape = shape.lab)
+        pca_plot <- ggplot(df_out, aes(x=PC1, y=PC2, colour = colour.data, shape=shape.data)) +
+          geom_point(size = 4.5) +
+          xlab(paste0('PC', PCs[1], ': ', round(as.numeric(x$variance[PCs[1]])), '% expl.var')) +
+          ylab(paste0('PC', PCs[2], ': ', round(as.numeric(x$variance[PCs[2]])), '% expl.var')) +
+          scale_color_gradientn(colours = colours) +
+          theme_cowplot() +
+          scale_shape_manual(values=c(19,15,17,18)) +
+          labs(colour = colour.lab, shape = shape.lab)
 
       return(pca_plot)
+
+      } else {
+
+        df_out <- data.frame(PC1=x$rotated[,PCs[1]], PC2=x$rotated[,PCs[2]])
+
+        pca_plot <- ggplot(df_out, aes(x=PC1, y=PC2, colour = colour.data, shape=shape.data)) +
+          geom_point(size = 4) +
+          xlab(paste0('PC', PCs[1], ': ', round(as.numeric(x$variance[PCs[1]])), '% expl.var')) +
+          ylab(paste0('PC', PCs[2], ': ', round(as.numeric(x$variance[PCs[2]])), '% expl.var')) +
+          scale_color_viridis(option = "plasma") +
+          theme_cowplot() +
+          scale_shape_manual(values=c(19,15,17,18)) +
+          labs(colour = colour.lab, shape = shape.lab)
+
+
+      return(pca_plot)
+
+
+    }
 
 
   } else if(!is.null(colour.data) & is.null(shape.data)) {

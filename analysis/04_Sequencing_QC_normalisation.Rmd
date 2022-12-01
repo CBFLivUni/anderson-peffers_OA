@@ -282,9 +282,6 @@ bp_sf_lncRNA_data
 
 # snoRNA
 
-The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snoRNA, snoRNA, snRNA, tRNA.
-
-
 ## Plasma:
 
 ### Read data in
@@ -363,9 +360,6 @@ bp_sf_snoRNA_data
 
 # snRNA
 
-The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the snRNA, snRNA, snRNA, tRNA.
-
-
 ## Plasma:
 
 ### Read data in
@@ -443,9 +437,6 @@ bp_sf_snRNA_data
 
 
 # tRNA
-
-The rest of the sequencing data didn't have raw counts.The CPM data provided will be read in for the tRNA, tRNA, tRNA, tRNA.
-
 
 ## Plasma:
 
@@ -732,6 +723,52 @@ saveRDS(log2(sf_lncRNA_data+1), "./data/sf_lncRNA_data.rds")
 saveRDS(log2(sf_snoRNA_data+1), "./data/sf_snoRNA_data.rds")
 saveRDS(log2(sf_snRNA_data+1), "./data/sf_snRNA_data.rds")
 
+
+```
+
+
+# Collapse all sequencing together and plot
+
+## Plasma
+
+```{r}
+plasma_seq <- rbind(plasma_miRNA_data, plasma_lncRNA_data, plasma_snoRNA_data, plasma_snRNA_data)
+
+bp_plasma_data <- gg_boxplot(plasma_seq,
+                               log.transform=T,
+                               title="Plasma sequencing",
+                               xlab="Sample ID", ylab="Log2 CPM")
+
+bp_plasma_data
+
+
+plasma_seq_log2 <- plasma_seq %>% log2(.) %>% Inf2NA(.)
+plasma_hist <- gg_histogram(plasma_seq_log2, ylab="Frequency", xlab="Log2 CPM")
+
+plasma_hist
+
+```
+
+
+## Synovial fluid 
+
+```{r}
+
+
+sf_seq <- rbind(sf_miRNA_data, sf_lncRNA_data, sf_snoRNA_data, sf_snRNA_data)
+
+bp_sf_data <- gg_boxplot(sf_seq,
+                             log.transform=T,
+                             title="Synovial fluid sequencing",
+                             xlab="Sample ID", ylab="Log2 CPM")
+
+bp_sf_data
+
+
+sf_seq_log2 <- sf_seq %>% log2(.) %>% Inf2NA(.)
+sf_hist <- gg_histogram(sf_seq_log2, ylab="Frequency", xlab="Log2 CPM")
+
+sf_hist 
 
 ```
 

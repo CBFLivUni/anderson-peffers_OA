@@ -43,6 +43,9 @@ plasma_pheno <- readRDS("./data/plasma_pheno.rds")
 
 ```{r}
 
+# Colour scheme for plasma
+redblue<-colorRampPalette(c("#db092c", "#984ea3", "#097ddb"))(50)
+
 row.names(plasma_pheno) <- plasma_pheno$Sample.Number
 plasma_pca_res <- pca(na.omit(plasma_data_norm), metadata = plasma_pheno, scale = TRUE, center = TRUE)
 plasma_df_out <- as.data.frame(plasma_pca_res$rotated)
@@ -75,10 +78,10 @@ plasma_corplot <- eigencorplot(plasma_pca_res,
 ```{r}
 
 plasma_pca_plot <- ggplot(plasma_df_out, aes(x=PC1, y=PC2, colour = plasma_pheno$Day, shape=factor(plasma_pheno$Horse))) + 
-    geom_point(size = 4) + 
+    geom_point(size = 4.5) + 
     xlab(paste0('PC1: ', round(as.numeric(plasma_pca_res$variance[1])), '% expl.var')) + 
     ylab(paste0('PC2: ', round(as.numeric(plasma_pca_res$variance[2])), '% expl.var')) + 
-    scale_color_viridis(option = "plasma") +
+    scale_color_gradientn(colours = redblue) +
     theme_cowplot() + 
     scale_shape_manual(values=c(19,15,17,18)) +
     labs(colour = "Day", shape = "Horse")
@@ -88,10 +91,10 @@ plasma_pca_plot <- ggplot(plasma_df_out, aes(x=PC1, y=PC2, colour = plasma_pheno
 ```{r}
 
 plasma_pca_plot2 <- ggplot(plasma_df_out, aes(x=PC1, y=PC3, colour = plasma_pheno$Day, shape=factor(plasma_pheno$Horse))) + 
-    geom_point(size = 4) + 
+    geom_point(size = 4.5) + 
     xlab(paste0('PC1: ', round(as.numeric(plasma_pca_res$variance[1])), '% expl.var')) + 
     ylab(paste0('PC3: ', round(as.numeric(plasma_pca_res$variance[3])), '% expl.var')) + 
-    scale_color_viridis(option = "plasma") +
+    scale_color_gradientn(colours = redblue) +
     theme_cowplot() + 
     scale_shape_manual(values=c(19,15,17,18)) +
     labs(colour = "Day", shape = "Horse")
@@ -101,7 +104,7 @@ plasma_pca_plot2 <- ggplot(plasma_df_out, aes(x=PC1, y=PC3, colour = plasma_phen
 ```{r}
 
 plasma_pca_plot3 <- ggplot(plasma_df_out, aes(x=PC4, y=PC5, colour = plasma_pheno$Horse)) + 
-    geom_point(size = 4) + 
+    geom_point(size = 4.5) + 
     xlab(paste0('PC4: ', round(as.numeric(plasma_pca_res$variance[5])), '% expl.var')) + 
     ylab(paste0('PC5: ', round(as.numeric(plasma_pca_res$variance[6])), '% expl.var')) + 
     scale_colour_brewer(palette = "Set1") +
@@ -179,10 +182,10 @@ sf_corplot <- eigencorplot(sf_pca_res,
 ```{r}
 
 sf_pca_plot <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Day, shape=factor(sf_pheno$Horse))) + 
-  geom_point(size = 4) + 
+  geom_point(size = 4.5) + 
   xlab(paste0('PC1: ', round(as.numeric(sf_pca_res$variance[1])), '% expl.var')) + 
   ylab(paste0('PC2: ', round(as.numeric(sf_pca_res$variance[2])), '% expl.var')) + 
-  scale_color_viridis(option = "plasma") +
+  scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
   theme_cowplot() + 
   scale_shape_manual(values=c(19,15,17,18)) +
   labs(colour = "Day", shape = "Horse")
@@ -192,7 +195,7 @@ sf_pca_plot <- ggplot(sf_df_out, aes(x=PC1, y=PC2, colour = sf_pheno$Day, shape=
 ```{r}
 
 sf_pca_plot2 <- ggplot(sf_df_out, aes(x=PC1, y=PC3, colour = as.factor(sf_pheno$Group))) + 
-  geom_point(size = 4) + 
+  geom_point(size = 4.5) + 
   xlab(paste0('PC1: ', round(as.numeric(sf_pca_res$variance[1])), '% expl.var')) + 
   ylab(paste0('PC3: ', round(as.numeric(sf_pca_res$variance[5])), '% expl.var')) + 
   scale_colour_brewer(palette = "Set1") +
@@ -204,7 +207,7 @@ sf_pca_plot2 <- ggplot(sf_df_out, aes(x=PC1, y=PC3, colour = as.factor(sf_pheno$
 ```{r}
 
 sf_pca_plot3 <- ggplot(sf_df_out, aes(x=PC1, y=PC4, colour = sf_pheno$Horse)) + 
-  geom_point(size = 4) + 
+  geom_point(size = 4.5) + 
   xlab(paste0('PC1: ', round(as.numeric(sf_pca_res$variance[1])), '% expl.var')) + 
   ylab(paste0('PC4: ', round(as.numeric(sf_pca_res$variance[4])), '% expl.var')) + 
   scale_colour_brewer(palette = "Set1") +
@@ -258,10 +261,10 @@ plasma_pca_multi_level <- mixOmics::pca(t(na.omit(plasma_data_norm)), scale = TR
 ```{r}
 
 plasma_ml_pca_plot <- ggplot(plasma_pca_multi_level$df, aes(x=x, y=y, colour = plasma_pheno$Day)) + 
-    geom_point(size = 3) + 
+    geom_point(size = 4.5) + 
     xlab(plasma_pca_multi_level[["graph"]][["labels"]]$x) + 
     ylab(plasma_pca_multi_level[["graph"]][["labels"]]$y) + 
-    scale_color_viridis(option = "plasma") +
+    scale_color_gradientn(colours = redblue) +
     theme_cowplot() + 
     labs(colour = "Treatment", shape = "Day") + 
     ggtitle("Plasma multi-level PCA")
@@ -293,10 +296,10 @@ sf_pca_multi_level <- mixOmics::pca(t(na.omit(sf_data_norm)), scale = TRUE, cent
 ```{r}
 
 sf_ml_pca_plot <- ggplot(sf_pca_multi_level$df, aes(x=x, y=y, colour = sf_pheno$Day)) + 
-    geom_point(size = 3) + 
+    geom_point(size = 4.5) + 
     xlab(sf_pca_multi_level[["graph"]][["labels"]]$x) + 
     ylab(sf_pca_multi_level[["graph"]][["labels"]]$y) + 
-    scale_color_viridis(option = "plasma") +
+    scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
     theme_cowplot() + 
     labs(colour = "Treatment", shape = "Day") + 
     ggtitle("Synovial fluid multi-level PCA")
@@ -304,12 +307,12 @@ sf_ml_pca_plot <- ggplot(sf_pca_multi_level$df, aes(x=x, y=y, colour = sf_pheno$
 
 
 sf_ml_pca_plot2 <- ggplot(sf_pca_multi_level$df, aes(x=x, y=y, colour = sf_pheno$Group)) + 
-    geom_point(size = 3) + 
+    geom_point(size = 4.5) + 
     xlab(sf_pca_multi_level[["graph"]][["labels"]]$x) + 
     ylab(sf_pca_multi_level[["graph"]][["labels"]]$y) + 
     scale_colour_brewer(palette = "Set1") +
     theme_cowplot() + 
-    labs(colour = "Treatment", shape = "Day") 
+    labs(colour = "Day") 
 
 
 ```
@@ -348,12 +351,12 @@ sf_pca_multi_level_OA <- mixOmics::pca(t(na.omit(sf_data_norm_just_OA)), scale =
 ```{r}
 
 sf_ml_pca_plot_OA <- ggplot(sf_pca_multi_level_OA$df, aes(x=x, y=y, colour = sf_pheno_OA$Day)) + 
-    geom_point(size = 3) + 
+    geom_point(size = 4.5) + 
     xlab(sf_pca_multi_level_OA[["graph"]][["labels"]]$x) + 
     ylab(sf_pca_multi_level_OA[["graph"]][["labels"]]$y) + 
-    scale_color_viridis(option = "plasma") +
+    scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
     theme_cowplot() + 
-    labs(colour = "Treatment", shape = "Day") + 
+    labs(colour = "Day") + 
     ggtitle("Synovial fluid multi-level PCA - no control samples")
 
 ```

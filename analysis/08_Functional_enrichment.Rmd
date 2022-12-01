@@ -15,9 +15,9 @@ library(tidyverse)
 library(cowplot) # ggplot2 theme
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 library(MetBrewer) # additional palettes
+library(enrichplot)
 library(clusterProfiler)
 library(RBiomirGS)
-library(clusterProfiler)
 library(pRoloc)
 
 ```
@@ -191,6 +191,9 @@ Carry out cluster functional enrichment:
 
 ```{r}
 
+# Colour scheme for plasma results
+redblue<-colorRampPalette(c("#db092c", "#984ea3", "#097ddb"))(50)
+
 cluster_enrichment <- compareCluster(geneCluster = plasma_clusters_list,
                     fun = enricher,
                     pvalueCutoff = 0.05,
@@ -207,7 +210,8 @@ cluster_enrichment <- compareCluster(geneCluster = plasma_clusters_list,
 cluster_enrichment_df <- cluster_enrichment@compareClusterResult
 
 
-clusterProfiler::dotplot(cluster_enrichment)
+clusterProfiler::dotplot(cluster_enrichment) + 
+  scale_color_gradientn(colours = redblue) 
 
 ```
 
@@ -240,7 +244,7 @@ plasma_c4_enrichment <- enricher(
 
 
 plasma_c4_dp <- clusterProfiler::dotplot(plasma_c4_enrichment) +
-  #scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  scale_color_gradientn(colours = redblue) +
   theme_minimal() +
   ggtitle("Plasma - cluster 4")
 
@@ -413,7 +417,7 @@ plasma_factor_enrichment <- compareCluster(geneCluster = plasma_mofa_list,
 plasma_factor_enrichment_df <- plasma_factor_enrichment@compareClusterResult
 
 plasma_factors_dp <- clusterProfiler::dotplot(plasma_factor_enrichment) +
-  #scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  scale_color_gradientn(colours = redblue) +
   theme_minimal() + 
   ggtitle("Plasma - factors GSEA")
 
@@ -445,7 +449,7 @@ gsea_plasma_f2 <- GSEA(geneList = factor2,
 
 
 plasma_f2_dp <- clusterProfiler::dotplot(gsea_plasma_f2) +
-  #scale_color_gradientn(colours = hcl.colors(50, "BluYl")) +
+  scale_color_gradientn(colours = redblue) +
   theme_minimal() + 
   ggtitle("Plasma - factor 2 GSEA")
 
@@ -453,6 +457,11 @@ plasma_f2_dp
 
 ```
 
+```{r}
+
+gseaplot2(gsea_plasma_f2, geneSetID = 1, title = gsea_plasma_f2$Description[1])
+
+```
 
 ## Synovial fluid 
 
@@ -535,6 +544,12 @@ sf_f5_dp
 
 ```
 
+```{r}
+
+gseaplot2(gsea_sf_f5, geneSetID = 3, title = gsea_sf_f5$Description[3])
+
+```
+
 Factor 5 appears to correspond to extracellular matrix and cytoskeletal fiber production. This is probably a wound healing response in response to the initial tissue damage. 
 
 
@@ -571,6 +586,11 @@ sf_f3_dp
 
 Factor 3 seems to be associated with an immune response. 
 
+```{r}
+
+gseaplot2(gsea_sf_f3, geneSetID = 1, title = gsea_sf_f3$Description[1])
+
+```
 
 
 <!-- Below is some code that will be hidden in the outputs to save figures. -->
