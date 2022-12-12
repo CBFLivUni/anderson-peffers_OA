@@ -1,7 +1,7 @@
-name: anderson-peffers_OA
+name: Longitudinal OA multi-omics
 output_dir: ../docs
 navbar:
-  title: anderson-peffers_OA
+  title: Longitudinal OA multi-omics
   left:
   - text: Home
     href: index.html
@@ -25,12 +25,18 @@ navbar:
       href: 05_Sequencing_EDA.html
   - text: Multi-omics analysis
     menu:
-    - text: Joint dimensionality reduction
+    - text: Joint dimensionality reduction v1
       href: 06_jDR.html
+    - text: Joint dimensionality reduction v2
+      href: 06_jDR_2.html
+    - text: '---------'
     - text: Clustering
       href: 07_Clustering.html
-    - text: Functional enrichment
+    - text: '---------'
+    - text: Functional enrichment v1
       href: 08_Functional_enrichment.html
+    - text: Functional enrichment v2
+      href: 08_Functional_enrichment_2.html
   right:
   - icon: fab fa-github
     text: Source code

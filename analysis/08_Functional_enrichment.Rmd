@@ -47,7 +47,7 @@ sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
 
 # Annotate data
 
-For GO term analysis we needed to manually annotate the proteomics and sequencing data. The GO term annotation for proteomics data can be readily accessed using the Uniprot accessions. For the sequencing data the miRNA/lncRNA/snRNA first needed to be mapped to the mRNA targets, before the GO terms associated with those targets were extracted.
+For GO term analysis we needed to manually annotate the proteomics and sequencing data. The GO term annotation for proteomics data can be readily accessed using the Uniprot accessions. 
 
 ## Proteomics
 

@@ -353,7 +353,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">anderson-peffers_OA</a>
+      <a class="navbar-brand" href="index.html">Longitudinal OA multi-omics</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -407,13 +407,21 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="06_jDR.html">Joint dimensionality reduction</a>
+      <a href="06_jDR.html">Joint dimensionality reduction v1</a>
     </li>
+    <li>
+      <a href="06_jDR_2.html">Joint dimensionality reduction v2</a>
+    </li>
+    <li class="divider"></li>
     <li>
       <a href="07_Clustering.html">Clustering</a>
     </li>
+    <li class="divider"></li>
     <li>
-      <a href="08_Functional_enrichment.html">Functional enrichment</a>
+      <a href="08_Functional_enrichment.html">Functional enrichment v1</a>
+    </li>
+    <li>
+      <a href="08_Functional_enrichment_2.html">Functional enrichment v2</a>
     </li>
   </ul>
 </li>
@@ -467,7 +475,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-25
+<strong>Last updated:</strong> 2022-12-12
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -601,15 +609,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -619,7 +627,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -639,34 +647,64 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Untracked files:
-    Untracked:  code/ArchRpalettes.R
-    Untracked:  imgs/clustering_results/plasma_c4_ora.PDF
-    Untracked:  imgs/clustering_results/synovial_fluid_c1_ora.PDF
-    Untracked:  imgs/jDR/plasma/
-    Untracked:  imgs/jDR/plasma_f2_gsea.PDF
-    Untracked:  imgs/jDR/plasma_factors_gsea_non-sig.PDF
-    Untracked:  imgs/jDR/synovial_fluid_f5_gsea.PDF
-    Untracked:  imgs/jDR/synovial_fluid_factors_gsea_non-sig.PDF
-    Untracked:  sf_time_model.hdf5
+    Untracked:  analysis/06_jDR_2.Rmd
+    Untracked:  analysis/08_Functional_enrichment_2.Rmd
+    Untracked:  analysis/about_check.Rmd
+    Untracked:  code/modified_heatmap.R
+    Untracked:  data/complete_annotation.csv
+    Untracked:  data/complete_annotation.rds
+    Untracked:  data/miRNA.dat
+    Untracked:  data/plasma_sequencing_data.rds
+    Untracked:  data/sf_sequencing_data.rds
+    Untracked:  imgs/jDR/plasma/v1/
+    Untracked:  imgs/jDR/plasma/v2_USETHIS/
+    Untracked:  imgs/jDR/synovial_fluid/v1/
+    Untracked:  imgs/jDR/synovial_fluid/v2_USETHIS/
+    Untracked:  imgs/sampling_types.png
+    Untracked:  output/complete_annotation.csv
+    Untracked:  output/complete_annotation.rds
+    Untracked:  output/enrichment_results/
+    Untracked:  plasma_model2.hdf5
+    Untracked:  sf_time_model2.hdf5
 
 Unstaged changes:
+    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
+    Modified:   analysis/05_Sequencing_EDA.Rmd
     Modified:   analysis/06_jDR.Rmd
-    Modified:   analysis/07_Clustering.Rmd
+    Deleted:    analysis/06_jDR_test.Rmd
     Modified:   analysis/08_Functional_enrichment.Rmd
-    Modified:   analysis/references.bib
-    Modified:   code/utility-functions.R
-    Modified:   data/mfuzz_cluster_sf_data.rds
+    Modified:   analysis/_site.yml
+    Modified:   data/mofa2_plasma.rds
+    Modified:   data/mofa2_plasma_df.rds
     Modified:   data/mofa2_sf.rds
     Modified:   data/mofa2_sf_df.rds
-    Modified:   imgs/clustering_results/clustering_results.PDF
-    Modified:   imgs/clustering_results/dtw_clustering_results.PDF
-    Modified:   imgs/clustering_results/dtw_clustering_results_wide.PDF
-    Modified:   imgs/clustering_results/mfuzz_clustering_results.PDF
-    Modified:   imgs/clustering_results/plasma_cluster_corr.PDF
-    Modified:   imgs/clustering_results/sf_cluster_corr.PDF
-    Deleted:    imgs/jDR/non_sig_plasma_factor_GSEA
+    Deleted:    docs.zip
+    Deleted:    imgs/jDR/plasma/gsea_lipid_binding.png
+    Deleted:    imgs/jDR/plasma/gsea_organitrogen.png
+    Deleted:    imgs/jDR/plasma/gsea_phospholipid.png
+    Deleted:    imgs/jDR/plasma/miRNA_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.png
+    Deleted:    imgs/jDR/plasma/plasma_factor_group_correlation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factor_variation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/plasma/plasma_mofa.PDF
+    Deleted:    imgs/jDR/plasma/protein_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.png
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/synovial_fluid/f3_gsea_inflammation.png
+    Deleted:    imgs/jDR/synovial_fluid/gsea_f5_supramolecular_complex.png
+    Deleted:    miRNA.dat
+    Modified:   output/plasma_limma_DE_results_log2.xlsx
+    Modified:   output/plasma_proDA_DE_results.xlsx
+    Modified:   output/sf_proDA_DE_results.xlsx
     Modified:   plasma_model.hdf5
+    Deleted:    protein_plasma_factor2_names.PDF
     Modified:   sf_model.hdf5
+    Modified:   sf_time_model.hdf5
 
 </code></pre>
 <p>
@@ -711,6 +749,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/526bc37f7b15e35117822b254db15be96996cbd7/analysis/06_jDR.Rmd" target="_blank">526bc37</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-25
+</td>
+<td>
+Project completion
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/526bc37f7b15e35117822b254db15be96996cbd7/docs/06_jDR.html" target="_blank">526bc37</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-25
+</td>
+<td>
+Project completion
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -887,6 +959,19 @@ Sequencing files created
 <hr>
 </div>
 </div>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This workflow employs joint dimensionality reduction to identify
+factors (combinations of all the different features) that account for
+the majority of the variation in the -omics data. These factors can be
+correlated with the phenotype data for downstream analysis. We can also
+see how much each -omics contributes to each factor.</p>
+<p>In this analysis the different types of small RNAs were read in
+individually and treated as different views. However, a more
+conventional version of the analysis with all the sequencing data
+collapsed together was also carried out <a
+href="06_jDR_2.html">here</a>.</p>
 </div>
 <div id="load-libraries" class="section level1">
 <h1>Load libraries</h1>
@@ -1480,7 +1565,7 @@ f5_sf_protein_heatmap &lt;- plot_data_heatmap(MOFAobject.trained,
         denoise = TRUE,
         color = heatmap_cols,
         border_color = NA,
-        annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;group&quot;),
+        annotation_samples = c(&quot;Day&quot;, &quot;Horse&quot;, &quot;Group&quot;),
         fontsize = 12
       )
 
@@ -1641,18 +1726,6 @@ $sparseGP
   training_options = train_opts,
   mefisto_options = mefisto_opts
 )</code></pre>
-<pre><code>
-# Multi-group mode requested.</code></pre>
-<pre><code>
-This is an advanced option, if this is the first time that you are running MOFA, we suggest that you try do some exploration first without specifying groups. Two important remarks:</code></pre>
-<pre><code>
- - The aim of the multi-group framework is to identify the sources of variability *within* the groups. If your aim is to find a factor that &#39;separates&#39; the groups, you DO NOT want to use the multi-group framework. Please see the FAQ on the MOFA2 webpage.</code></pre>
-<pre><code>
- - It is important to account for the group effect before selecting highly variable features (HVFs). We suggest that either you calculate HVFs per group and then take the union, or regress out the group effect before HVF selection</code></pre>
-<pre><code>Checking data options...</code></pre>
-<pre><code>Checking training options...</code></pre>
-<pre><code>Checking model options...</code></pre>
-<pre><code>Checking inference options for mefisto covariates...</code></pre>
 <p>Train model:</p>
 <pre class="r"><code>outfile &lt;- file.path(getwd(),&quot;sf_time_model.hdf5&quot;)
 MOFAobject.trained &lt;- run_mofa(MOFAobject, outfile, use_basilisk=TRUE)</code></pre>

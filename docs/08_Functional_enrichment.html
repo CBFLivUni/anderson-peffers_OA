@@ -331,7 +331,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">anderson-peffers_OA</a>
+      <a class="navbar-brand" href="index.html">Longitudinal OA multi-omics</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -385,13 +385,21 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="06_jDR.html">Joint dimensionality reduction</a>
+      <a href="06_jDR.html">Joint dimensionality reduction v1</a>
     </li>
+    <li>
+      <a href="06_jDR_2.html">Joint dimensionality reduction v2</a>
+    </li>
+    <li class="divider"></li>
     <li>
       <a href="07_Clustering.html">Clustering</a>
     </li>
+    <li class="divider"></li>
     <li>
-      <a href="08_Functional_enrichment.html">Functional enrichment</a>
+      <a href="08_Functional_enrichment.html">Functional enrichment v1</a>
+    </li>
+    <li>
+      <a href="08_Functional_enrichment_2.html">Functional enrichment v2</a>
     </li>
   </ul>
 </li>
@@ -444,7 +452,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-25
+<strong>Last updated:</strong> 2022-12-12
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -578,15 +586,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreefc9ca8a4449562942f7261173f6140fb19879267targetblankfc9ca8aa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -596,7 +604,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/fc9ca8a4449562942f7261173f6140fb19879267" target="_blank">fc9ca8a</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -616,34 +624,64 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Untracked files:
-    Untracked:  code/ArchRpalettes.R
-    Untracked:  imgs/clustering_results/plasma_c4_ora.PDF
-    Untracked:  imgs/clustering_results/synovial_fluid_c1_ora.PDF
-    Untracked:  imgs/jDR/plasma/
-    Untracked:  imgs/jDR/plasma_f2_gsea.PDF
-    Untracked:  imgs/jDR/plasma_factors_gsea_non-sig.PDF
-    Untracked:  imgs/jDR/synovial_fluid_f5_gsea.PDF
-    Untracked:  imgs/jDR/synovial_fluid_factors_gsea_non-sig.PDF
-    Untracked:  sf_time_model.hdf5
+    Untracked:  analysis/06_jDR_2.Rmd
+    Untracked:  analysis/08_Functional_enrichment_2.Rmd
+    Untracked:  analysis/about_check.Rmd
+    Untracked:  code/modified_heatmap.R
+    Untracked:  data/complete_annotation.csv
+    Untracked:  data/complete_annotation.rds
+    Untracked:  data/miRNA.dat
+    Untracked:  data/mofa2_plasma_2.rds
+    Untracked:  data/mofa2_plasma_df_2.rds
+    Untracked:  data/mofa2_sf_2.rds
+    Untracked:  data/mofa2_sf_df_2.rds
+    Untracked:  data/plasma_sequencing_data.rds
+    Untracked:  data/sf_sequencing_data.rds
+    Untracked:  imgs/jDR/plasma/v1/
+    Untracked:  imgs/jDR/plasma/v2_USETHIS/
+    Untracked:  imgs/jDR/synovial_fluid/v1/
+    Untracked:  imgs/jDR/synovial_fluid/v2_USETHIS/
+    Untracked:  imgs/sampling_types.png
+    Untracked:  output/complete_annotation.csv
+    Untracked:  output/complete_annotation.rds
+    Untracked:  output/enrichment_results/
+    Untracked:  plasma_model2.hdf5
+    Untracked:  sf_time_model2.hdf5
 
 Unstaged changes:
+    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
+    Modified:   analysis/05_Sequencing_EDA.Rmd
     Modified:   analysis/06_jDR.Rmd
-    Modified:   analysis/07_Clustering.Rmd
+    Deleted:    analysis/06_jDR_test.Rmd
     Modified:   analysis/08_Functional_enrichment.Rmd
-    Modified:   analysis/references.bib
-    Modified:   code/utility-functions.R
-    Modified:   data/mfuzz_cluster_sf_data.rds
-    Modified:   data/mofa2_sf.rds
-    Modified:   data/mofa2_sf_df.rds
-    Modified:   imgs/clustering_results/clustering_results.PDF
-    Modified:   imgs/clustering_results/dtw_clustering_results.PDF
-    Modified:   imgs/clustering_results/dtw_clustering_results_wide.PDF
-    Modified:   imgs/clustering_results/mfuzz_clustering_results.PDF
-    Modified:   imgs/clustering_results/plasma_cluster_corr.PDF
-    Modified:   imgs/clustering_results/sf_cluster_corr.PDF
-    Deleted:    imgs/jDR/non_sig_plasma_factor_GSEA
+    Modified:   analysis/_site.yml
+    Deleted:    docs.zip
+    Deleted:    imgs/jDR/plasma/gsea_lipid_binding.png
+    Deleted:    imgs/jDR/plasma/gsea_organitrogen.png
+    Deleted:    imgs/jDR/plasma/gsea_phospholipid.png
+    Deleted:    imgs/jDR/plasma/miRNA_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.png
+    Deleted:    imgs/jDR/plasma/plasma_factor_group_correlation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factor_variation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/plasma/plasma_mofa.PDF
+    Deleted:    imgs/jDR/plasma/protein_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.png
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/synovial_fluid/f3_gsea_inflammation.png
+    Deleted:    imgs/jDR/synovial_fluid/gsea_f5_supramolecular_complex.png
+    Deleted:    miRNA.dat
+    Modified:   output/plasma_limma_DE_results_log2.xlsx
+    Modified:   output/plasma_proDA_DE_results.xlsx
+    Modified:   output/sf_proDA_DE_results.xlsx
     Modified:   plasma_model.hdf5
+    Deleted:    protein_plasma_factor2_names.PDF
     Modified:   sf_model.hdf5
+    Modified:   sf_time_model.hdf5
 
 </code></pre>
 <p>
@@ -690,6 +728,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/7648b32ce01fe6db04bcff0d91151a4188130207/analysis/08_Functional_enrichment.Rmd" target="_blank">7648b32</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+Further visualisation updates
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/526bc37f7b15e35117822b254db15be96996cbd7/analysis/08_Functional_enrichment.Rmd" target="_blank">526bc37</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-25
+</td>
+<td>
+Project completion
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/526bc37f7b15e35117822b254db15be96996cbd7/docs/08_Functional_enrichment.html" target="_blank">526bc37</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-25
+</td>
+<td>
+Project completion
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -788,9 +877,9 @@ Updated theme + additional analysis docs
 library(cowplot) # ggplot2 theme
 library(ggpubr) # utilities to arrange/annotate ggplot2 plots
 library(MetBrewer) # additional palettes
+library(enrichplot)
 library(clusterProfiler)
 library(RBiomirGS)
-library(clusterProfiler)
 library(pRoloc)</code></pre>
 </div>
 <div id="read-data" class="section level1">
@@ -815,9 +904,7 @@ sf_snRNA_data &lt;- readRDS(&quot;./data/sf_snRNA_data.rds&quot;)</code></pre>
 <h1>Annotate data</h1>
 <p>For GO term analysis we needed to manually annotate the proteomics
 and sequencing data. The GO term annotation for proteomics data can be
-readily accessed using the Uniprot accessions. For the sequencing data
-the miRNA/lncRNA/snRNA first needed to be mapped to the mRNA targets,
-before the GO terms associated with those targets were extracted.</p>
+readily accessed using the Uniprot accessions.</p>
 <div id="proteomics" class="section level2">
 <h2>Proteomics</h2>
 <p>The tools previously developed by Simon Perkins were employed: <a
@@ -830,14 +917,21 @@ source(&#39;./code/mapping_with_db_ortho.R&#39;)
 source(&#39;./code/mapping_with_files.R&#39;)
 source(&#39;./code/uniprot_selected_term_types.R&#39;)
 source(&#39;./code/utils.R&#39;)</code></pre>
+<p>Create a combined protein list for synovial fluid and plasma
+proteins:</p>
 <pre class="r"><code># Combine plasma and synovial fluid
 proteins_list &lt;- c(row.names(plasma_proteomics_data), row.names(sf_proteomics_data))
 
 # Remove repeats
 proteins_list &lt;- unique(proteins_list)</code></pre>
+<p>Map this combined list to the protein GO terms using the
+‘map_using_uniprot_files’ function:</p>
 <pre class="r"><code>GO_anot_protein &lt;- map_using_uniprot_files(input_id = &#39;UniProtKB-AC&#39;, input_values = proteins_list, output_id = &#39;GO&#39;)</code></pre>
+<p>Convert the GO annotation to a dataframe, then build the full
+parent-child term map using the buildGOmap function:</p>
 <pre class="r"><code>GO_anot_protein &lt;- as.data.frame(GO_anot_protein)
 GO_anot_full &lt;- buildGOmap(GO_anot_protein[,c(2,1)])</code></pre>
+<p>Add the GO term names and ontology information:</p>
 <pre class="r"><code># Add name annotation
 GO_anot_full$names &lt;- goIdToTerm(GO_anot_full$GO, names = TRUE, keepNA = TRUE)
 
@@ -896,7 +990,10 @@ sf_clusters &lt;- readRDS(&quot;./data/mfuzz_cluster_sf_data.rds&quot;)</code></
 
 plasma_background &lt;- row.names(plasma_proteomics_data)</code></pre>
 <p>Carry out cluster functional enrichment:</p>
-<pre class="r"><code>cluster_enrichment &lt;- compareCluster(geneCluster = plasma_clusters_list,
+<pre class="r"><code># Colour scheme for plasma results
+redblue&lt;-colorRampPalette(c(&quot;#db092c&quot;, &quot;#984ea3&quot;, &quot;#097ddb&quot;))(50)
+
+cluster_enrichment &lt;- compareCluster(geneCluster = plasma_clusters_list,
                     fun = enricher,
                     pvalueCutoff = 0.05,
                     pAdjustMethod = &quot;BH&quot;,
@@ -912,7 +1009,10 @@ plasma_background &lt;- row.names(plasma_proteomics_data)</code></pre>
 cluster_enrichment_df &lt;- cluster_enrichment@compareClusterResult
 
 
-clusterProfiler::dotplot(cluster_enrichment)</code></pre>
+clusterProfiler::dotplot(cluster_enrichment) + 
+  scale_color_gradientn(colours = redblue) </code></pre>
+<pre><code>Scale for &#39;colour&#39; is already present. Adding another scale for &#39;colour&#39;,
+which will replace the existing scale.</code></pre>
 <p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>When joint cluster analysis is carried out only cluster 4 has
 signficant GO terms:</p>
@@ -953,12 +1053,12 @@ plasma_c4_enrichment &lt;- enricher(
 
 
 plasma_c4_dp &lt;- clusterProfiler::dotplot(plasma_c4_enrichment) +
-  #scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  scale_color_gradientn(colours = redblue) +
   theme_minimal() +
-  ggtitle(&quot;Plasma - cluster 4&quot;)
-
-
-plasma_c4_dp</code></pre>
+  ggtitle(&quot;Plasma - cluster 4&quot;)</code></pre>
+<pre><code>Scale for &#39;colour&#39; is already present. Adding another scale for &#39;colour&#39;,
+which will replace the existing scale.</code></pre>
+<pre class="r"><code>plasma_c4_dp</code></pre>
 <p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Interesting lipid metabolism seems to be enriched for cluster 4:</p>
 <ul>
@@ -1062,8 +1162,8 @@ sf_c3_dp</code></pre>
 <p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="factor-functional" class="section level1">
-<h1>Factor functional</h1>
+<div id="factor-functional-enrichment" class="section level1">
+<h1>Factor functional enrichment</h1>
 <p>Read data in:</p>
 <pre class="r"><code>plasma_mofa &lt;- readRDS(&quot;./data/mofa2_plasma_df.rds&quot;) 
 sf_mofa &lt;- readRDS(&quot;./data/mofa2_sf_df.rds&quot;)</code></pre>
@@ -1091,7 +1191,7 @@ sf_mofa &lt;- readRDS(&quot;./data/mofa2_sf_df.rds&quot;)</code></pre>
 plasma_factor_enrichment_df &lt;- plasma_factor_enrichment@compareClusterResult
 
 plasma_factors_dp &lt;- clusterProfiler::dotplot(plasma_factor_enrichment) +
-  #scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  scale_color_gradientn(colours = redblue) +
   theme_minimal() + 
   ggtitle(&quot;Plasma - factors GSEA&quot;)
 
@@ -1113,12 +1213,14 @@ plasma_factors_dp</code></pre>
 
 
 plasma_f2_dp &lt;- clusterProfiler::dotplot(gsea_plasma_f2) +
-  #scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  scale_color_gradientn(colours = redblue) +
   theme_minimal() + 
   ggtitle(&quot;Plasma - factor 2 GSEA&quot;)
 
 plasma_f2_dp</code></pre>
 <p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>gseaplot2(gsea_plasma_f2, geneSetID = 1, title = gsea_plasma_f2$Description[1])</code></pre>
+<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="synovial-fluid-1" class="section level2">
@@ -1157,7 +1259,7 @@ sf_factors_dp &lt;- clusterProfiler::dotplot(sf_factor_enrichment) +
   ggtitle(&quot;Synovial fluid - factors GSEA&quot;)
 
 sf_factors_dp</code></pre>
-<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Only factor 5 and factor 3 appear to have any significant GO terms
 associated with them. This is expected considering their association
 with the phenotype in the factor analysis.</p>
@@ -1181,7 +1283,9 @@ sf_f5_dp &lt;- clusterProfiler::dotplot(gsea_sf_f5) +
   ggtitle(&quot;Synovial fluid - factor 5 GSEA&quot;)
 
 sf_f5_dp</code></pre>
-<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>gseaplot2(gsea_sf_f5, geneSetID = 3, title = gsea_sf_f5$Description[3])</code></pre>
+<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Factor 5 appears to correspond to extracellular matrix and
 cytoskeletal fiber production. This is probably a wound healing response
 in response to the initial tissue damage.</p>
@@ -1206,8 +1310,10 @@ sf_f3_dp &lt;- clusterProfiler::dotplot(gsea_sf_f3) +
   ggtitle(&quot;Synovial fluid - factor 3 GSEA&quot;)
 
 sf_f3_dp</code></pre>
-<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Factor 3 seems to be associated with an immune response.</p>
+<pre class="r"><code>gseaplot2(gsea_sf_f3, geneSetID = 1, title = gsea_sf_f3$Description[1])</code></pre>
+<p><img src="figure/08_Functional_enrichment.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
 <!-- Below is some code that will be hidden in the outputs to save figures. -->
 <p><a
 href="http://www.bioconductor.org/packages/release/bioc/vignettes/ncRNAtools/inst/doc/ncRNAtools.html"
@@ -1246,11 +1352,11 @@ other attached packages:
 [10] AnnotationDbi_1.58.0  IRanges_2.30.0        MSnbase_2.22.0       
 [13] ProtGenerics_1.28.0   S4Vectors_0.34.0      mzR_2.30.0           
 [16] Rcpp_1.0.8.3          Biobase_2.56.0        BiocGenerics_0.42.0  
-[19] RBiomirGS_0.2.17      clusterProfiler_4.4.4 MetBrewer_0.2.0      
-[22] ggpubr_0.4.0          cowplot_1.1.1         forcats_0.5.1        
-[25] stringr_1.4.0         dplyr_1.0.9           purrr_0.3.4          
-[28] readr_2.1.2           tidyr_1.2.0           tibble_3.1.7         
-[31] ggplot2_3.3.6         tidyverse_1.3.1      
+[19] RBiomirGS_0.2.17      clusterProfiler_4.4.4 enrichplot_1.16.2    
+[22] MetBrewer_0.2.0       ggpubr_0.4.0          cowplot_1.1.1        
+[25] forcats_0.5.1         stringr_1.4.0         dplyr_1.0.9          
+[28] purrr_0.3.4           readr_2.1.2           tidyr_1.2.0          
+[31] tibble_3.1.7          ggplot2_3.3.6         tidyverse_1.3.1      
 
 loaded via a namespace (and not attached):
   [1] rappdirs_0.3.3         ModelMetrics_1.2.2.2   coda_0.19-4           
@@ -1259,62 +1365,62 @@ loaded via a namespace (and not attached):
  [10] RCurl_1.98-1.7         doParallel_1.0.17      generics_0.1.2        
  [13] snow_0.4-4             preprocessCore_1.58.0  RSQLite_2.2.14        
  [16] shadowtext_0.1.2       future_1.26.1          proxy_0.4-27          
- [19] bit_4.0.4              tzdb_0.3.0             enrichplot_1.16.1     
- [22] xml2_1.3.3             lubridate_1.8.0        httpuv_1.6.5          
- [25] assertthat_0.2.1       viridis_0.6.2          gower_1.0.0           
- [28] xfun_0.31              hms_1.1.1              jquerylib_0.1.4       
- [31] evaluate_0.15          promises_1.2.0.1       fansi_1.0.3           
- [34] progress_1.2.2         dendextend_1.15.2      dbplyr_2.2.0          
- [37] readxl_1.4.0           igraph_1.3.2           DBI_1.1.2             
- [40] ellipsis_0.3.2         backports_1.4.1        biomaRt_2.52.0        
- [43] vctrs_0.4.1            abind_1.4-5            caret_6.0-92          
- [46] cachem_1.0.6           withr_2.5.0            ggforce_0.3.3         
- [49] vroom_1.5.7            treeio_1.20.0          prettyunits_1.1.1     
- [52] mclust_5.4.10          DOSE_3.22.0            ape_5.6-2             
- [55] segmented_1.6-0        lazyeval_0.2.2         crayon_1.5.1          
- [58] labeling_0.4.2         recipes_0.2.0          pkgconfig_2.0.3       
- [61] tweenr_1.0.2           GenomeInfoDb_1.32.2    nlme_3.1-157          
- [64] nnet_7.3-17            globals_0.15.0         rlang_1.0.2           
- [67] lifecycle_1.0.1        LaplacesDemon_16.1.6   downloader_0.4        
- [70] filelock_1.0.2         affyio_1.66.0          BiocFileCache_2.4.0   
- [73] modelr_0.1.8           randomForest_4.7-1.1   cellranger_1.1.0      
- [76] rprojroot_2.0.3        polyclip_1.10-0        Matrix_1.5-1          
- [79] aplot_0.1.6            carData_3.0-5          reprex_2.0.1          
- [82] whisker_0.4            png_0.1-7              viridisLite_0.4.0     
- [85] bitops_1.0-7           pROC_1.18.0            Biostrings_2.64.0     
- [88] blob_1.2.3             workflowr_1.7.0        qvalue_2.28.0         
- [91] parallelly_1.32.0      rstatix_0.7.0          gridGraphics_0.5-1    
- [94] ggsignif_0.6.3         lpSolve_5.6.15         scales_1.2.0          
- [97] magrittr_2.0.3         plyr_1.8.7             hexbin_1.28.2         
-[100] zlibbioc_1.42.0        compiler_4.2.0         scatterpie_0.1.7      
-[103] RColorBrewer_1.1-3     pcaMethods_1.88.0      clue_0.3-61           
-[106] cli_3.3.0              affy_1.74.0            XVector_0.36.0        
-[109] listenv_0.8.0          patchwork_1.1.1        MASS_7.3-56           
-[112] tidyselect_1.1.2       vsn_3.64.0             stringi_1.7.6         
-[115] highr_0.9              yaml_2.3.5             GOSemSim_2.22.0       
-[118] MALDIquant_1.21        ggrepel_0.9.1          grid_4.2.0            
-[121] sass_0.4.1             fastmatch_1.1-3        tools_4.2.0           
-[124] future.apply_1.9.0     parallel_4.2.0         rstudioapi_0.13       
-[127] MsCoreUtils_1.8.0      foreach_1.5.2          git2r_0.30.1          
-[130] gridExtra_2.3          prodlim_2019.11.13     farver_2.1.0          
-[133] mzID_1.34.0            ggraph_2.0.5           digest_0.6.29         
-[136] BiocManager_1.30.18    lava_1.6.10            FNN_1.1.3.1           
-[139] car_3.1-0              broom_0.8.0            later_1.3.0           
-[142] ncdf4_1.19             httr_1.4.3             kernlab_0.9-31        
-[145] colorspace_2.0-3       rvest_1.0.2            fs_1.5.2              
-[148] splines_4.2.0          yulab.utils_0.0.4      tidytree_0.3.9        
-[151] graphlayouts_0.8.0     ggplotify_0.1.0        xtable_1.8-4          
-[154] ggtree_3.4.0           tidygraph_1.2.1        timeDate_3043.102     
-[157] ggfun_0.0.6            ipred_0.9-13           R6_2.5.1              
-[160] pillar_1.7.0           htmltools_0.5.2        fastmap_1.1.0         
-[163] class_7.3-20           codetools_0.2-18       fgsea_1.22.0          
-[166] mvtnorm_1.1-3          utf8_1.2.2             lattice_0.20-45       
-[169] bslib_0.3.1            mixtools_1.2.0         curl_4.3.2            
-[172] gtools_3.9.2.2         GO.db_3.15.0           survival_3.3-1        
-[175] limma_3.52.1           sampling_2.9           rmarkdown_2.14        
-[178] munsell_0.5.0          e1071_1.7-11           DO.db_2.9             
-[181] GenomeInfoDbData_1.2.8 iterators_1.0.14       impute_1.70.0         
-[184] haven_2.5.0            reshape2_1.4.4         gtable_0.3.0          </code></pre>
+ [19] bit_4.0.4              tzdb_0.3.0             xml2_1.3.3            
+ [22] lubridate_1.8.0        httpuv_1.6.5           assertthat_0.2.1      
+ [25] viridis_0.6.2          gower_1.0.0            xfun_0.31             
+ [28] hms_1.1.1              jquerylib_0.1.4        evaluate_0.15         
+ [31] promises_1.2.0.1       fansi_1.0.3            progress_1.2.2        
+ [34] dendextend_1.15.2      dbplyr_2.2.0           readxl_1.4.0          
+ [37] igraph_1.3.2           DBI_1.1.2              ellipsis_0.3.2        
+ [40] backports_1.4.1        biomaRt_2.52.0         vctrs_0.4.1           
+ [43] abind_1.4-5            caret_6.0-92           cachem_1.0.6          
+ [46] withr_2.5.0            ggforce_0.3.3          vroom_1.5.7           
+ [49] treeio_1.20.0          prettyunits_1.1.1      mclust_5.4.10         
+ [52] DOSE_3.22.0            ape_5.6-2              segmented_1.6-0       
+ [55] lazyeval_0.2.2         crayon_1.5.1           labeling_0.4.2        
+ [58] recipes_0.2.0          pkgconfig_2.0.3        tweenr_1.0.2          
+ [61] GenomeInfoDb_1.32.2    nlme_3.1-157           nnet_7.3-17           
+ [64] globals_0.15.0         rlang_1.0.2            lifecycle_1.0.1       
+ [67] LaplacesDemon_16.1.6   downloader_0.4         filelock_1.0.2        
+ [70] affyio_1.66.0          BiocFileCache_2.4.0    modelr_0.1.8          
+ [73] randomForest_4.7-1.1   cellranger_1.1.0       rprojroot_2.0.3       
+ [76] polyclip_1.10-0        Matrix_1.5-1           aplot_0.1.6           
+ [79] carData_3.0-5          reprex_2.0.1           whisker_0.4           
+ [82] png_0.1-7              viridisLite_0.4.0      bitops_1.0-7          
+ [85] pROC_1.18.0            Biostrings_2.64.0      blob_1.2.3            
+ [88] workflowr_1.7.0        qvalue_2.28.0          parallelly_1.32.0     
+ [91] rstatix_0.7.0          gridGraphics_0.5-1     ggsignif_0.6.3        
+ [94] lpSolve_5.6.15         scales_1.2.0           magrittr_2.0.3        
+ [97] plyr_1.8.7             hexbin_1.28.2          zlibbioc_1.42.0       
+[100] compiler_4.2.0         scatterpie_0.1.7       RColorBrewer_1.1-3    
+[103] pcaMethods_1.88.0      clue_0.3-61            cli_3.3.0             
+[106] affy_1.74.0            XVector_0.36.0         listenv_0.8.0         
+[109] patchwork_1.1.1        MASS_7.3-56            tidyselect_1.1.2      
+[112] vsn_3.64.0             stringi_1.7.6          highr_0.9             
+[115] yaml_2.3.5             GOSemSim_2.22.0        MALDIquant_1.21       
+[118] ggrepel_0.9.1          grid_4.2.0             sass_0.4.1            
+[121] fastmatch_1.1-3        tools_4.2.0            future.apply_1.9.0    
+[124] parallel_4.2.0         rstudioapi_0.13        MsCoreUtils_1.8.0     
+[127] foreach_1.5.2          git2r_0.30.1           gridExtra_2.3         
+[130] prodlim_2019.11.13     farver_2.1.0           mzID_1.34.0           
+[133] ggraph_2.0.5           digest_0.6.29          BiocManager_1.30.18   
+[136] lava_1.6.10            FNN_1.1.3.1            car_3.1-0             
+[139] broom_0.8.0            later_1.3.0            ncdf4_1.19            
+[142] httr_1.4.3             kernlab_0.9-31         colorspace_2.0-3      
+[145] rvest_1.0.2            fs_1.5.2               splines_4.2.0         
+[148] yulab.utils_0.0.4      tidytree_0.3.9         graphlayouts_0.8.0    
+[151] ggplotify_0.1.0        xtable_1.8-4           ggtree_3.4.0          
+[154] tidygraph_1.2.1        timeDate_3043.102      ggfun_0.0.6           
+[157] ipred_0.9-13           R6_2.5.1               pillar_1.7.0          
+[160] htmltools_0.5.2        fastmap_1.1.0          class_7.3-20          
+[163] codetools_0.2-18       fgsea_1.22.0           mvtnorm_1.1-3         
+[166] utf8_1.2.2             lattice_0.20-45        bslib_0.3.1           
+[169] mixtools_1.2.0         curl_4.3.2             gtools_3.9.2.2        
+[172] GO.db_3.15.0           survival_3.3-1         limma_3.52.1          
+[175] sampling_2.9           rmarkdown_2.14         munsell_0.5.0         
+[178] e1071_1.7-11           DO.db_2.9              GenomeInfoDbData_1.2.8
+[181] iterators_1.0.14       impute_1.70.0          haven_2.5.0           
+[184] reshape2_1.4.4         gtable_0.3.0          </code></pre>
 </div>
 </div>
 </div>

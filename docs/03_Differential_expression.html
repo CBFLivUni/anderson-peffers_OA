@@ -348,7 +348,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">anderson-peffers_OA</a>
+      <a class="navbar-brand" href="index.html">Longitudinal OA multi-omics</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -402,13 +402,21 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="06_jDR.html">Joint dimensionality reduction</a>
+      <a href="06_jDR.html">Joint dimensionality reduction v1</a>
     </li>
+    <li>
+      <a href="06_jDR_2.html">Joint dimensionality reduction v2</a>
+    </li>
+    <li class="divider"></li>
     <li>
       <a href="07_Clustering.html">Clustering</a>
     </li>
+    <li class="divider"></li>
     <li>
-      <a href="08_Functional_enrichment.html">Functional enrichment</a>
+      <a href="08_Functional_enrichment.html">Functional enrichment v1</a>
+    </li>
+    <li>
+      <a href="08_Functional_enrichment_2.html">Functional enrichment v2</a>
     </li>
   </ul>
 </li>
@@ -441,7 +449,7 @@ proteomics data</h1>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -452,8 +460,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -462,13 +470,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-11
+<strong>Last updated:</strong> 2022-12-12
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>anderson-peffers_OA/</code> <span
@@ -491,21 +499,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -596,15 +601,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreeb8abb7ebb24e6e1d60f8a8c601795873111a34e1targetblankb8abb7ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -614,7 +619,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/b8abb7ebb24e6e1d60f8a8c601795873111a34e1" target="_blank">b8abb7e</a>.
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -633,19 +638,62 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
 
+Untracked files:
+    Untracked:  analysis/06_jDR_2.Rmd
+    Untracked:  analysis/08_Functional_enrichment_2.Rmd
+    Untracked:  analysis/about_check.Rmd
+    Untracked:  code/modified_heatmap.R
+    Untracked:  data/complete_annotation.csv
+    Untracked:  data/complete_annotation.rds
+    Untracked:  data/miRNA.dat
+    Untracked:  data/plasma_sequencing_data.rds
+    Untracked:  data/sf_sequencing_data.rds
+    Untracked:  imgs/jDR/plasma/v1/
+    Untracked:  imgs/jDR/plasma/v2_USETHIS/
+    Untracked:  imgs/jDR/synovial_fluid/v1/
+    Untracked:  imgs/jDR/synovial_fluid/v2_USETHIS/
+    Untracked:  imgs/sampling_types.png
+    Untracked:  output/complete_annotation.csv
+    Untracked:  output/complete_annotation.rds
+    Untracked:  output/enrichment_results/
+    Untracked:  plasma_model2.hdf5
+    Untracked:  sf_time_model2.hdf5
+
 Unstaged changes:
-    Modified:   analysis/03_Differential_expression.Rmd
     Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
+    Modified:   analysis/05_Sequencing_EDA.Rmd
     Modified:   analysis/06_jDR.Rmd
-    Modified:   analysis/07_Clustering.Rmd
+    Deleted:    analysis/06_jDR_test.Rmd
     Modified:   analysis/08_Functional_enrichment.Rmd
     Modified:   analysis/_site.yml
-    Modified:   analysis/index.Rmd
-    Modified:   code/utility-functions.R
-    Modified:   data/plasma_lncRNA_data.rds
-    Modified:   data/sf_lncRNA_data.rds
+    Modified:   data/mofa2_plasma.rds
+    Modified:   data/mofa2_plasma_df.rds
+    Modified:   data/mofa2_sf.rds
+    Modified:   data/mofa2_sf_df.rds
+    Deleted:    docs.zip
+    Deleted:    imgs/jDR/plasma/gsea_lipid_binding.png
+    Deleted:    imgs/jDR/plasma/gsea_organitrogen.png
+    Deleted:    imgs/jDR/plasma/gsea_phospholipid.png
+    Deleted:    imgs/jDR/plasma/miRNA_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.png
+    Deleted:    imgs/jDR/plasma/plasma_factor_group_correlation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factor_variation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/plasma/plasma_mofa.PDF
+    Deleted:    imgs/jDR/plasma/protein_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.png
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/synovial_fluid/f3_gsea_inflammation.png
+    Deleted:    imgs/jDR/synovial_fluid/gsea_f5_supramolecular_complex.png
+    Deleted:    miRNA.dat
     Modified:   plasma_model.hdf5
+    Deleted:    protein_plasma_factor2_names.PDF
     Modified:   sf_model.hdf5
+    Modified:   sf_time_model.hdf5
 
 </code></pre>
 <p>
@@ -692,6 +740,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/blob/6ed591f12047bc35eb7635f1d01e14badef83ec8/analysis/03_Differential_expression.Rmd" target="_blank">6ed591f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-11
+</td>
+<td>
+jDR + clustering + knitting
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CBFLivUni/anderson-peffers_OA/6ed591f12047bc35eb7635f1d01e14badef83ec8/docs/03_Differential_expression.html" target="_blank">6ed591f</a>
+</td>
+<td>
+ejjohnson93
+</td>
+<td>
+2022-11-11
+</td>
+<td>
+jDR + clustering + knitting
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1135,7 +1217,7 @@ other attached packages:
  [1] limma_3.52.1    openxlsx_4.2.5  DT_0.23         proDA_1.10.0   
  [5] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9     purrr_0.3.4    
  [9] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    ggplot2_3.3.6  
-[13] tidyverse_1.3.1 workflowr_1.7.0
+[13] tidyverse_1.3.1
 
 loaded via a namespace (and not attached):
  [1] bitops_1.0-7                matrixStats_0.62.0         
@@ -1146,42 +1228,40 @@ loaded via a namespace (and not attached):
 [11] utf8_1.2.2                  R6_2.5.1                   
 [13] DBI_1.1.2                   BiocGenerics_0.42.0        
 [15] colorspace_2.0-3            withr_2.5.0                
-[17] tidyselect_1.1.2            processx_3.6.0             
-[19] compiler_4.2.0              git2r_0.30.1               
-[21] cli_3.3.0                   rvest_1.0.2                
-[23] Biobase_2.56.0              xml2_1.3.3                 
-[25] DelayedArray_0.22.0         sass_0.4.1                 
-[27] scales_1.2.0                callr_3.7.0                
-[29] digest_0.6.29               rmarkdown_2.14             
-[31] extraDistr_1.9.1            XVector_0.36.0             
-[33] pkgconfig_2.0.3             htmltools_0.5.2            
-[35] MatrixGenerics_1.8.0        dbplyr_2.2.0               
-[37] fastmap_1.1.0               htmlwidgets_1.5.4          
-[39] rlang_1.0.2                 readxl_1.4.0               
-[41] rstudioapi_0.13             jquerylib_0.1.4            
-[43] generics_0.1.2              jsonlite_1.8.0             
-[45] crosstalk_1.2.0             zip_2.2.0                  
-[47] RCurl_1.98-1.7              magrittr_2.0.3             
-[49] GenomeInfoDbData_1.2.8      Matrix_1.5-1               
-[51] Rcpp_1.0.8.3                munsell_0.5.0              
-[53] S4Vectors_0.34.0            fansi_1.0.3                
-[55] lifecycle_1.0.1             stringi_1.7.6              
-[57] whisker_0.4                 yaml_2.3.5                 
-[59] SummarizedExperiment_1.26.1 zlibbioc_1.42.0            
-[61] grid_4.2.0                  promises_1.2.0.1           
-[63] crayon_1.5.1                lattice_0.20-45            
-[65] haven_2.5.0                 hms_1.1.1                  
-[67] knitr_1.39                  ps_1.7.0                   
-[69] pillar_1.7.0                GenomicRanges_1.48.0       
-[71] stats4_4.2.0                reprex_2.0.1               
-[73] glue_1.6.2                  evaluate_0.15              
-[75] getPass_0.2-2               modelr_0.1.8               
-[77] vctrs_0.4.1                 tzdb_0.3.0                 
-[79] httpuv_1.6.5                cellranger_1.1.0           
-[81] gtable_0.3.0                assertthat_0.2.1           
-[83] xfun_0.31                   broom_0.8.0                
-[85] later_1.3.0                 IRanges_2.30.0             
-[87] ellipsis_0.3.2             </code></pre>
+[17] tidyselect_1.1.2            compiler_4.2.0             
+[19] git2r_0.30.1                cli_3.3.0                  
+[21] rvest_1.0.2                 Biobase_2.56.0             
+[23] xml2_1.3.3                  DelayedArray_0.22.0        
+[25] sass_0.4.1                  scales_1.2.0               
+[27] digest_0.6.29               rmarkdown_2.14             
+[29] extraDistr_1.9.1            XVector_0.36.0             
+[31] pkgconfig_2.0.3             htmltools_0.5.2            
+[33] MatrixGenerics_1.8.0        dbplyr_2.2.0               
+[35] fastmap_1.1.0               htmlwidgets_1.5.4          
+[37] rlang_1.0.2                 readxl_1.4.0               
+[39] rstudioapi_0.13             jquerylib_0.1.4            
+[41] generics_0.1.2              jsonlite_1.8.0             
+[43] crosstalk_1.2.0             zip_2.2.0                  
+[45] RCurl_1.98-1.7              magrittr_2.0.3             
+[47] GenomeInfoDbData_1.2.8      Matrix_1.5-1               
+[49] Rcpp_1.0.8.3                munsell_0.5.0              
+[51] S4Vectors_0.34.0            fansi_1.0.3                
+[53] lifecycle_1.0.1             stringi_1.7.6              
+[55] whisker_0.4                 yaml_2.3.5                 
+[57] SummarizedExperiment_1.26.1 zlibbioc_1.42.0            
+[59] grid_4.2.0                  promises_1.2.0.1           
+[61] crayon_1.5.1                lattice_0.20-45            
+[63] haven_2.5.0                 hms_1.1.1                  
+[65] knitr_1.39                  pillar_1.7.0               
+[67] GenomicRanges_1.48.0        stats4_4.2.0               
+[69] reprex_2.0.1                glue_1.6.2                 
+[71] evaluate_0.15               modelr_0.1.8               
+[73] vctrs_0.4.1                 tzdb_0.3.0                 
+[75] httpuv_1.6.5                cellranger_1.1.0           
+[77] gtable_0.3.0                assertthat_0.2.1           
+[79] xfun_0.31                   broom_0.8.0                
+[81] later_1.3.0                 IRanges_2.30.0             
+[83] workflowr_1.7.0             ellipsis_0.3.2             </code></pre>
 </div>
 </div>
 </div>

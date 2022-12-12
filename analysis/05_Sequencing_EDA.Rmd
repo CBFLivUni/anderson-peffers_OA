@@ -33,6 +33,7 @@ plasma_lncRNA_data <- readRDS("./data/plasma_lncRNA_data.rds")
 plasma_snoRNA_data <- readRDS("./data/plasma_snoRNA_data.rds")
 plasma_snRNA_data <- readRDS("./data/plasma_snRNA_data.rds")
 plasma_tRNA_data <- readRDS("./data/plasma_tRNA_data.rds")
+plasma_sequencing_data <- readRDS("./data/plasma_sequencing_data.rds") 
 
 # SF
 sf_pheno_seq <- readRDS("./data/sf_sequencing_pheno.rds")
@@ -40,6 +41,7 @@ sf_miRNA_data <- readRDS("./data/sf_miRNA_data.rds")
 sf_lncRNA_data <- readRDS("./data/sf_lncRNA_data.rds")
 sf_snoRNA_data <- readRDS("./data/sf_snoRNA_data.rds")
 sf_snRNA_data <- readRDS("./data/sf_snRNA_data.rds")
+sf_sequencing_data <- readRDS("./data/sf_sequencing_data.rds")
 
 
 ```
@@ -406,9 +408,99 @@ sf_snRNA_ml_PCA
 ```
 
 
+# All sequencing data
+
+```{r}
+
+seq_plasma_pca_res <- pca(na.omit(plasma_sequencing_data), metadata = plasma_pheno_seq, scale = TRUE, center = TRUE)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+plasma_sequencing_PCA <- plotPCA(seq_plasma_pca_res,
+                            PCs=c(1,2),
+                            colours=redblue,
+                            colour.data=plasma_pheno_seq$Day,
+                            shape.data=plasma_pheno_seq$Horse,
+                            colour.lab="Day",
+                            shape.lab="Horse")
+
+plasma_sequencing_PCA
+
+
+# Correlation plot
+plasma_sequencing_corplot <- eigencorplotPCA(seq_plasma_pca_res,
+                                        metavars = c("Day", "Horse", "Date")) 
+
+
+plasma_sequencing_corplot
+
+```
+
+
+```{r}
+
+seq_sf_pca_res <- pca(na.omit(sf_sequencing_data), metadata = sf_pheno_seq, scale = TRUE, center = TRUE)
+
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+
+# PCA plot
+sf_sequencing_PCA <- plotPCA(seq_sf_pca_res,
+                                 PCs=c(1,3),
+                                 colours=yellowblue,
+                                 colour.data=sf_pheno_seq$Day,
+                                 shape.data=sf_pheno_seq$Horse,
+                                 colour.lab="Day",
+                                 shape.lab="Horse")
+
+sf_sequencing_PCA
+
+
+# Correlation plot
+sf_sequencing_corplot <- eigencorplotPCA(seq_sf_pca_res,
+                                             metavars = c("Day", "Horse", "Date", "Group")) 
+
+
+sf_sequencing_corplot
+
+```
+
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 9, fig.align="center"}
+
+ggarrange(plasma_sequencing_PCA, sf_sequencing_PCA,
+          ncol = 2,
+          nrow = 1, 
+          labels = c("A", "B")) 
+
+```
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align="center"}
+
+df_out <- data.frame(PC1=seq_sf_pca_res$rotated[,1], PC3=seq_sf_pca_res$rotated[,3])
+
+sf_sequencing_PCA_2 <- ggplot(df_out, aes(x=PC1, y=PC3, colour = sf_pheno_seq$Group)) + 
+  geom_point(size = 4.5) + 
+  xlab(paste0('PC1: ', round(as.numeric(seq_sf_pca_res$variance[1])), '% expl.var')) + 
+  ylab(paste0('PC4: ', round(as.numeric(seq_sf_pca_res$variance[3])), '% expl.var')) + 
+  scale_colour_brewer(palette = "Set1") +
+  theme_cowplot() + 
+  labs(colour = "Group")
+
+sf_sequencing_PCA_2
+
+```
+
+
 # Conclusions
 
-Will not include snoRNA data in clustering analysis due to extremely high proportion of missing values (only 3 rows in SF data and plasma data after filtering). 
+Will not include snoRNA data in clustering analysis due to extremely high proportion of missing values (only 3 rows in SF data and plasma data after filtering). However, have included it in factor analysis as all the sequencing data was collapsed together and factor analysis is not sensitive to missing values. 
 Notable perhaps that URS00006ACE58_9796 and URS000068B4BE_9796 present in both.
 
 

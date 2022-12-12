@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Emily Johnson" />
+
+<meta name="date" content="2022-09-28" />
+
+<title>Multi-omics - functional enrichment</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Longitudinal OA multi-omics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Proteomics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01_QC_normalisation.html">QC and normalisation</a>
+    </li>
+    <li>
+      <a href="02_EDA.html">Exploratory data analysis</a>
+    </li>
+    <li>
+      <a href="03_Differential_expression.html">Differential expression analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Small RNA sequencing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_Sequencing_QC_normalisation.html">QC and normalisation</a>
+    </li>
+    <li>
+      <a href="05_Sequencing_EDA.html">Exploratory data analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Multi-omics analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="06_jDR.html">Joint dimensionality reduction v1</a>
+    </li>
+    <li>
+      <a href="06_jDR_2.html">Joint dimensionality reduction v2</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="07_Clustering.html">Clustering</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="08_Functional_enrichment.html">Functional enrichment v1</a>
+    </li>
+    <li>
+      <a href="08_Functional_enrichment_2.html">Functional enrichment v2</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ejjohnson93/anderson-peffers_OA">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Multi-omics - functional enrichment</h1>
+<h4 class="author">Emily Johnson</h4>
+<h4 class="date">2022-09-28</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-12-12
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>anderson-peffers_OA/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20220927code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20220927)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20220927code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20220927)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomCBFLivUniandersonpeffersOAtreecbc8d588a2797af629dcbd0a50035fa7ae7026b1targetblankcbc8d58a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/CBFLivUni/anderson-peffers_OA/tree/cbc8d588a2797af629dcbd0a50035fa7ae7026b1" target="_blank">cbc8d58</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+
+Untracked files:
+    Untracked:  analysis/06_jDR_2.Rmd
+    Untracked:  analysis/08_Functional_enrichment_2.Rmd
+    Untracked:  analysis/about_check.Rmd
+    Untracked:  code/modified_heatmap.R
+    Untracked:  data/complete_annotation.csv
+    Untracked:  data/complete_annotation.rds
+    Untracked:  data/miRNA.dat
+    Untracked:  data/mofa2_plasma_2.rds
+    Untracked:  data/mofa2_plasma_df_2.rds
+    Untracked:  data/mofa2_sf_2.rds
+    Untracked:  data/mofa2_sf_df_2.rds
+    Untracked:  data/plasma_sequencing_data.rds
+    Untracked:  data/sf_sequencing_data.rds
+    Untracked:  imgs/jDR/plasma/v1/
+    Untracked:  imgs/jDR/plasma/v2_USETHIS/
+    Untracked:  imgs/jDR/synovial_fluid/v1/
+    Untracked:  imgs/jDR/synovial_fluid/v2_USETHIS/
+    Untracked:  imgs/sampling_types.png
+    Untracked:  output/complete_annotation.csv
+    Untracked:  output/complete_annotation.rds
+    Untracked:  output/enrichment_results/
+    Untracked:  plasma_model2.hdf5
+    Untracked:  sf_time_model2.hdf5
+
+Unstaged changes:
+    Modified:   analysis/04_Sequencing_QC_normalisation.Rmd
+    Modified:   analysis/05_Sequencing_EDA.Rmd
+    Modified:   analysis/06_jDR.Rmd
+    Deleted:    analysis/06_jDR_test.Rmd
+    Modified:   analysis/08_Functional_enrichment.Rmd
+    Modified:   analysis/_site.yml
+    Deleted:    docs.zip
+    Deleted:    imgs/jDR/plasma/gsea_lipid_binding.png
+    Deleted:    imgs/jDR/plasma/gsea_organitrogen.png
+    Deleted:    imgs/jDR/plasma/gsea_phospholipid.png
+    Deleted:    imgs/jDR/plasma/miRNA_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.PDF
+    Deleted:    imgs/jDR/plasma/plasma_f2_gsea.png
+    Deleted:    imgs/jDR/plasma/plasma_factor_group_correlation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factor_variation_mofa.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/plasma_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/plasma/plasma_mofa.PDF
+    Deleted:    imgs/jDR/plasma/protein_plasma_factor2.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_f5_gsea.png
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.PDF
+    Deleted:    imgs/jDR/plasma/synovial_fluid_factors_gsea_non-sig.png
+    Deleted:    imgs/jDR/synovial_fluid/f3_gsea_inflammation.png
+    Deleted:    imgs/jDR/synovial_fluid/gsea_f5_supramolecular_complex.png
+    Deleted:    miRNA.dat
+    Modified:   output/plasma_limma_DE_results_log2.xlsx
+    Modified:   output/plasma_proDA_DE_results.xlsx
+    Modified:   output/sf_proDA_DE_results.xlsx
+    Modified:   plasma_model.hdf5
+    Deleted:    protein_plasma_factor2_names.PDF
+    Modified:   sf_model.hdf5
+    Modified:   sf_time_model.hdf5
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-libraries" class="section level1">
+<h1>Load libraries</h1>
+<pre class="r"><code>library(tidyverse)
+library(cowplot) # ggplot2 theme
+library(ggpubr) # utilities to arrange/annotate ggplot2 plots
+library(MetBrewer) # additional palettes
+library(enrichplot)
+library(clusterProfiler)
+library(RBiomirGS)
+library(pRoloc)
+library(ncRNAtools)</code></pre>
+</div>
+<div id="read-data" class="section level1">
+<h1>Read data</h1>
+<pre class="r"><code># Plasma 
+plasma_annotation &lt;- readRDS(&quot;./data/plasma_proteomics_annotation.rds&quot;)
+plasma_pheno &lt;- readRDS(&quot;./data/plasma_pheno.rds&quot;) 
+plasma_proteomics_data &lt;- readRDS(&quot;./data/plasma_data_norm.rds&quot;)
+plasma_miRNA_data &lt;- readRDS(&quot;./data/plasma_miRNA_data.rds&quot;) 
+plasma_lncRNA_data &lt;- readRDS(&quot;./data/plasma_lncRNA_data.rds&quot;)
+plasma_snRNA_data &lt;- readRDS(&quot;./data/plasma_snRNA_data.rds&quot;)
+plasma_snoRNA_data &lt;- readRDS(&quot;./data/plasma_snoRNA_data.rds&quot;)
+
+# SF
+sf_annotation &lt;- readRDS(&quot;./data/sf_proteomics_annotation.rds&quot;)
+sf_pheno &lt;- readRDS(&quot;./data/sf_pheno.rds&quot;)
+sf_proteomics_data &lt;- readRDS(&quot;./data/sf_data_norm.rds&quot;)
+sf_miRNA_data &lt;- readRDS(&quot;./data/sf_miRNA_data.rds&quot;)
+sf_lncRNA_data &lt;- readRDS(&quot;./data/sf_lncRNA_data.rds&quot;)
+sf_snRNA_data &lt;- readRDS(&quot;./data/sf_snRNA_data.rds&quot;)
+sf_snoRNA_data &lt;- readRDS(&quot;./data/plasma_snoRNA_data.rds&quot;)</code></pre>
+</div>
+<div id="create-annotation-dataframe" class="section level1">
+<h1>Create annotation dataframe</h1>
+<p>A master annotation dataframe for the proteomics and sequencing data
+was created so the protein names/small RNA names could be mapped to
+their accessions.</p>
+<p>To retrieve annotation for the RNA the RNAcentral package
+<code>ncRNAtools</code> was used.</p>
+<p>Example usage of <code>ncRNAtools</code> to query individual RNA:</p>
+<pre class="r"><code>rnaCentralRetrieveEntry(&quot;URS0000537687_9796&quot;)</code></pre>
+<pre><code>$rnaCentralID
+[1] &quot;URS0000537687_9796&quot;
+
+$sequence
+[1] &quot;AUACUUACCUGGCAGGGGAGAUACCAUGAUCACGAAGGUGGUUUUCCCAGGGCGAGGCUCAUCCAUUGCACUCCGGAUGUGCUGACCCCUGCGAUUUCCCCAAAUGUGGGAAACUCGACUGCAUAAUUUGUGGUAGUGGGGGACUGCGUUCGCGCUUUCCCCUG&quot;
+
+$sequenceLength
+[1] 164
+
+$description
+[1] &quot;Equus caballus (horse) U1 spliceosomal RNA (ENSECAG00000034457.1)&quot;
+
+$species
+[1] &quot;Equus caballus&quot;
+
+$ncbiTaxID
+[1] 9796
+
+$RNATypes
+[1] &quot;snRNA&quot;</code></pre>
+<p>lncRNA, snoRNA, snRNA:</p>
+<pre class="r"><code># Create data frame of small RNAs
+# Join row names for lncRNA and snRNA sequencing data together
+# Filter the joined data to only keep unique IDs
+# Convert this to data frame
+RNA_annot &lt;- data.frame(ID = unique(
+  c(row.names(plasma_lncRNA_data),
+    row.names(sf_lncRNA_data),
+    row.names(plasma_snRNA_data),
+    row.names(sf_snRNA_data),
+    row.names(plasma_snoRNA_data),
+    row.names(sf_snoRNA_data))
+    )
+  )
+
+
+
+# Query RNAcentral with this newly created dataframe
+RNA_annot$description &lt;- sapply(1:length(RNA_annot$ID),function(row){
+  print(RNA_annot$ID[row])
+  return(rnaCentralRetrieveEntry(RNA_annot$ID[row])$description)
+})
+
+
+# Query RNAcentral with this newly created dataframe
+RNA_annot$type &lt;- sapply(1:length(RNA_annot$ID),function(row){
+  print(RNA_annot$ID[row])
+  return(rnaCentralRetrieveEntry(RNA_annot$ID[row])$RNATypes)
+})</code></pre>
+<p>miRNA:</p>
+<pre class="r"><code>miRNA_annot &lt;- data.frame(ID = unique(c(row.names(plasma_miRNA_data), row.names(sf_miRNA_data))),
+                          description = unique(c(row.names(plasma_miRNA_data), row.names(sf_miRNA_data))),
+                          type = rep(&quot;miRNA&quot;, length(unique(c(row.names(plasma_miRNA_data), row.names(sf_miRNA_data)))))
+)</code></pre>
+<p>Proteomics:</p>
+<pre class="r"><code>proteomics_annot &lt;- data.frame(ID = c(row.names(plasma_annotation), row.names(sf_annotation)),
+                          description = c(plasma_annotation$Protein, sf_annotation$Protein),
+                          type = rep(&quot;proteomics&quot;, length(c(row.names(plasma_annotation), row.names(sf_annotation))))
+)
+
+
+proteomics_annot &lt;- unique(proteomics_annot)</code></pre>
+<p>All:</p>
+<pre class="r"><code>all_annotation &lt;- rbind(proteomics_annot, miRNA_annot, RNA_annot)
+row.names(all_annotation) &lt;- all_annotation$ID</code></pre>
+<pre class="r"><code>write.csv(all_annotation, &quot;./output/complete_annotation.csv&quot;)
+write_rds(all_annotation, &quot;./output/complete_annotation.rds&quot;)</code></pre>
+<div id="proteomics" class="section level2">
+<h2>Proteomics</h2>
+<p>For GO term analysis we needed to manually annotate the data. The GO
+term annotation for proteomics data can be readily accessed using the
+Uniprot accessions.</p>
+<p>The tools previously developed by Simon Perkins were employed: <a
+href="https://github.com/CBFLivUni/mapping_and_enrichment"
+class="uri">https://github.com/CBFLivUni/mapping_and_enrichment</a>. For
+the proteomics a combined GO annotation dataframe was created for the
+plasma and synovial fluid:</p>
+<pre class="r"><code>source(&#39;./code/uniprot_dat_reading.R&#39;)
+source(&#39;./code/mapping_with_db_ortho.R&#39;)
+source(&#39;./code/mapping_with_files.R&#39;)
+source(&#39;./code/uniprot_selected_term_types.R&#39;)
+source(&#39;./code/utils.R&#39;)</code></pre>
+<p>Create a combined protein list for synovial fluid and plasma
+proteins:</p>
+<pre class="r"><code># Combine plasma and synovial fluid
+proteins_list &lt;- c(row.names(plasma_proteomics_data), row.names(sf_proteomics_data))
+
+# Remove repeats
+proteins_list &lt;- unique(proteins_list)</code></pre>
+<p>Map this combined list to the protein GO terms using the
+‘map_using_uniprot_files’ function:</p>
+<pre class="r"><code>GO_anot_protein &lt;- map_using_uniprot_files(input_id = &#39;UniProtKB-AC&#39;, input_values = proteins_list, output_id = &#39;GO&#39;)</code></pre>
+<p>Convert the GO annotation to a dataframe, then build the full
+parent-child term map using the buildGOmap function:</p>
+<pre class="r"><code>GO_anot_protein &lt;- as.data.frame(GO_anot_protein)
+GO_anot_full &lt;- buildGOmap(GO_anot_protein[,c(2,1)])</code></pre>
+<p>Add the GO term names and ontology information:</p>
+<pre class="r"><code># Add name annotation
+GO_anot_full$names &lt;- goIdToTerm(GO_anot_full$GO, names = TRUE, keepNA = TRUE)
+
+# Add ontology information
+ontologies &lt;- go2ont(GO_anot_full$GO)
+row.names(ontologies) &lt;- ontologies$go_id
+GO_anot_full$ontology &lt;- ontologies[GO_anot_full$GO, 2]</code></pre>
+</div>
+<div id="sequencing" class="section level2">
+<h2>Sequencing</h2>
+<div id="mirna" class="section level3">
+<h3>miRNA</h3>
+<p>To begin, all the human miRNA manual GO term annotations were
+downloaded from the QuickGO database as an equivalent equine annotation
+doesn’t exist. The link to these annotations can be found here: <a
+href="https://www.ebi.ac.uk/QuickGO/annotations?assignedBy=ARUK-UCL&amp;geneProductType=miRNA&amp;taxonId=9606&amp;taxonUsage=descendants"
+class="uri">https://www.ebi.ac.uk/QuickGO/annotations?assignedBy=ARUK-UCL&amp;geneProductType=miRNA&amp;taxonId=9606&amp;taxonUsage=descendants</a>.</p>
+<p>More information can be found on miRNA functional annotation here: <a
+href="https://www.ucl.ac.uk/cardiovascular/research/pre-clinical-and-fundamental-science/functional-gene-annotation/microrna-annotation"
+class="uri">https://www.ucl.ac.uk/cardiovascular/research/pre-clinical-and-fundamental-science/functional-gene-annotation/microrna-annotation</a>
+<a href="https://rnajournal.cshlp.org/content/22/5/667"
+class="uri">https://rnajournal.cshlp.org/content/22/5/667</a> <a
+href="https://www.mirbase.org/blog/2018/06/microrna-gene-ontology-annotations/"
+class="uri">https://www.mirbase.org/blog/2018/06/microrna-gene-ontology-annotations/</a></p>
+<p>For the purpose of this analysis the human miRNAs were converted into
+their equine counterparts.</p>
+<pre class="r"><code>miRNA_GO &lt;- read.table(file = &quot;./data/QuickGO-annotations-1669061355988-20221121.tsv&quot;, sep = &quot;\t&quot;, header = TRUE)</code></pre>
+<pre class="r"><code>GO_annot_miRNA &lt;- miRNA_GO[,c(3,5)]
+GO_annot_miRNA$SYMBOL &lt;- gsub(&quot;Homo sapiens (human) hsa&quot;, &quot;eca&quot;, GO_annot_miRNA$SYMBOL,  fixed = TRUE)</code></pre>
+<pre class="r"><code>GO_annot_miRNA &lt;- GO_annot_miRNA[,c(2,1)]
+GO_annot_miRNA$names &lt;- goIdToTerm(GO_annot_miRNA$GO, names = TRUE, keepNA = TRUE)
+
+colnames(GO_annot_miRNA)[1:2] &lt;- c(&quot;GO&quot;, &quot;Gene&quot;)</code></pre>
+<p>However, the miRNAs in the dataset were poorly represented among this
+data:</p>
+<pre class="r"><code>intersect(GO_annot_miRNA$SYMBOL, row.names(plasma_miRNA_data))</code></pre>
+<pre><code>NULL</code></pre>
+</div>
+</div>
+</div>
+<div id="clustering-functional-enrichment" class="section level1">
+<h1>Clustering functional enrichment</h1>
+<p>Read data in:</p>
+<pre class="r"><code>plasma_clusters &lt;- readRDS(&quot;./data/mfuzz_cluster_plasma_data.rds&quot;) 
+sf_clusters &lt;- readRDS(&quot;./data/mfuzz_cluster_sf_data.rds&quot;)</code></pre>
+<div id="plasma" class="section level2">
+<h2>Plasma</h2>
+<p>Order by membership:</p>
+<pre class="r"><code>plasma_clusters &lt;- plasma_clusters[order(plasma_clusters$MEM.SHIP, decreasing = TRUE),]</code></pre>
+<p>Create list:</p>
+<pre class="r"><code>plasma_clusters_list &lt;- list(C1 = row.names(plasma_clusters[plasma_clusters$CLUSTER == 1, ]),
+                             C2 = row.names(plasma_clusters[plasma_clusters$CLUSTER == 2, ]),
+                             C3 = row.names(plasma_clusters[plasma_clusters$CLUSTER == 3, ]),
+                             C4 = row.names(plasma_clusters[plasma_clusters$CLUSTER == 4, ]))
+
+
+plasma_background &lt;- row.names(plasma_proteomics_data)</code></pre>
+<p>Carry out cluster functional enrichment:</p>
+<pre class="r"><code># Colour scheme for plasma results
+redblue&lt;-colorRampPalette(c(&quot;#db092c&quot;, &quot;#984ea3&quot;, &quot;#097ddb&quot;))(50)
+
+cluster_enrichment &lt;- compareCluster(geneCluster = plasma_clusters_list,
+                    fun = enricher,
+                    pvalueCutoff = 0.05,
+                    pAdjustMethod = &quot;BH&quot;,
+                    plasma_background,
+                    minGSSize = 3,
+                    qvalueCutoff = 0.2,
+                    TERM2GENE = GO_anot_full[,c(1,2)],
+                    TERM2NAME = GO_anot_full[,c(1,3)])
+
+# GO_anot_full[GO_anot_full$ontology == &quot;BP&quot;,c(1,2)]
+
+
+cluster_enrichment_df &lt;- cluster_enrichment@compareClusterResult
+
+
+clusterProfiler::dotplot(cluster_enrichment) + 
+  scale_color_gradientn(colours = redblue) </code></pre>
+<pre><code>Scale for &#39;colour&#39; is already present. Adding another scale for &#39;colour&#39;,
+which will replace the existing scale.</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>When joint cluster analysis is carried out only cluster 4 has
+signficant GO terms:</p>
+<pre class="r"><code>head(cluster_enrichment_df)</code></pre>
+<pre><code>  Cluster         ID                           Description GeneRatio BgRatio
+1      C4 GO:0005882                 intermediate filament      8/52  13/699
+2      C4 GO:0045111    intermediate filament cytoskeleton      8/52  15/699
+3      C4 GO:0045095                      keratin filament      6/52   9/699
+4      C4 GO:0055090              acylglycerol homeostasis      4/52   4/699
+5      C4 GO:0070328              triglyceride homeostasis      4/52   4/699
+6      C4 GO:0034361 very-low-density lipoprotein particle      6/52  11/699
+        pvalue     p.adjust       qvalue
+1 5.328532e-07 0.0008440394 0.0007818919
+2 2.370384e-06 0.0018773441 0.0017391133
+3 9.047310e-06 0.0047769797 0.0044252457
+4 2.745143e-05 0.0086966133 0.0080562726
+5 2.745143e-05 0.0086966133 0.0080562726
+6 4.425959e-05 0.0100153129 0.0092778749
+                                                               geneID Count
+1 A0A5F5PYS7/F6WGX6/F6Q1M4/A0A3Q2I3K2/A0A3Q2LCW0/F7AGY4/F6WDW3/F6SHJ8     8
+2 A0A5F5PYS7/F6WGX6/F6Q1M4/A0A3Q2I3K2/A0A3Q2LCW0/F7AGY4/F6WDW3/F6SHJ8     8
+3                   A0A5F5PYS7/F6WGX6/A0A3Q2LCW0/F7AGY4/F6WDW3/F6SHJ8     6
+4                                     F6Z2L5/F6VBP9/P0DN28/A0A5F5PQA2     4
+5                                     F6Z2L5/F6VBP9/P0DN28/A0A5F5PQA2     4
+6                       F6Z2L5/F6VBP9/F6RM73/P0DN28/A0A5F5PQA2/F7A1W7     6</code></pre>
+<p>Repeat analysis with just cluster 4:</p>
+<pre class="r"><code>c4 &lt;- row.names(plasma_clusters[plasma_clusters$CLUSTER == 4, ])
+
+plasma_c4_enrichment &lt;- enricher(
+  c4,
+  pvalueCutoff = 0.05,
+  pAdjustMethod = &quot;BH&quot;,
+  plasma_background,
+  minGSSize = 3,
+  qvalueCutoff = 0.2,
+  TERM2GENE = GO_anot_full[,c(1,2)],
+  TERM2NAME = GO_anot_full[,c(1,3)])
+
+
+plasma_c4_dp &lt;- clusterProfiler::dotplot(plasma_c4_enrichment) +
+  scale_color_gradientn(colours = redblue) +
+  theme_minimal() +
+  ggtitle(&quot;Plasma - cluster 4&quot;)</code></pre>
+<pre><code>Scale for &#39;colour&#39; is already present. Adding another scale for &#39;colour&#39;,
+which will replace the existing scale.</code></pre>
+<pre class="r"><code>plasma_c4_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Interesting lipid metabolism seems to be enriched for cluster 4:</p>
+<ul>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/21115041/"
+class="uri">https://pubmed.ncbi.nlm.nih.gov/21115041/</a><br />
+‘Lipid metabolism and osteoarthritis: lessons from atherosclerosis’</li>
+</ul>
+</div>
+<div id="synovial-fluid" class="section level2">
+<h2>Synovial fluid</h2>
+<p>Order by membership:</p>
+<pre class="r"><code>sf_clusters &lt;- sf_clusters[order(sf_clusters$MEM.SHIP, decreasing = TRUE),]</code></pre>
+<p>Create list:</p>
+<pre class="r"><code>sf_clusters_list &lt;- list(C1 = row.names(sf_clusters[sf_clusters$CLUSTER == 1, ]),
+                             C2 = row.names(sf_clusters[sf_clusters$CLUSTER == 2, ]),
+                             C3 = row.names(sf_clusters[sf_clusters$CLUSTER == 3, ]),
+                             C4 = row.names(sf_clusters[sf_clusters$CLUSTER == 4, ]),
+                             C5 = row.names(sf_clusters[sf_clusters$CLUSTER == 5, ]),
+                             C6 = row.names(sf_clusters[sf_clusters$CLUSTER == 6, ]))
+
+
+sf_background &lt;- row.names(sf_proteomics_data)</code></pre>
+<p>Carry out cluster functional enrichment:</p>
+<pre class="r"><code>sf_cluster_enrichment &lt;- compareCluster(geneCluster = sf_clusters_list,
+                                     fun = enricher,
+                                     pvalueCutoff = 0.5,
+                                     pAdjustMethod = &quot;BH&quot;,
+                                     sf_background,
+                                     minGSSize = 3,
+                                     qvalueCutoff = 0.2,
+                                     TERM2GENE = GO_anot_full[c(1,2)],
+                                     TERM2NAME = GO_anot_full[c(1,3)])
+
+
+sf_cluster_enrichment_df &lt;- sf_cluster_enrichment@compareClusterResult</code></pre>
+<p>When joint functional enrichment analysis is carried out only cluster
+3 has significantly enriched GO terms.</p>
+<pre class="r"><code>head(cluster_enrichment_df)</code></pre>
+<pre><code>  Cluster         ID                           Description GeneRatio BgRatio
+1      C4 GO:0005882                 intermediate filament      8/52  13/699
+2      C4 GO:0045111    intermediate filament cytoskeleton      8/52  15/699
+3      C4 GO:0045095                      keratin filament      6/52   9/699
+4      C4 GO:0055090              acylglycerol homeostasis      4/52   4/699
+5      C4 GO:0070328              triglyceride homeostasis      4/52   4/699
+6      C4 GO:0034361 very-low-density lipoprotein particle      6/52  11/699
+        pvalue     p.adjust       qvalue
+1 5.328532e-07 0.0008440394 0.0007818919
+2 2.370384e-06 0.0018773441 0.0017391133
+3 9.047310e-06 0.0047769797 0.0044252457
+4 2.745143e-05 0.0086966133 0.0080562726
+5 2.745143e-05 0.0086966133 0.0080562726
+6 4.425959e-05 0.0100153129 0.0092778749
+                                                               geneID Count
+1 A0A5F5PYS7/F6WGX6/F6Q1M4/A0A3Q2I3K2/A0A3Q2LCW0/F7AGY4/F6WDW3/F6SHJ8     8
+2 A0A5F5PYS7/F6WGX6/F6Q1M4/A0A3Q2I3K2/A0A3Q2LCW0/F7AGY4/F6WDW3/F6SHJ8     8
+3                   A0A5F5PYS7/F6WGX6/A0A3Q2LCW0/F7AGY4/F6WDW3/F6SHJ8     6
+4                                     F6Z2L5/F6VBP9/P0DN28/A0A5F5PQA2     4
+5                                     F6Z2L5/F6VBP9/P0DN28/A0A5F5PQA2     4
+6                       F6Z2L5/F6VBP9/F6RM73/P0DN28/A0A5F5PQA2/F7A1W7     6</code></pre>
+<p>Cluster analysis for clusters 1 &amp; 3:</p>
+<pre class="r"><code>c1 &lt;- row.names(sf_clusters[sf_clusters$CLUSTER == 1, ])
+
+sf_c1_enrichment &lt;- enricher(
+  c1,
+  pvalueCutoff = 0.05,
+  pAdjustMethod = &quot;BH&quot;,
+  sf_background,
+  minGSSize = 3,
+  qvalueCutoff = 0.2,
+  TERM2GENE = GO_anot_full[c(1,2)],
+  TERM2NAME = GO_anot_full[c(1,3)])
+
+
+sf_c1_dp &lt;- clusterProfiler::dotplot(sf_c1_enrichment) +
+  scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  theme_minimal() +
+  ggtitle(&quot;Synovial fluid - cluster 1&quot;)
+
+
+sf_c1_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c3 &lt;- row.names(sf_clusters[sf_clusters$CLUSTER == 3, ])
+
+sf_c3_enrichment &lt;- enricher(
+  c3,
+  pvalueCutoff = 0.05,
+  pAdjustMethod = &quot;BH&quot;,
+  sf_background,
+  minGSSize = 3,
+  qvalueCutoff = 0.2,
+  TERM2GENE = GO_anot_full[c(1,2)],
+  TERM2NAME = GO_anot_full[c(1,3)])
+
+
+sf_c3_dp &lt;- clusterProfiler::dotplot(sf_c3_enrichment) +
+  scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  theme_minimal() +
+  ggtitle(&quot;Synovial fluid - cluster 3&quot;)
+
+sf_c3_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="write-ora-results" class="section level2">
+<h2>Write ORA results:</h2>
+<pre class="r"><code># Plasma:
+write.csv(plasma_c4_enrichment@result, &quot;./output/enrichment_results/plasma_c4_ORA_results.csv&quot;)
+
+
+# SF: 
+write.csv(sf_c1_enrichment@result, &quot;./output/enrichment_results/synovial_fluid_c1_ORA_results.csv&quot;)
+write.csv(sf_c3_enrichment@result, &quot;./output/enrichment_results/synovial_fluid_c3_ORA_results.csv&quot;)</code></pre>
+</div>
+</div>
+<div id="factor-functional-enrichment" class="section level1">
+<h1>Factor functional enrichment</h1>
+<p>Read data in:</p>
+<pre class="r"><code>plasma_mofa &lt;- readRDS(&quot;./data/mofa2_plasma_df_2.rds&quot;) 
+sf_mofa &lt;- readRDS(&quot;./data/mofa2_sf_df_2.rds&quot;)</code></pre>
+<div id="plasma-1" class="section level2">
+<h2>Plasma</h2>
+<pre class="r"><code>plasma_mofa_list &lt;- list(Factor1 = plasma_mofa[plasma_mofa$view == &quot;proteomics&quot; &amp; plasma_mofa$factor == &quot;Factor1&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                    Factor2 = plasma_mofa[plasma_mofa$view == &quot;proteomics&quot; &amp; plasma_mofa$factor == &quot;Factor2&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                    Factor3 = plasma_mofa[plasma_mofa$view == &quot;proteomics&quot; &amp; plasma_mofa$factor == &quot;Factor3&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                    Factor4 = plasma_mofa[plasma_mofa$view == &quot;proteomics&quot; &amp; plasma_mofa$factor == &quot;Factor4&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                    Factor5 = plasma_mofa[plasma_mofa$view == &quot;proteomics&quot; &amp; plasma_mofa$factor == &quot;Factor5&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                    Factor6 = plasma_mofa[plasma_mofa$view == &quot;proteomics&quot; &amp; plasma_mofa$factor == &quot;Factor6&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature))</code></pre>
+<pre class="r"><code>plasma_factor_enrichment &lt;- compareCluster(geneCluster = plasma_mofa_list,
+               fun = GSEA,
+               exponent = 1,
+               minGSSize = 5,
+               maxGSSize = 500,
+               pvalueCutoff = 0.5,
+               pAdjustMethod = &quot;BH&quot;,
+               TERM2GENE = GO_anot_full[c(1,2)],
+               TERM2NAME = GO_anot_full[c(1,3)],
+               by = &quot;fgsea&quot;)
+
+
+
+plasma_factor_enrichment_df &lt;- plasma_factor_enrichment@compareClusterResult
+
+plasma_factors_dp &lt;- clusterProfiler::dotplot(plasma_factor_enrichment) +
+  scale_color_gradientn(colours = redblue) +
+  theme_minimal() + 
+  ggtitle(&quot;Plasma - factors GSEA&quot;)
+
+
+plasma_factors_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="factor-1" class="section level3">
+<h3>Factor 1</h3>
+<pre class="r"><code>factor1 &lt;- plasma_mofa[plasma_mofa$view == &quot;proteomics&quot; &amp; plasma_mofa$factor == &quot;Factor1&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature)</code></pre>
+<pre class="r"><code>gsea_plasma_f1 &lt;- GSEA(geneList = factor1,
+               exponent = 1,
+               minGSSize = 5,
+               maxGSSize = 500,
+               pvalueCutoff = 0.05,
+               pAdjustMethod = &quot;BH&quot;,
+               TERM2GENE = GO_anot_full[c(1,2)],
+               TERM2NAME = GO_anot_full[c(1,3)],
+               by = &quot;fgsea&quot;)
+
+
+plasma_f1_dp &lt;- clusterProfiler::dotplot(gsea_plasma_f1) +
+  scale_color_gradientn(colours = redblue) +
+  theme_minimal() + 
+  ggtitle(&quot;Plasma - factor 1 GSEA&quot;)
+
+plasma_f1_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>(Note: due to way the gene sets are ranked they may appear equally
+significant when this analysis is run.)</p>
+<pre class="r"><code>gseaplot2(gsea_plasma_f1, geneSetID = 3, title = gsea_plasma_f1$Description[3])</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="synovial-fluid-1" class="section level2">
+<h2>Synovial fluid</h2>
+<pre class="r"><code># Create a list object containing the proteomic factor data in descending order
+sf_mofa_list &lt;- list(Factor1 = sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor1&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                         Factor2 = sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor2&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                         Factor3 = sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor3&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                         Factor4 = sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor4&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                         Factor5 = sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor5&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature),
+                         Factor6 = sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor6&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature))</code></pre>
+<p>Calculate factor enrichment using GSEA. Note: the p-value threshold
+is set higher just for the initial exploration.</p>
+<pre class="r"><code># Joint factor GSEA analysis using compareCluster function
+sf_factor_enrichment &lt;- compareCluster(geneCluster = sf_mofa_list,
+                                           fun = GSEA,
+                                           exponent = 1,
+                                           minGSSize = 5,
+                                           maxGSSize = 500,
+                                           pvalueCutoff = 0.5,
+                                           pAdjustMethod = &quot;BH&quot;,
+                                           TERM2GENE = GO_anot_full[c(1,2)],
+                                           TERM2NAME = GO_anot_full[c(1,3)],
+                                           by = &quot;fgsea&quot;)
+
+
+
+# Data frame for comparison purposes
+sf_factor_enrichment_df &lt;- sf_factor_enrichment@compareClusterResult
+
+
+# Dotplot 
+sf_factors_dp &lt;- clusterProfiler::dotplot(sf_factor_enrichment) +
+  scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  theme_minimal() + 
+  ggtitle(&quot;Synovial fluid - factors GSEA&quot;)
+
+sf_factors_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Only factor 3 and factor 2 appear to have any significant GO terms
+associated with them. This is expected considering their association
+with the phenotype in the factor analysis.</p>
+<div id="factor-3" class="section level3">
+<h3>Factor 3</h3>
+<pre class="r"><code>factor3 &lt;- sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor3&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature)</code></pre>
+<pre class="r"><code>gsea_sf_f3 &lt;- GSEA(geneList = factor3,
+               exponent = 1,
+               minGSSize = 5,
+               maxGSSize = 500,
+               pvalueCutoff = 0.05,
+               pAdjustMethod = &quot;BH&quot;,
+               TERM2GENE = GO_anot_full[c(1,2)],
+               TERM2NAME = GO_anot_full[c(1,3)],
+               by = &quot;fgsea&quot;)
+
+
+sf_f3_dp &lt;- clusterProfiler::dotplot(gsea_sf_f3) +
+  scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  theme_minimal() + 
+  ggtitle(&quot;Synovial fluid - factor 3 GSEA&quot;)
+
+sf_f3_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>gseaplot2(gsea_sf_f3, geneSetID = 3, title = gsea_sf_f3$Description[3])</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 5 appears to correspond to extracellular matrix and
+cytoskeletal fiber production. This is probably a wound healing response
+in response to the initial tissue damage.</p>
+</div>
+<div id="factor-2" class="section level3">
+<h3>Factor 2</h3>
+<pre class="r"><code>factor2 &lt;- sf_mofa[sf_mofa$view == &quot;proteomics&quot; &amp; sf_mofa$factor == &quot;Factor2&quot;,] %&gt;% arrange(desc(value)) %&gt;% pull(value, feature)</code></pre>
+<pre class="r"><code>gsea_sf_f2 &lt;- GSEA(geneList = factor2,
+               exponent = 1,
+               minGSSize = 5,
+               maxGSSize = 500,
+               pvalueCutoff = 0.05,
+               pAdjustMethod = &quot;BH&quot;,
+               TERM2GENE = GO_anot_full[c(1,2)],
+               TERM2NAME = GO_anot_full[c(1,3)],
+               by = &quot;fgsea&quot;)
+
+
+sf_f2_dp &lt;- clusterProfiler::dotplot(gsea_sf_f2) +
+  scale_color_gradientn(colours = hcl.colors(50, &quot;BluYl&quot;)) +
+  theme_minimal() + 
+  ggtitle(&quot;Synovial fluid - factor 2 GSEA&quot;)
+
+sf_f2_dp</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Factor 2 seems to be associated with an immune response.</p>
+<pre class="r"><code>gseaplot2(gsea_sf_f2, geneSetID = 1, title = gsea_sf_f2$Description[1])</code></pre>
+<p><img src="figure/08_Functional_enrichment_2.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="write-gsea-results" class="section level2">
+<h2>Write GSEA results:</h2>
+<pre class="r"><code># Plasma:
+write.csv(gsea_plasma_f1@result, &quot;./output/enrichment_results/plasma_f1_GSEA_results.csv&quot;)
+
+
+# SF: 
+write.csv(gsea_sf_f3@result, &quot;./output/enrichment_results/synovial_fluid_f3_GSEA_results.csv&quot;)</code></pre>
+<!-- Below is some code that will be hidden in the outputs to save figures. -->
+<p><a
+href="http://www.bioconductor.org/packages/release/bioc/vignettes/ncRNAtools/inst/doc/ncRNAtools.html"
+class="uri">http://www.bioconductor.org/packages/release/bioc/vignettes/ncRNAtools/inst/doc/ncRNAtools.html</a></p>
+<p>^ enrichment for RNA</p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.0 (2022-04-22 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19044)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United Kingdom.utf8 
+[2] LC_CTYPE=English_United Kingdom.utf8   
+[3] LC_MONETARY=English_United Kingdom.utf8
+[4] LC_NUMERIC=C                           
+[5] LC_TIME=English_United Kingdom.utf8    
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] glue_1.6.2            jsonlite_1.8.0        memoise_2.0.1        
+ [4] ncRNAtools_1.6.0      pRoloc_1.36.0         BiocParallel_1.30.3  
+ [7] MLInterfaces_1.76.0   cluster_2.1.3         annotate_1.74.0      
+[10] XML_3.99-0.10         AnnotationDbi_1.58.0  IRanges_2.30.0       
+[13] MSnbase_2.22.0        ProtGenerics_1.28.0   S4Vectors_0.34.0     
+[16] mzR_2.30.0            Rcpp_1.0.8.3          Biobase_2.56.0       
+[19] BiocGenerics_0.42.0   RBiomirGS_0.2.17      clusterProfiler_4.4.4
+[22] enrichplot_1.16.2     MetBrewer_0.2.0       ggpubr_0.4.0         
+[25] cowplot_1.1.1         forcats_0.5.1         stringr_1.4.0        
+[28] dplyr_1.0.9           purrr_0.3.4           readr_2.1.2          
+[31] tidyr_1.2.0           tibble_3.1.7          ggplot2_3.3.6        
+[34] tidyverse_1.3.1      
+
+loaded via a namespace (and not attached):
+  [1] rappdirs_0.3.3         ModelMetrics_1.2.2.2   coda_0.19-4           
+  [4] bit64_4.0.5            knitr_1.39             data.table_1.14.2     
+  [7] rpart_4.1.16           KEGGREST_1.36.2        hardhat_1.1.0         
+ [10] RCurl_1.98-1.7         doParallel_1.0.17      generics_0.1.2        
+ [13] snow_0.4-4             preprocessCore_1.58.0  RSQLite_2.2.14        
+ [16] shadowtext_0.1.2       future_1.26.1          proxy_0.4-27          
+ [19] bit_4.0.4              tzdb_0.3.0             xml2_1.3.3            
+ [22] lubridate_1.8.0        httpuv_1.6.5           assertthat_0.2.1      
+ [25] viridis_0.6.2          gower_1.0.0            xfun_0.31             
+ [28] hms_1.1.1              jquerylib_0.1.4        evaluate_0.15         
+ [31] promises_1.2.0.1       fansi_1.0.3            progress_1.2.2        
+ [34] dendextend_1.15.2      dbplyr_2.2.0           readxl_1.4.0          
+ [37] igraph_1.3.2           DBI_1.1.2              ellipsis_0.3.2        
+ [40] backports_1.4.1        biomaRt_2.52.0         vctrs_0.4.1           
+ [43] abind_1.4-5            caret_6.0-92           cachem_1.0.6          
+ [46] withr_2.5.0            ggforce_0.3.3          vroom_1.5.7           
+ [49] treeio_1.20.0          prettyunits_1.1.1      mclust_5.4.10         
+ [52] DOSE_3.22.0            ape_5.6-2              segmented_1.6-0       
+ [55] lazyeval_0.2.2         crayon_1.5.1           labeling_0.4.2        
+ [58] recipes_0.2.0          pkgconfig_2.0.3        tweenr_1.0.2          
+ [61] GenomeInfoDb_1.32.2    nlme_3.1-157           nnet_7.3-17           
+ [64] globals_0.15.0         rlang_1.0.2            lifecycle_1.0.1       
+ [67] LaplacesDemon_16.1.6   downloader_0.4         filelock_1.0.2        
+ [70] affyio_1.66.0          BiocFileCache_2.4.0    modelr_0.1.8          
+ [73] randomForest_4.7-1.1   cellranger_1.1.0       rprojroot_2.0.3       
+ [76] polyclip_1.10-0        Matrix_1.5-1           aplot_0.1.6           
+ [79] carData_3.0-5          reprex_2.0.1           png_0.1-7             
+ [82] viridisLite_0.4.0      bitops_1.0-7           pROC_1.18.0           
+ [85] Biostrings_2.64.0      blob_1.2.3             workflowr_1.7.0       
+ [88] qvalue_2.28.0          parallelly_1.32.0      rstatix_0.7.0         
+ [91] gridGraphics_0.5-1     ggsignif_0.6.3         lpSolve_5.6.15        
+ [94] scales_1.2.0           magrittr_2.0.3         plyr_1.8.7            
+ [97] hexbin_1.28.2          zlibbioc_1.42.0        compiler_4.2.0        
+[100] scatterpie_0.1.7       RColorBrewer_1.1-3     pcaMethods_1.88.0     
+[103] clue_0.3-61            cli_3.3.0              affy_1.74.0           
+[106] XVector_0.36.0         listenv_0.8.0          patchwork_1.1.1       
+[109] MASS_7.3-56            tidyselect_1.1.2       vsn_3.64.0            
+[112] stringi_1.7.6          highr_0.9              yaml_2.3.5            
+[115] GOSemSim_2.22.0        MALDIquant_1.21        ggrepel_0.9.1         
+[118] grid_4.2.0             sass_0.4.1             fastmatch_1.1-3       
+[121] tools_4.2.0            future.apply_1.9.0     parallel_4.2.0        
+[124] rstudioapi_0.13        MsCoreUtils_1.8.0      foreach_1.5.2         
+[127] git2r_0.30.1           gridExtra_2.3          prodlim_2019.11.13    
+[130] farver_2.1.0           mzID_1.34.0            ggraph_2.0.5          
+[133] digest_0.6.29          BiocManager_1.30.18    lava_1.6.10           
+[136] FNN_1.1.3.1            GenomicRanges_1.48.0   car_3.1-0             
+[139] broom_0.8.0            later_1.3.0            ncdf4_1.19            
+[142] httr_1.4.3             kernlab_0.9-31         colorspace_2.0-3      
+[145] rvest_1.0.2            fs_1.5.2               splines_4.2.0         
+[148] yulab.utils_0.0.4      tidytree_0.3.9         graphlayouts_0.8.0    
+[151] ggplotify_0.1.0        xtable_1.8-4           ggtree_3.4.0          
+[154] tidygraph_1.2.1        timeDate_3043.102      ggfun_0.0.6           
+[157] ipred_0.9-13           R6_2.5.1               pillar_1.7.0          
+[160] htmltools_0.5.2        fastmap_1.1.0          class_7.3-20          
+[163] codetools_0.2-18       fgsea_1.22.0           mvtnorm_1.1-3         
+[166] utf8_1.2.2             lattice_0.20-45        bslib_0.3.1           
+[169] mixtools_1.2.0         curl_4.3.2             gtools_3.9.2.2        
+[172] GO.db_3.15.0           survival_3.3-1         limma_3.52.1          
+[175] sampling_2.9           rmarkdown_2.14         munsell_0.5.0         
+[178] e1071_1.7-11           DO.db_2.9              GenomeInfoDbData_1.2.8
+[181] iterators_1.0.14       impute_1.70.0          haven_2.5.0           
+[184] reshape2_1.4.4         gtable_0.3.0          </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

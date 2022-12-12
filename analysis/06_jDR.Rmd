@@ -8,6 +8,13 @@ editor_options:
 bibliography: references.bib
 ---
 
+# Introduction
+
+This workflow employs joint dimensionality reduction to identify factors (combinations of all the different features) that account for the majority of the variation in the -omics data. These factors can be correlated with the phenotype data for downstream analysis. We can also see how much each -omics contributes to each factor. 
+
+In this analysis the different types of small RNAs were read in individually and treated as different views. However, a more conventional version of the analysis with all the sequencing data collapsed together was also carried out [here](06_jDR_2.html). 
+
+
 # Load libraries
 
 ```{r, message=FALSE, warning=FALSE}
@@ -724,7 +731,7 @@ f5_sf_protein_heatmap <- plot_data_heatmap(MOFAobject.trained,
         denoise = TRUE,
         color = heatmap_cols,
         border_color = NA,
-        annotation_samples = c("Day", "Horse", "group"),
+        annotation_samples = c("Day", "Horse", "Group"),
         fontsize = 12
       )
 
@@ -840,7 +847,7 @@ head(mefisto_opts)
 
 Prepare MOFA object with modified parameters:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 MOFAobject <- prepare_mofa(
   object = MOFAobject,
